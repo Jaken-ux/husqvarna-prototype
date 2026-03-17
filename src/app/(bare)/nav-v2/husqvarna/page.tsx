@@ -228,7 +228,7 @@ export default function HusqvarnaPage() {
       <main className="mx-auto max-w-[1280px] px-6 py-8">
         {/* ── Breadcrumb ── */}
         <Link
-          href="/start-v2"
+          href="/nav-v2"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[#888] transition-colors hover:text-[#273A60]"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

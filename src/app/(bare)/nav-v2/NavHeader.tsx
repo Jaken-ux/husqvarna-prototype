@@ -43,7 +43,7 @@ export default function NavHeader() {
               </svg>
             </button>
 
-            <Link href="/start-v2" className="hidden items-center gap-2.5 md:flex">
+            <Link href="/nav-v2" className="hidden items-center gap-2.5 md:flex">
               <Image
                 src="/images/Husqvarna-logo.png"
                 alt="Husqvarna"
