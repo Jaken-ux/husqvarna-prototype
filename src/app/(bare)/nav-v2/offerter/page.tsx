@@ -228,6 +228,7 @@ function ShowroomView({ quote, discounts, onClose }: { quote: Quote; discounts: 
               <thead>
                 <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
                   <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Artikel</th>
+                  <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Rabatt</th>
                   <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Pris exkl. moms</th>
                   <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Pris inkl. moms</th>
                   <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Antal</th>
@@ -245,6 +246,7 @@ function ShowroomView({ quote, discounts, onClose }: { quote: Quote; discounts: 
                         <td className="px-5 py-4">
                           <p className="text-[13px] font-medium text-[#555]">{row.description || "Tilläggstjänst"}</p>
                         </td>
+                        <td className="px-5 py-4 text-[13px] text-[#999]">—</td>
                         <td className="px-5 py-4 text-[13px] text-[#999]">{row.hasPrice ? `SEK ${fmt(row.priceExcl)}` : "—"}</td>
                         <td className="px-5 py-4 text-[13px] text-[#999]">{row.hasPrice ? `SEK ${fmt(priceIncl)}` : "—"}</td>
                         <td className="px-5 py-4 text-[13px] text-[#333]">{row.hasPrice ? row.qty : "—"}</td>
@@ -262,8 +264,27 @@ function ShowroomView({ quote, discounts, onClose }: { quote: Quote; discounts: 
                         <p className="text-[13px] font-semibold text-[#111]">{row.name}</p>
                         <p className="text-[12px] text-[#999]">{row.article}</p>
                       </td>
-                      <td className="px-5 py-4 text-[13px] text-[#333]">SEK {fmt(custExcl)}</td>
-                      <td className="px-5 py-4 text-[13px] text-[#333]">SEK {fmt(custIncl)}</td>
+                      <td className="px-5 py-4">
+                        {disc > 0 ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[12px] font-semibold text-[#2a7d4c]">
+                            −{disc}%
+                          </span>
+                        ) : (
+                          <span className="text-[13px] text-[#999]">—</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4">
+                        {disc > 0 && (
+                          <span className="mr-1.5 text-[12px] text-[#999] line-through">SEK {fmt(row.rrpExcl)}</span>
+                        )}
+                        <span className="text-[13px] text-[#333]">SEK {fmt(custExcl)}</span>
+                      </td>
+                      <td className="px-5 py-4">
+                        {disc > 0 && (
+                          <span className="mr-1.5 text-[12px] text-[#999] line-through">SEK {fmt(row.rrpIncl)}</span>
+                        )}
+                        <span className="text-[13px] text-[#333]">SEK {fmt(custIncl)}</span>
+                      </td>
                       <td className="px-5 py-4 text-[13px] text-[#333]">{row.qty}</td>
                       <td className="px-5 py-4 text-[13px] font-medium text-[#111]">SEK {fmt(custExcl * row.qty)}</td>
                       <td className="px-5 py-4 text-[13px] font-medium text-[#111]">SEK {fmt(custIncl * row.qty)}</td>
