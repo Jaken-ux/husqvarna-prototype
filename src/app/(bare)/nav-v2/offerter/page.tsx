@@ -66,91 +66,160 @@ function fmt(cents: number) {
   return (cents / 100).toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+/* ═══ DEMO PRODUCT CATALOG ═══ */
+const demoCatalog: Record<string, { name: string; image: string; rrpExcl: number; dealerExcl: number }> = {
+  "585 57 28-01": { name: "Husqvarna Automower 430X NERA", image: "https://www.husqvarna.com/images/pl-large-webp/H310-0848/husqvarna-automower-430x-nera.webp", rrpExcl: 2999000, dealerExcl: 1949400 },
+  "967 09 82-01": { name: "HUSQVARNA 120 Mark II", image: "https://www.husqvarna.com/images/pl-large-webp/H110-0375/husqvarna-120-mark-ii.webp", rrpExcl: 249900, dealerExcl: 162400 },
+  "970 52 76-18": { name: "Husqvarna Automower 450X NERA", image: "https://www.husqvarna.com/images/pl-large-webp/H310-0850/husqvarna-automower-450x-nera.webp", rrpExcl: 3999000, dealerExcl: 2599400 },
+  "967 29 61-01": { name: "Husqvarna 550 XP® G Mark II", image: "https://www.husqvarna.com/images/pl-large-webp/H110-0551/husqvarna-550-xp-g-mark-ii.webp", rrpExcl: 899900, dealerExcl: 584900 },
+  "587 85 81-01": { name: "Husqvarna svärdkedja H37", image: "https://www.husqvarna.com/images/pl-large-webp/H170-0074/husqvarna-chain-h37.webp", rrpExcl: 24900, dealerExcl: 15900 },
+};
+const defaultDemoProduct = { name: "Husqvarna Automower 430X NERA", image: "https://www.husqvarna.com/images/pl-large-webp/H310-0848/husqvarna-automower-430x-nera.webp", rrpExcl: 2999000, dealerExcl: 1949400 };
+
 /* ═══ ADD ARTICLE MODAL ═══ */
 function AddArticleModal({ onAdd, onClose }: { onAdd: (item: QuoteItem) => void; onClose: () => void }) {
-  const [articleNr, setArticleNr] = useState("585 57 28-01");
-  const [name, setName] = useState("Husqvarna Automower 430X NERA");
-  const [rrpExcl, setRrpExcl] = useState("29990.00");
-  const [qty, setQty] = useState("1");
+  const [articleNr, setArticleNr] = useState("");
+  const [found, setFound] = useState<{ name: string; image: string; rrpExcl: number; dealerExcl: number } | null>(null);
+  const [searching, setSearching] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [comment, setComment] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!articleNr.trim() || !name.trim() || !rrpExcl.trim()) return;
-    const excl = Math.round(parseFloat(rrpExcl) * 100);
+  const handleSearch = () => {
+    if (!articleNr.trim()) return;
+    setSearching(true);
+    // Simulate API lookup delay
+    setTimeout(() => {
+      const match = demoCatalog[articleNr.trim()];
+      setFound(match || defaultDemoProduct);
+      setSearching(false);
+    }, 400);
+  };
+
+  const handleSubmit = () => {
+    if (!found) return;
+    const nr = articleNr.trim() || "585 57 28-01";
     onAdd({
-      id: articleNr.replace(/\s/g, "-"),
-      article: articleNr,
-      name,
-      dealerExcl: Math.round(excl * 0.65),
-      rrpExcl: excl,
-      rrpIncl: Math.round(excl * VAT_RATE),
-      qty: parseInt(qty) || 1,
-      comment: "",
+      id: nr.replace(/\s/g, "-"),
+      article: nr,
+      name: found.name,
+      dealerExcl: found.dealerExcl,
+      rrpExcl: found.rrpExcl,
+      rrpIncl: Math.round(found.rrpExcl * VAT_RATE),
+      qty,
+      comment,
     });
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={onClose}>
-      <div className="w-full max-w-md rounded-xl border border-[#e5e5e5] bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
-        <h3 className="text-[16px] font-semibold text-[#111]">Lägg till artikel</h3>
-        <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wide text-[#999]">Artikelnummer</label>
+      <div className="flex w-full max-w-lg flex-col rounded-xl border border-[#e5e5e5] bg-white shadow-xl" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+          <h3 className="text-[16px] font-semibold text-[#111]">Lägg till i offert</h3>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] hover:bg-[#f5f5f5] hover:text-[#555]">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 px-6 py-5">
+          {/* Article number search */}
+          <label className="text-[12px] font-semibold text-[#333]">Artikelnummer</label>
+          <div className="mt-1.5 flex gap-2">
             <input
               ref={inputRef}
               value={articleNr}
-              onChange={(e) => setArticleNr(e.target.value)}
-              placeholder="t.ex. 967 29 61-01"
-              className="mt-1 h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 text-[14px] text-[#333] placeholder:text-[#bbb] focus:border-[#999] focus:bg-white focus:outline-none"
+              onChange={(e) => { setArticleNr(e.target.value); setFound(null); }}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleSearch(); } }}
+              placeholder="t.ex. 585 57 28-01"
+              className="h-10 flex-1 rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 text-[14px] text-[#333] placeholder:text-[#bbb] focus:border-[#999] focus:bg-white focus:outline-none"
             />
-          </div>
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wide text-[#999]">Produktnamn</label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="t.ex. Husqvarna 550i XP"
-              className="mt-1 h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 text-[14px] text-[#333] placeholder:text-[#bbb] focus:border-[#999] focus:bg-white focus:outline-none"
-            />
-          </div>
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <label className="text-[11px] font-semibold uppercase tracking-wide text-[#999]">RRP exkl. moms (SEK)</label>
-              <input
-                value={rrpExcl}
-                onChange={(e) => setRrpExcl(e.target.value)}
-                placeholder="745.00"
-                type="number"
-                step="0.01"
-                className="mt-1 h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 text-[14px] text-[#333] placeholder:text-[#bbb] focus:border-[#999] focus:bg-white focus:outline-none"
-              />
-            </div>
-            <div className="w-24">
-              <label className="text-[11px] font-semibold uppercase tracking-wide text-[#999]">Antal</label>
-              <input
-                value={qty}
-                onChange={(e) => setQty(e.target.value)}
-                type="number"
-                min="1"
-                className="mt-1 h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 text-[14px] text-[#333] focus:border-[#999] focus:bg-white focus:outline-none"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-2 pt-2">
-            <button type="button" onClick={onClose} className="rounded-lg border border-[#d0d0d0] px-4 py-2 text-[13px] font-medium text-[#555] hover:bg-[#f5f5f5]">
-              Avbryt
-            </button>
-            <button type="submit" className="rounded-lg bg-[#273A60] px-4 py-2 text-[13px] font-semibold text-white hover:bg-[#1a2d4d]">
-              Lägg till
+            <button
+              onClick={handleSearch}
+              disabled={searching}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#273A60] text-white transition-colors hover:bg-[#1a2d4d] disabled:opacity-50"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M5 8h6M8 5l3 3-3 3" />
+              </svg>
             </button>
           </div>
-        </form>
+
+          {/* Loading state */}
+          {searching && (
+            <div className="mt-4 flex items-center justify-center py-8">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#d0d0d0] border-t-[#273A60]" />
+            </div>
+          )}
+
+          {/* Product card */}
+          {found && !searching && (
+            <div className="mt-4 rounded-lg border border-[#e5e5e5] bg-[#fafafa] p-4">
+              <div className="flex gap-4">
+                <img
+                  src={found.image}
+                  alt={found.name}
+                  className="h-20 w-20 shrink-0 rounded-lg border border-[#e5e5e5] bg-white object-contain p-1"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-semibold text-[#111]">{found.name}</p>
+                  <p className="mt-0.5 text-[12px] text-[#888]">Artikelnummer: {articleNr.trim()}</p>
+                  <div className="mt-2 flex items-center gap-4">
+                    <div>
+                      <span className="text-[11px] text-[#999]">Nettopris</span>
+                      <p className="text-[13px] font-semibold text-[#111]">SEK {fmt(found.dealerExcl)} <span className="text-[11px] font-normal text-[#999]">exkl. moms</span></p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-7 w-7 items-center justify-center rounded border border-[#d0d0d0] text-[#999] hover:bg-[#f0f0f0] hover:text-[#333]">−</button>
+                      <span className="flex h-7 w-8 items-center justify-center border border-[#d0d0d0] rounded text-[13px] font-medium text-[#111]">{qty}</span>
+                      <button onClick={() => setQty((q) => q + 1)} className="flex h-7 w-7 items-center justify-center rounded border border-[#d0d0d0] text-[#999] hover:bg-[#f0f0f0] hover:text-[#333]">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Comment */}
+          {found && !searching && (
+            <div className="mt-4">
+              <div className="flex items-center justify-between">
+                <label className="text-[12px] font-semibold text-[#333]">Kommentar på orderrad (valfritt)</label>
+                <span className="text-[11px] text-[#bbb]">{comment.length}/65</span>
+              </div>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value.slice(0, 65))}
+                placeholder="Kommentar"
+                rows={2}
+                className="mt-1.5 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 py-2 text-[13px] text-[#333] placeholder:text-[#bbb] focus:border-[#999] focus:bg-white focus:outline-none resize-none"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-2 border-t border-[#e5e5e5] px-6 py-4">
+          <button onClick={onClose} className="rounded-lg border border-[#d0d0d0] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-[#555] hover:bg-[#f5f5f5]">
+            Avbryt
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!found}
+            className="rounded-lg bg-[#273A60] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-white hover:bg-[#1a2d4d] disabled:opacity-30"
+          >
+            Lägg till i offert
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -336,6 +405,8 @@ export default function OfferterPage() {
   const [addMenuOpen, setAddMenuOpen] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [showroomQuote, setShowroomQuote] = useState<Quote | null>(null);
+  const [editingQuote, setEditingQuote] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
   const { showroom } = useShowroom();
 
   const updateQty = (quoteId: string, itemId: string, delta: number) => {
@@ -381,6 +452,11 @@ export default function OfferterPage() {
 
   const deleteQuote = (quoteId: string) => {
     setQuotes((prev) => prev.filter((q) => q.id !== quoteId));
+  };
+
+  const renameQuote = (quoteId: string, newName: string) => {
+    setQuotes((prev) => prev.map((q) => q.id === quoteId ? { ...q, client: newName } : q));
+    setEditingQuote(null);
   };
 
   const createQuote = (clientName: string) => {
@@ -444,10 +520,49 @@ export default function OfferterPage() {
               <div key={quote.id}>
                 {/* Quote header */}
                 <div className="flex items-center justify-between">
-                  <h2 className="text-[18px] font-bold text-[#111]">Offert: {quote.client}</h2>
+                  {editingQuote === quote.id ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[18px] font-bold text-[#111]">Offert: </span>
+                      <input
+                        autoFocus
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && editName.trim() !== quote.client) renameQuote(quote.id, editName.trim());
+                          if (e.key === "Escape") setEditingQuote(null);
+                        }}
+                        className="h-9 rounded-lg border border-[#273A60] bg-white px-3 text-[18px] font-bold text-[#111] outline-none ring-2 ring-[#273A60]/20"
+                      />
+                      <button
+                        onClick={() => renameQuote(quote.id, editName.trim())}
+                        disabled={!editName.trim() || editName.trim() === quote.client}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-[#2a7d4c] transition-colors hover:bg-[#e8f5e9] disabled:text-[#ccc] disabled:hover:bg-transparent"
+                        title="Spara"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => setEditingQuote(null)}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#555]"
+                        title="Avbryt"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                          <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <h2 className="text-[18px] font-bold text-[#111]">Offert: {quote.client}</h2>
+                  )}
                   <div className="flex items-center gap-1">
                     {/* Edit */}
-                    <button className={iconBtn} title="Redigera offertnamn">
+                    <button
+                      className={iconBtn}
+                      title="Redigera offertnamn"
+                      onClick={() => { setEditingQuote(quote.id); setEditName(quote.client); }}
+                    >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                         <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
                         <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />

@@ -21,7 +21,7 @@ export default function NavHeader() {
     <header className="relative bg-white">
       {/* ═══ Row 1: Utility bar — compact, subdued ═══ */}
       <div className="border-b border-[#1a2d4d] bg-[#273A60]">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4 py-1.5 md:px-6">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4 py-3.5 md:px-6">
           {/* Left: Brand — logo + text */}
           <div className="flex items-center gap-4">
             {/* Mobile hamburger */}
@@ -47,11 +47,11 @@ export default function NavHeader() {
               <Image
                 src="/images/Husqvarna-logo.png"
                 alt="Husqvarna"
-                width={28}
-                height={28}
+                width={56}
+                height={56}
                 className="brightness-0 invert"
               />
-              <span className="text-[13px] font-semibold tracking-tight text-white/90">
+              <span className="text-[20px] font-semibold tracking-tight text-white/90">
                 Dealer Portal
               </span>
             </Link>
