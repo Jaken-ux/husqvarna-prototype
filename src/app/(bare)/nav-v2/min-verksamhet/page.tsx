@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import NavHeader from "../NavHeader";
+import Breadcrumb from "../Breadcrumb";
 
 /* ═══════════════════════════════════════════════════════
    MIN VERKSAMHET — LANDING PAGE
@@ -197,15 +198,7 @@ export default function MinVerksamhetPage() {
 
       <main className="mx-auto max-w-[1320px] px-6 py-6">
         {/* ── Breadcrumb ── */}
-        <Link
-          href="/nav-v2"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#888] transition-colors hover:text-[#273A60]"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M10 12L6 8l4-4" />
-          </svg>
-          Startsidan
-        </Link>
+        <Breadcrumb items={[{ label: "Min verksamhet", href: "/nav-v2/min-verksamhet" }]} />
 
         {/* ── Page header ── */}
         <div className="mt-5">

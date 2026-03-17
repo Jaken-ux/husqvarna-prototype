@@ -7,6 +7,7 @@ const PASSWORD = "supersecret";
 
 export default function PasswordGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);
+  const [checking, setChecking] = useState(true);
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
 
@@ -14,6 +15,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
       setUnlocked(true);
     }
+    setChecking(false);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,6 +29,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     }
   };
 
+  if (checking) return null;
   if (unlocked) return <>{children}</>;
 
   return (

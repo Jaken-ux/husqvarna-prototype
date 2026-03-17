@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import NavHeader from "../NavHeader";
+import Breadcrumb from "../Breadcrumb";
 import { useShowroom } from "../ShowroomContext";
 
 /* ═══ TYPES ═══ */
@@ -371,8 +372,14 @@ export default function OfferterPage() {
       <NavHeader />
 
       <main className="mx-auto max-w-[1280px] px-6 py-10">
+        {/* ── Breadcrumb ── */}
+        <Breadcrumb items={[
+          { label: "Min verksamhet", href: "/nav-v2/min-verksamhet" },
+          { label: "Offerter", href: "/nav-v2/offerter" },
+        ]} />
+
         {/* Header */}
-        <h1 className="text-[26px] font-bold text-[#111]">Offerter</h1>
+        <h1 className="mt-5 text-[26px] font-bold text-[#111]">Offerter</h1>
         <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-[#555]">
           Här hittar du alla dina skapade offerter. Skapa nya offerter, lägg till artiklar och
           öppna i showroom-läge för att visa kunden direkt i butiken.
