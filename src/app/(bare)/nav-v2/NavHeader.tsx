@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { accountNav } from "./navData";
 import MobileDrawer from "./MobileDrawer";
 import ProfileSwitcher from "./ProfileSwitcher";
@@ -13,6 +14,9 @@ export default function NavHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const { showroom, setShowroom } = useShowroom();
+  const pathname = usePathname();
+  const isHusqvarna = pathname.startsWith("/nav-v2/husqvarna") || pathname.startsWith("/nav-v2/kampanj");
+  const isVerksamhet = pathname.startsWith("/nav-v2/min-verksamhet") || pathname.startsWith("/nav-v2/offerter") || pathname.startsWith("/nav-v2/varukorg") || pathname.startsWith("/nav-v2/task-flows");
 
   const accountTriggerRef = useRef<HTMLButtonElement>(null);
   const accountPanelRef = useRef<HTMLDivElement>(null);
@@ -217,13 +221,16 @@ export default function NavHeader() {
           <div className="flex items-center">
             <Link
               href="/nav-v2/husqvarna"
-              className="relative flex items-center gap-2.5 px-5 py-5 text-base text-[#444] transition-colors hover:text-[#111] focus:outline-none"
+              className={`relative flex items-center gap-2.5 px-5 py-5 text-base transition-colors focus:outline-none ${
+                isHusqvarna ? "text-[#111]" : "text-[#444] hover:text-[#111]"
+              }`}
             >
-              <span className="font-bold text-[#111]">Husqvarna</span>
-              <span className="text-sm font-medium text-[#999]">Produkter, reservdelar &amp; tjänster</span>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <span className="font-bold">Husqvarna</span>
+              <span className={`text-sm font-medium ${isHusqvarna ? "text-[#666]" : "text-[#999]"}`}>Produkter, reservdelar &amp; tjänster</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`transition-transform ${isHusqvarna ? "rotate-90" : ""}`}>
                 <path d="M4.5 3l3 3-3 3" />
               </svg>
+              {isHusqvarna && <span className="absolute bottom-0 left-5 right-5 h-[2px] rounded-full bg-[#273A60]" />}
             </Link>
           </div>
 
@@ -256,13 +263,16 @@ export default function NavHeader() {
           <div className="flex items-center">
             <Link
               href="/nav-v2/min-verksamhet"
-              className="relative flex items-center gap-2.5 px-5 py-5 text-base text-[#444] transition-colors hover:text-[#111] focus:outline-none"
+              className={`relative flex items-center gap-2.5 px-5 py-5 text-base transition-colors focus:outline-none ${
+                isVerksamhet ? "text-[#111]" : "text-[#444] hover:text-[#111]"
+              }`}
             >
-              <span className="font-bold text-[#111]">Min verksamhet</span>
-              <span className="text-sm font-medium text-[#999]">Dealer Workspace</span>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <span className="font-bold">Min verksamhet</span>
+              <span className={`text-sm font-medium ${isVerksamhet ? "text-[#666]" : "text-[#999]"}`}>Dealer Workspace</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`transition-transform ${isVerksamhet ? "rotate-90" : ""}`}>
                 <path d="M4.5 3l3 3-3 3" />
               </svg>
+              {isVerksamhet && <span className="absolute bottom-0 left-5 right-5 h-[2px] rounded-full bg-[#273A60]" />}
             </Link>
           </div>
         </div>
