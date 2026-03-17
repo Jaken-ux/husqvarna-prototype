@@ -14,9 +14,12 @@ export default function NavV2Page() {
       <main className="mx-auto max-w-[1280px] space-y-10 px-6 py-10">
         <DashboardWidgets />
         <AlertsTasksPanel />
-        <QuickActions />
+        {/* Campaign + Quick Actions side by side */}
+        <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[1fr_1fr]">
+          <PromoBanner />
+          <QuickActions />
+        </div>
         <RecentActivity />
-        <PromoBanner />
         <QuickLinks />
       </main>
     </div>

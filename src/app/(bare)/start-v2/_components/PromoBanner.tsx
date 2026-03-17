@@ -1,27 +1,36 @@
 export default function PromoBanner() {
   return (
     <section aria-labelledby="promo-heading">
-      <div className="rounded-xl border border-[#e8e8f0] bg-gradient-to-r from-[#fafafe] to-[#f5f5ff] px-8 py-8 md:flex md:items-center md:justify-between">
-        <div>
+      <a
+        href="/nav-v2/kampanj"
+        className="group relative block h-full overflow-hidden rounded-2xl border border-[#d0d0d0]"
+      >
+        <img
+          src="/images/husqvarna.jpg"
+          alt="Husqvarna Automower på gräsmatta"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        {/* Text content */}
+        <div className="absolute bottom-0 left-0 p-6 md:p-8">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-white/70">
+            Vårkampanj 2026
+          </p>
           <h2
             id="promo-heading"
-            className="text-base font-semibold text-[#333]"
+            className="mt-1 text-xl font-bold text-white md:text-2xl"
           >
-            Spring Campaign 2026 — Dealer Incentive Program
+            Återförsäljarprogram
           </h2>
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-[#777]">
-            Earn bonus margin on selected Automower and Forest &amp; Garden
-            models. Program runs March 1 – May 31. Check eligible products and
-            register your participation.
+          <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/80">
+            Tjäna bonusmarginal på utvalda Automower- och Forest &amp; Garden-modeller. 1 mars – 31 maj.
           </p>
+          <span className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white/90 px-5 py-2.5 text-[13px] font-semibold text-[#111] backdrop-blur transition-colors group-hover:bg-white">
+            Visa detaljer →
+          </span>
         </div>
-        <a
-          href="/nav-v2/kampanj"
-          className="mt-4 inline-flex shrink-0 items-center rounded-lg border border-[#d0d0e0] bg-white px-5 py-2.5 text-sm font-medium text-[#333] transition-colors hover:bg-[#f5f5f5] md:mt-0"
-        >
-          View details
-        </a>
-      </div>
+      </a>
     </section>
   );
 }
