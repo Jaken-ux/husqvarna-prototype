@@ -55,8 +55,13 @@ export default function NavHeader() {
                 height={56}
                 className="brightness-0 invert"
               />
-              <span className="text-[20px] font-semibold tracking-tight text-white/90">
-                Dealer Portal
+              <span className="flex items-baseline gap-2.5">
+                <span className="text-[20px] font-semibold tracking-tight text-white/90">
+                  Dealer Portal
+                </span>
+                <span className="rounded bg-white/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white/40">
+                  Husqvarna Vision Prototype
+                </span>
               </span>
             </Link>
           </div>
