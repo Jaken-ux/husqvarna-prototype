@@ -301,7 +301,7 @@ export default function OrdersPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-white">
       <NavHeader />
 
       <main className="mx-auto max-w-[1320px] px-6 py-6">

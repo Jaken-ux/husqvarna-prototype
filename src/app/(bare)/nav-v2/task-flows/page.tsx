@@ -41,7 +41,7 @@ export default function TaskFlowsPage() {
   const colors = flowColors[flow.id] ?? flowColors.identify_product;
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-white">
       <NavHeader />
 
       <main className="mx-auto max-w-[1320px] px-6 py-6">

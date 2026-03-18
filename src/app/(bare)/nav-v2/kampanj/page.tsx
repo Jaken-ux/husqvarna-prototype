@@ -57,7 +57,7 @@ const faq = [
 
 export default function KampanjPage() {
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-white">
       <NavHeader />
 
       {/* ═══ HERO ═══ */}
