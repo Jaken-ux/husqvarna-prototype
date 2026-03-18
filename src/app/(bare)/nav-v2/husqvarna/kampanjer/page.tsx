@@ -90,8 +90,8 @@ export default function KampanjerPage() {
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
-            { label: "Min verksamhet", href: "/nav-v2/min-verksamhet" },
-            { label: "Kampanjer", href: "/nav-v2/min-verksamhet/kampanjer" },
+            { label: "Husqvarna", href: "/nav-v2/husqvarna" },
+            { label: "Kampanjer", href: "/nav-v2/husqvarna/kampanjer" },
           ]}
         />
 

@@ -31,20 +31,26 @@ const ekonomiItems = [
   {
     title: "Fakturor",
     desc: "Fakturaöversikt och betalningsstatus",
-    href: "#invoices",
+    href: "/nav-v2/min-verksamhet/fakturor",
     badge: "8",
+    secondBadge: "NY",
+    secondBadgeColor: "orange",
     icon: "M5 2h10a2 2 0 012 2v14l-3-2-3 2-3-2-3 2V4a2 2 0 012-2zM8 7h4M8 10h4M8 13h2",
   },
   {
     title: "Betalningar & saldo",
     desc: "Betalningshistorik och kontosaldo",
-    href: "#payments",
+    href: "/nav-v2/min-verksamhet/betalningar",
+    secondBadge: "NY",
+    secondBadgeColor: "orange",
     icon: "M2 5h16v11H2zM2 9h16",
   },
   {
     title: "Rapporter",
     desc: "Exportera rapporter och statistik",
-    href: "#reports",
+    href: "/nav-v2/min-verksamhet/rapporter",
+    secondBadge: "NY",
+    secondBadgeColor: "orange",
     icon: "M3 17l4-8 4 4 6-10",
   },
 ];
@@ -70,7 +76,7 @@ const forsaljningItems = [
   {
     title: "Kampanjer",
     desc: "Aktiva kampanjer och säljmaterial",
-    href: "/nav-v2/min-verksamhet/kampanjer",
+    href: "/nav-v2/husqvarna/kampanjer",
     badge: "2",
     secondBadge: "NY",
     secondBadgeColor: "orange",
@@ -325,11 +331,20 @@ export default function MinVerksamhetPage() {
                     <h3 className="text-[13px] font-semibold text-[#111]">{item.title}</h3>
                     <p className="mt-0.5 text-[11px] text-[#888]">{item.desc}</p>
                   </div>
-                  {item.badge && (
-                    <span className="rounded-full bg-[#273A60] px-2 py-0.5 text-[10px] font-bold text-white">
-                      {item.badge}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-1.5">
+                    {item.secondBadge && (
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${
+                        item.secondBadgeColor === "orange" ? "bg-[#ff6b00]" : "bg-[#273A60]"
+                      }`}>
+                        {item.secondBadge}
+                      </span>
+                    )}
+                    {item.badge && (
+                      <span className="rounded-full bg-[#273A60] px-2 py-0.5 text-[10px] font-bold text-white">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
                 </a>
               ))}
             </div>
