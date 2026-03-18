@@ -70,8 +70,10 @@ const forsaljningItems = [
   {
     title: "Kampanjer",
     desc: "Aktiva kampanjer och säljmaterial",
-    href: "#campaigns",
+    href: "/nav-v2/min-verksamhet/kampanjer",
     badge: "2",
+    secondBadge: "NY",
+    secondBadgeColor: "orange",
     icon: "M5 9l3-6h4l3 6M3 9h14v3H3zM6 12v4M14 12v4M8 12v4M12 12v4",
   },
   {
@@ -439,6 +441,8 @@ function ModuleCard({
   href,
   badge,
   badgeColor,
+  secondBadge,
+  secondBadgeColor,
   icon,
 }: {
   title: string;
@@ -446,6 +450,8 @@ function ModuleCard({
   href: string;
   badge?: string;
   badgeColor?: string;
+  secondBadge?: string;
+  secondBadgeColor?: string;
   icon: string;
 }) {
   return (
@@ -459,13 +465,22 @@ function ModuleCard({
             <path d={icon} />
           </svg>
         </span>
-        {badge && (
-          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${
-            badgeColor === "orange" ? "bg-[#ff6b00]" : "bg-[#273A60]"
-          }`}>
-            {badge}
-          </span>
-        )}
+        <div className="flex items-center gap-1.5">
+          {secondBadge && (
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${
+              secondBadgeColor === "orange" ? "bg-[#ff6b00]" : "bg-[#273A60]"
+            }`}>
+              {secondBadge}
+            </span>
+          )}
+          {badge && (
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${
+              badgeColor === "orange" ? "bg-[#ff6b00]" : "bg-[#273A60]"
+            }`}>
+              {badge}
+            </span>
+          )}
+        </div>
       </div>
       <h3 className="mt-3 text-[14px] font-semibold text-[#111]">{title}</h3>
       <p className="mt-0.5 text-[12px] text-[#888]">{desc}</p>
