@@ -90,7 +90,9 @@ const forsaljningItems = [
   {
     title: "Wishlist",
     desc: "Sparade produkter och kundintressen",
-    href: "#wishlist",
+    href: "/nav-v2/min-verksamhet/wishlist",
+    badge: "NY",
+    badgeColor: "orange",
     icon: "M10 17l-6.5-6a4 4 0 010-5.5 3.8 3.8 0 015.5 0L10 6.5l1-1a3.8 3.8 0 015.5 0 4 4 0 010 5.5L10 17z",
   },
   {
