@@ -21,10 +21,10 @@ import Breadcrumb from "../Breadcrumb";
 
 /* ── B) Ekonomi & Beställningar ── */
 const orderIndicators = [
-  { label: "Varukorg", count: 3, color: "text-[#e65100]", dot: "bg-[#e65100]" },
-  { label: "Aktiva", count: 3, color: "text-[#1565c0]", dot: "bg-[#1565c0]" },
-  { label: "Levererade", count: 2, color: "text-[#2e7d32]", dot: "bg-[#2e7d32]" },
-  { label: "Returer", count: 1, color: "text-[#c62828]", dot: "bg-[#c62828]" },
+  { label: "Varukorg", count: 3, color: "text-[#e65100]", bg: "bg-[#fff3e0]", dot: "bg-[#e65100]", alert: true },
+  { label: "Aktiva", count: 3, color: "text-[#1565c0]", bg: "bg-[#e3f2fd]", dot: "bg-[#1565c0]", alert: false },
+  { label: "Levererade", count: 2, color: "text-[#2e7d32]", bg: "bg-[#e8f5e9]", dot: "bg-[#2e7d32]", alert: false },
+  { label: "Returer", count: 1, color: "text-[#c62828]", bg: "bg-[#fce8e8]", dot: "bg-[#c62828]", alert: true },
 ];
 
 const ekonomiItems = [
@@ -255,49 +255,82 @@ export default function MinVerksamhetPage() {
             subtitle="Order, leveranser, fakturor och returer"
             icon="M3 4h14v13H3zM3 8h14M7 4V2M13 4V2"
           />
-          {/* Orderhantering — expanded card with live indicators */}
-          <a
-            href="/nav-v2/min-verksamhet/orders"
-            className="group mt-5 flex flex-col rounded-xl border border-[#d0d0d0] bg-white p-5 transition-all hover:border-[#273A60]/30 hover:shadow-md"
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <span className="shrink-0 rounded-lg bg-[#f0f3f8] p-2.5 text-[#273A60] transition-colors group-hover:bg-[#273A60] group-hover:text-white">
-                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 4h14v13H3zM3 8h14" />
-                  </svg>
-                </span>
-                <div>
-                  <h3 className="text-[14px] font-semibold text-[#111]">Orderhantering</h3>
-                  <p className="mt-0.5 text-[12px] text-[#888]">Beställningar, leveranser, returer och utkast</p>
-                </div>
-              </div>
-              <span className="rounded-full bg-[#ff6b00] px-2 py-0.5 text-[10px] font-bold text-white">
+          <div className="mt-5 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+            {/* Left: Orderhantering */}
+            <a
+              href="/nav-v2/min-verksamhet/orders"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-[#d0d0d0] bg-gradient-to-br from-[#273A60] to-[#1a2d4d] p-6 transition-all hover:shadow-lg"
+            >
+              {/* NY badge */}
+              <span className="absolute right-4 top-4 rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
                 NY
               </span>
-            </div>
-            {/* Live indicators */}
-            <div className="mt-4 grid grid-cols-4 gap-3">
-              {orderIndicators.map((ind) => (
-                <div key={ind.label} className="rounded-lg bg-[#fafafa] px-3 py-2.5 text-center">
-                  <span className={`block text-[18px] font-bold ${ind.color}`}>{ind.count}</span>
-                  <span className="flex items-center justify-center gap-1 text-[11px] text-[#999]">
-                    <span className={`inline-block h-1.5 w-1.5 rounded-full ${ind.dot}`} />
-                    {ind.label}
-                  </span>
+
+              {/* Title area */}
+              <div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 4h14v13H3zM3 8h14" />
+                  </svg>
                 </div>
+                <h3 className="mt-3 text-[16px] font-bold text-white">Orderhantering</h3>
+                <p className="mt-1 text-[12px] leading-relaxed text-white/60">
+                  Beställningar, leveranser, returer och utkast — samlat i en vy.
+                </p>
+              </div>
+
+              {/* Metrics grid */}
+              <div className="mt-5 grid grid-cols-4 gap-2">
+                {orderIndicators.map((ind) => (
+                  <div
+                    key={ind.label}
+                    className="relative rounded-lg bg-white/10 px-2 py-3 text-center backdrop-blur-sm"
+                  >
+                    {ind.alert && ind.count > 0 && (
+                      <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#ff6b00] ring-2 ring-[#273A60]" />
+                    )}
+                    <span className="block text-[20px] font-bold text-white">{ind.count}</span>
+                    <span className="mt-0.5 block text-[10px] font-medium text-white/50">
+                      {ind.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Hover CTA */}
+              <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-white/40 transition-colors group-hover:text-white/80">
+                Öppna orderhantering
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
+                  <path d="M5 3l4 4-4 4" />
+                </svg>
+              </span>
+            </a>
+
+            {/* Right: Fakturor, Betalningar, Rapporter stacked */}
+            <div className="flex flex-col gap-3">
+              {ekonomiItems.map((item) => (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  className="group flex flex-1 items-center gap-4 rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 transition-all hover:border-[#273A60]/30 hover:shadow-md"
+                >
+                  <span className="shrink-0 rounded-lg bg-[#f0f3f8] p-2.5 text-[#273A60] transition-colors group-hover:bg-[#273A60] group-hover:text-white">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={item.icon} />
+                    </svg>
+                  </span>
+                  <div className="flex-1">
+                    <h3 className="text-[13px] font-semibold text-[#111]">{item.title}</h3>
+                    <p className="mt-0.5 text-[11px] text-[#888]">{item.desc}</p>
+                  </div>
+                  {item.badge && (
+                    <span className="rounded-full bg-[#273A60] px-2 py-0.5 text-[10px] font-bold text-white">
+                      {item.badge}
+                    </span>
+                  )}
+                </a>
               ))}
             </div>
-            <span className="mt-3 text-[12px] font-semibold text-[#273A60] opacity-0 transition-opacity group-hover:opacity-100">
-              Öppna orderhantering →
-            </span>
-          </a>
-
-          {/* Remaining economy items */}
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {ekonomiItems.map((item) => (
-              <ModuleCard key={item.title} {...item} />
-            ))}
           </div>
         </section>
 
