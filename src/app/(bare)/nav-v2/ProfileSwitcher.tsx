@@ -40,8 +40,9 @@ export default function ProfileSwitcher() {
     requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
 
-  /* Click outside */
-  useOnClickOutside(panelRef, () => {
+  /* Click outside — ignore clicks on the trigger button */
+  useOnClickOutside(panelRef, (e) => {
+    if (triggerRef.current?.contains(e.target as Node)) return;
     if (open) close();
   });
 

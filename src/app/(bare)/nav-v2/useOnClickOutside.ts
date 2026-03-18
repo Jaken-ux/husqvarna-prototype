@@ -4,7 +4,7 @@ import { useEffect, type RefObject } from "react";
 
 export function useOnClickOutside(
   ref: RefObject<HTMLElement | null>,
-  handler: () => void,
+  handler: (e: MouseEvent | TouchEvent) => void,
   active: boolean = true
 ) {
   useEffect(() => {
@@ -12,7 +12,7 @@ export function useOnClickOutside(
 
     function listener(e: MouseEvent | TouchEvent) {
       if (!ref.current || ref.current.contains(e.target as Node)) return;
-      handler();
+      handler(e);
     }
 
     document.addEventListener("mousedown", listener);

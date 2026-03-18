@@ -20,48 +20,20 @@ import Breadcrumb from "../Breadcrumb";
    ═══════════════════════════════════════════════════════ */
 
 /* ── B) Ekonomi & Beställningar ── */
+const orderIndicators = [
+  { label: "Varukorg", count: 3, color: "text-[#e65100]", dot: "bg-[#e65100]" },
+  { label: "Aktiva", count: 3, color: "text-[#1565c0]", dot: "bg-[#1565c0]" },
+  { label: "Levererade", count: 2, color: "text-[#2e7d32]", dot: "bg-[#2e7d32]" },
+  { label: "Returer", count: 1, color: "text-[#c62828]", dot: "bg-[#c62828]" },
+];
+
 const ekonomiItems = [
-  {
-    title: "Beställningar",
-    desc: "Aktuella order och orderstatus",
-    href: "#orders",
-    badge: "14",
-    icon: "M3 4h14v13H3zM3 8h14",
-  },
-  {
-    title: "Restorder",
-    desc: "Order som väntar på leverans",
-    href: "#backorders",
-    badge: "6",
-    icon: "M10 10a7 7 0 100-14M10 7v3l2 2",
-  },
-  {
-    title: "Leveranser",
-    desc: "Spåra leveranser och mottagning",
-    href: "#deliveries",
-    badge: "12",
-    icon: "M2 4h10v8H2zM12 8h4l2 3v5h-6V8zM6 15a2 2 0 100-4 2 2 0 000 4zM15 15a2 2 0 100-4 2 2 0 000 4z",
-  },
-  {
-    title: "Returer / RMA",
-    desc: "Hantera returer och reklamationer",
-    href: "#returns",
-    badge: "1",
-    icon: "M4 10a6 6 0 0112 0M4 10l-2-2M4 10l2-2M16 10a6 6 0 01-12 0M16 10l2 2M16 10l-2 2",
-  },
   {
     title: "Fakturor",
     desc: "Fakturaöversikt och betalningsstatus",
     href: "#invoices",
     badge: "8",
     icon: "M5 2h10a2 2 0 012 2v14l-3-2-3 2-3-2-3 2V4a2 2 0 012-2zM8 7h4M8 10h4M8 13h2",
-  },
-  {
-    title: "Orderutkast",
-    desc: "Påbörjade beställningar och utkast",
-    href: "#drafts",
-    badge: "3",
-    icon: "M13 2H5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6l-4-4zM13 2v4h4",
   },
   {
     title: "Betalningar & saldo",
@@ -283,7 +255,46 @@ export default function MinVerksamhetPage() {
             subtitle="Order, leveranser, fakturor och returer"
             icon="M3 4h14v13H3zM3 8h14M7 4V2M13 4V2"
           />
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {/* Orderhantering — expanded card with live indicators */}
+          <a
+            href="/nav-v2/min-verksamhet/orders"
+            className="group mt-5 flex flex-col rounded-xl border border-[#d0d0d0] bg-white p-5 transition-all hover:border-[#273A60]/30 hover:shadow-md"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <span className="shrink-0 rounded-lg bg-[#f0f3f8] p-2.5 text-[#273A60] transition-colors group-hover:bg-[#273A60] group-hover:text-white">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 4h14v13H3zM3 8h14" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 className="text-[14px] font-semibold text-[#111]">Orderhantering</h3>
+                  <p className="mt-0.5 text-[12px] text-[#888]">Beställningar, leveranser, returer och utkast</p>
+                </div>
+              </div>
+              <span className="rounded-full bg-[#ff6b00] px-2 py-0.5 text-[10px] font-bold text-white">
+                NY
+              </span>
+            </div>
+            {/* Live indicators */}
+            <div className="mt-4 grid grid-cols-4 gap-3">
+              {orderIndicators.map((ind) => (
+                <div key={ind.label} className="rounded-lg bg-[#fafafa] px-3 py-2.5 text-center">
+                  <span className={`block text-[18px] font-bold ${ind.color}`}>{ind.count}</span>
+                  <span className="flex items-center justify-center gap-1 text-[11px] text-[#999]">
+                    <span className={`inline-block h-1.5 w-1.5 rounded-full ${ind.dot}`} />
+                    {ind.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <span className="mt-3 text-[12px] font-semibold text-[#273A60] opacity-0 transition-opacity group-hover:opacity-100">
+              Öppna orderhantering →
+            </span>
+          </a>
+
+          {/* Remaining economy items */}
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {ekonomiItems.map((item) => (
               <ModuleCard key={item.title} {...item} />
             ))}
