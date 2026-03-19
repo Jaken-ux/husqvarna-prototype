@@ -12,6 +12,7 @@ import Breadcrumb from "../../Breadcrumb";
 type Priority = "high" | "medium" | "low";
 
 type Tab = "dashboard" | "products" | "customers" | "contracts" | "today";
+type ContractView = "alla" | "service-plus" | "warranty-plus" | "leasing-plus" | "hypercare";
 
 /* ═══════════════════════════════════════════════════════
    SHARED DATA
@@ -239,23 +240,24 @@ const customers = [
    ═══════════════════════════════════════════════════════ */
 
 const contracts = [
-  { id: "SP-2024-089", program: "Service Plus", customer: "BRF Solsidan", product: "Automower 450X NERA", start: "2024-01-15", end: "2025-01-15", status: "expiring", bonus: "eligible" },
-  { id: "SP-2024-091", program: "Service Plus", customer: "Nilsson Villaservice", product: "Automower 310 Mark II", start: "2024-12-01", end: "2025-12-01", status: "active", bonus: "eligible" },
-  { id: "LP-2024-022", program: "Lease Plus", customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-03-01", end: "2027-03-01", status: "active", bonus: "—" },
-  { id: "LP-2024-031", program: "Lease Plus", customer: "Karlsson Park & Trädgård", product: "CEORA 526 EPOS", start: "2024-08-14", end: "2027-08-14", status: "active", bonus: "—" },
-  { id: "SP-2024-078", program: "Service Plus", customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-09-05", end: "2025-09-05", status: "active", bonus: "eligible" },
-  { id: "HC-198", program: "HyperCare", customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-11-01", end: "—", status: "active", bonus: "—" },
-  { id: "HC-201", program: "HyperCare", customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-12-10", end: "—", status: "active", bonus: "—" },
-  { id: "SP-2024-065", program: "Service Plus", customer: "Eriksson Trädgård AB", product: "Automower 550X Mark II", start: "2024-10-20", end: "2025-10-20", status: "active", bonus: "paid" },
-  { id: "WP-2024-112", program: "Warranty Plus", customer: "BRF Solsidan", product: "Automower 450X NERA", start: "2024-02-10", end: "2026-02-10", status: "active", bonus: "—" },
-  { id: "WP-2024-118", program: "Warranty Plus", customer: "Nilsson Villaservice", product: "Automower 310 Mark II", start: "2024-12-01", end: "2026-12-01", status: "active", bonus: "—" },
-  { id: "WP-2024-105", program: "Warranty Plus", customer: "Eriksson Trädgård AB", product: "Automower 550X Mark II", start: "2024-10-20", end: "2026-10-20", status: "active", bonus: "—" },
-  { id: "WP-2024-099", program: "Warranty Plus", customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-03-01", end: "2026-03-01", status: "expiring", bonus: "—" },
-  { id: "WP-2024-121", program: "Warranty Plus", customer: "Karlsson Park & Trädgård", product: "CEORA 526 EPOS", start: "2024-08-14", end: "2026-08-14", status: "active", bonus: "—" },
-  { id: "WP-2024-130", program: "Warranty Plus", customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-09-05", end: "2026-09-05", status: "active", bonus: "—" },
-  { id: "WP-2025-003", program: "Warranty Plus", customer: "Fastighets AB Solbacken", product: "Automower 405X NERA", start: "2025-01-15", end: "2027-01-15", status: "active", bonus: "—" },
-  { id: "WP-2024-088", program: "Warranty Plus", customer: "Lundgren Maskin AB", product: "Husqvarna 562XP", start: "2024-06-20", end: "2025-06-20", status: "expiring", bonus: "—" },
-  { id: "WP-2025-011", program: "Warranty Plus", customer: "Malmö Grönska HB", product: "Automower 320 NERA", start: "2025-02-01", end: "2027-02-01", status: "active", bonus: "—" },
+  { id: "SP-2024-089", program: "Service Plus" as const, customer: "BRF Solsidan", product: "Automower 450X NERA", start: "2024-01-15", end: "2025-01-15", status: "expiring", bonus: "eligible", winterStorage: true },
+  { id: "SP-2024-091", program: "Service Plus" as const, customer: "Nilsson Villaservice", product: "Automower 310 Mark II", start: "2024-12-01", end: "2025-12-01", status: "active", bonus: "eligible", winterStorage: false },
+  { id: "LP-2024-022", program: "Lease Plus" as const, customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-03-01", end: "2027-03-01", status: "active", bonus: "—", salesContact: "2026-02-15" },
+  { id: "LP-2024-031", program: "Lease Plus" as const, customer: "Karlsson Park & Trädgård", product: "CEORA 526 EPOS", start: "2024-08-14", end: "2027-08-14", status: "active", bonus: "—", salesContact: "Ej kontaktad" },
+  { id: "SP-2024-078", program: "Service Plus" as const, customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-09-05", end: "2025-09-05", status: "active", bonus: "eligible", winterStorage: false },
+  { id: "HC-198", program: "HyperCare" as const, customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-11-01", end: "—", status: "active", bonus: "—", priority: "medium" as Priority, hyperCareStatus: "Uppföljning" },
+  { id: "HC-201", program: "HyperCare" as const, customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-12-10", end: "—", status: "active", bonus: "—", priority: "high" as Priority, hyperCareStatus: "Åtgärd krävs" },
+  { id: "HC-205", program: "HyperCare" as const, customer: "Nilsson Villaservice", product: "Automower 310 Mark II", start: "2025-01-05", end: "—", status: "active", bonus: "—", priority: "low" as Priority, hyperCareStatus: "Bevakning" },
+  { id: "SP-2024-065", program: "Service Plus" as const, customer: "Eriksson Trädgård AB", product: "Automower 550X Mark II", start: "2024-10-20", end: "2025-10-20", status: "active", bonus: "paid", winterStorage: true },
+  { id: "WP-2024-112", program: "Warranty Plus" as const, customer: "BRF Solsidan", product: "Automower 450X NERA", start: "2024-02-10", end: "2026-02-10", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
+  { id: "WP-2024-118", program: "Warranty Plus" as const, customer: "Nilsson Villaservice", product: "Automower 310 Mark II", start: "2024-12-01", end: "2026-12-01", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
+  { id: "WP-2024-105", program: "Warranty Plus" as const, customer: "Eriksson Trädgård AB", product: "Automower 550X Mark II", start: "2024-10-20", end: "2026-10-20", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "Pågående" },
+  { id: "WP-2024-099", program: "Warranty Plus" as const, customer: "AB Grönytor", product: "CEORA 546 EPOS", start: "2024-03-01", end: "2026-03-01", status: "expiring", bonus: "—", warrantyStatus: "Löper ut", claimStatus: "—" },
+  { id: "WP-2024-121", program: "Warranty Plus" as const, customer: "Karlsson Park & Trädgård", product: "CEORA 526 EPOS", start: "2024-08-14", end: "2026-08-14", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "Avslutad" },
+  { id: "WP-2024-130", program: "Warranty Plus" as const, customer: "Skogsservice Norr AB", product: "Husqvarna 346XP", start: "2024-09-05", end: "2026-09-05", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
+  { id: "WP-2025-003", program: "Warranty Plus" as const, customer: "Fastighets AB Solbacken", product: "Automower 405X NERA", start: "2025-01-15", end: "2027-01-15", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
+  { id: "WP-2024-088", program: "Warranty Plus" as const, customer: "Lundgren Maskin AB", product: "Husqvarna 562XP", start: "2024-06-20", end: "2025-06-20", status: "expiring", bonus: "—", warrantyStatus: "Löper ut", claimStatus: "Pågående" },
+  { id: "WP-2025-011", program: "Warranty Plus" as const, customer: "Malmö Grönska HB", product: "Automower 320 NERA", start: "2025-02-01", end: "2027-02-01", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
 ];
 
 const renewalRadar = [
@@ -264,7 +266,13 @@ const renewalRadar = [
   { id: "SP-2024-065", customer: "Eriksson Trädgård AB", daysLeft: 58, program: "Service Plus" },
 ];
 
-const contractFilters = ["Alla", "Service Plus", "Warranty Plus", "Lease Plus", "HyperCare", "Löper ut snart", "Bonusberättigade"];
+const contractViews: { id: ContractView; label: string; count: number }[] = [
+  { id: "alla", label: "Alla", count: contracts.length },
+  { id: "service-plus", label: "Service Plus", count: contracts.filter((c) => c.program === "Service Plus").length },
+  { id: "warranty-plus", label: "Warranty Plus", count: contracts.filter((c) => c.program === "Warranty Plus").length },
+  { id: "leasing-plus", label: "Lease Plus", count: contracts.filter((c) => c.program === "Lease Plus").length },
+  { id: "hypercare", label: "HyperCare", count: contracts.filter((c) => c.program === "HyperCare").length },
+];
 
 /* ═══════════════════════════════════════════════════════
    E) TODAY / ACTIONS DATA
@@ -370,7 +378,7 @@ function StatusBadge({ status }: { status: string }) {
 export default function MinVerksamhetPage() {
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [productFilter, setProductFilter] = useState("Alla");
-  const [contractFilter, setContractFilter] = useState("Alla");
+  const [contractView, setContractView] = useState<ContractView>("alla");
   const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
 
   return (
@@ -447,8 +455,8 @@ export default function MinVerksamhetPage() {
           )}
           {activeTab === "contracts" && (
             <ContractsView
-              filter={contractFilter}
-              onFilterChange={setContractFilter}
+              activeView={contractView}
+              onViewChange={setContractView}
             />
           )}
           {activeTab === "today" && (
@@ -828,16 +836,22 @@ function CustomersView({
    ═══════════════════════════════════════════════════════ */
 
 function ContractsView({
-  filter,
-  onFilterChange,
+  activeView,
+  onViewChange,
 }: {
-  filter: string;
-  onFilterChange: (f: string) => void;
+  activeView: ContractView;
+  onViewChange: (v: ContractView) => void;
 }) {
-  const bonusLabels: Record<string, { label: string; style: string }> = {
-    eligible: { label: "Berättigad", style: "bg-[#e8f5e9] text-[#2e7d32]" },
-    paid: { label: "Utbetald", style: "bg-[#e3f2fd] text-[#1565c0]" },
-    "—": { label: "—", style: "text-[#ccc]" },
+  const [winterStorage, setWinterStorage] = useState<Record<string, boolean>>(
+    Object.fromEntries(contracts.filter((c) => c.program === "Service Plus").map((c) => [c.id, c.winterStorage ?? false]))
+  );
+
+  const viewDescriptions: Record<ContractView, string> = {
+    alla: "Alla avtal samlat — övergripande vy för jämförelse och översikt",
+    "service-plus": "Hantera serviceavtal — vinterförvaring, statusar och förnyelseuppföljning",
+    "warranty-plus": "Garantiövervakning — status och reklamationsärenden",
+    "leasing-plus": "Leasinglivscykel — uppföljning och kundkontakt inför förnyelse",
+    hypercare: "Eskaleringar och prioriterade supportärenden",
   };
 
   return (
@@ -845,120 +859,377 @@ function ContractsView({
       {/* Header */}
       <div>
         <h2 className="text-base font-semibold text-[#111]">Avtal & program</h2>
-        <p className="text-[12px] text-[#888]">Service Plus, Lease Plus, HyperCare — alla avtal samlat</p>
+        <p className="text-[12px] text-[#888]">{viewDescriptions[activeView]}</p>
       </div>
 
-      {/* Renewal radar */}
-      <div className="rounded-xl border border-[#d0d0d0] bg-gradient-to-r from-[#fff8f0] to-white p-5">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#b8860b]" />
-          <h3 className="text-[14px] font-semibold text-[#111]">Förnyelseradar</h3>
+      {/* Renewal radar — only in "alla" view */}
+      {activeView === "alla" && (
+        <div className="rounded-xl border border-[#d0d0d0] bg-gradient-to-r from-[#fff8f0] to-white p-5">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#b8860b]" />
+            <h3 className="text-[14px] font-semibold text-[#111]">Förnyelseradar</h3>
+          </div>
+          <p className="mt-1 text-[12px] text-[#888]">Avtal som löper ut inom 60 dagar</p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            {renewalRadar.map((r) => (
+              <a
+                key={r.id}
+                href={`#contract/${r.id}`}
+                className="group flex items-center justify-between rounded-lg border border-[#e5e5e5] bg-white px-4 py-3 transition-all hover:border-[#b8860b]/40 hover:shadow-sm"
+              >
+                <div>
+                  <span className="text-[12px] font-semibold text-[#111]">{r.customer}</span>
+                  <span className="mt-0.5 block text-[11px] text-[#888]">{r.program} · {r.id}</span>
+                </div>
+                <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
+                  r.daysLeft <= 14 ? "bg-[#fce8e8] text-[#c44]" : "bg-[#fff3e0] text-[#e65100]"
+                }`}>
+                  {r.daysLeft} dagar
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
-        <p className="mt-1 text-[12px] text-[#888]">Avtal som löper ut inom 60 dagar</p>
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          {renewalRadar.map((r) => (
-            <a
-              key={r.id}
-              href={`#contract/${r.id}`}
-              className="group flex items-center justify-between rounded-lg border border-[#e5e5e5] bg-white px-4 py-3 transition-all hover:border-[#b8860b]/40 hover:shadow-sm"
-            >
-              <div>
-                <span className="text-[12px] font-semibold text-[#111]">{r.customer}</span>
-                <span className="mt-0.5 block text-[11px] text-[#888]">{r.program} · {r.id}</span>
+      )}
+
+      {/* Program summary cards — only in "alla" view */}
+      {activeView === "alla" && (
+        <div className="grid gap-3 sm:grid-cols-4">
+          {programBands.map((band) => (
+            <div key={band.label} className="rounded-xl border border-[#d0d0d0] bg-white p-5">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: band.color }} />
+                <h3 className="text-[13px] font-semibold text-[#111]">{band.label}</h3>
               </div>
-              <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                r.daysLeft <= 14 ? "bg-[#fce8e8] text-[#c44]" : "bg-[#fff3e0] text-[#e65100]"
-              }`}>
-                {r.daysLeft} dagar
-              </span>
-            </a>
+              <div className="mt-3 flex gap-6">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Totalt</p>
+                  <p className="text-xl font-extrabold text-[#111]">{band.count}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Aktiva</p>
+                  <p className="text-xl font-extrabold" style={{ color: band.color }}>{band.active}</p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      )}
 
-      {/* Program summary cards */}
-      <div className="grid gap-3 sm:grid-cols-4">
-        {programBands.map((band) => (
-          <div key={band.label} className="rounded-xl border border-[#d0d0d0] bg-white p-5">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: band.color }} />
-              <h3 className="text-[13px] font-semibold text-[#111]">{band.label}</h3>
-            </div>
-            <div className="mt-3 flex gap-6">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Totalt</p>
-                <p className="text-xl font-extrabold text-[#111]">{band.count}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Aktiva</p>
-                <p className="text-xl font-extrabold" style={{ color: band.color }}>{band.active}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2">
-        {contractFilters.map((f) => (
+      {/* ── View Switcher ── */}
+      <div className="flex items-center gap-1 rounded-xl border border-[#d0d0d0] bg-[#f5f5f5] p-1">
+        {contractViews.map((v) => (
           <button
-            key={f}
-            onClick={() => onFilterChange(f)}
-            className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-all ${
-              filter === f
-                ? "bg-[#273A60] text-white"
-                : "bg-white text-[#555] border border-[#d0d0d0] hover:bg-[#f5f5f5]"
+            key={v.id}
+            onClick={() => onViewChange(v.id)}
+            className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-[12px] font-semibold transition-all ${
+              activeView === v.id
+                ? "bg-white text-[#111] shadow-sm"
+                : "text-[#888] hover:text-[#555]"
             }`}
           >
-            {f}
+            {v.label}
+            <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+              activeView === v.id ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"
+            }`}>
+              {v.count}
+            </span>
           </button>
         ))}
       </div>
 
-      {/* Contracts table */}
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
-              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Avtals-ID</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Program</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Kund</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Produkt</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Start</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Slut</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Status</th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">CX Bonus</th>
+      {/* ── View-specific table ── */}
+      {activeView === "alla" && <AllaContractsTable />}
+      {activeView === "service-plus" && (
+        <ServicePlusTable winterStorage={winterStorage} onToggleStorage={(id) => setWinterStorage((prev) => ({ ...prev, [id]: !prev[id] }))} />
+      )}
+      {activeView === "warranty-plus" && <WarrantyPlusTable />}
+      {activeView === "leasing-plus" && <LeasingPlusTable />}
+      {activeView === "hypercare" && <HyperCareTable />}
+    </div>
+  );
+}
+
+/* ── Shared table wrapper ── */
+const TH = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <th className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] ${className}`}>{children}</th>
+);
+const TD = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <td className={`px-4 py-3 text-[12px] text-[#555] ${className}`}>{children}</td>
+);
+const IDLink = ({ id }: { id: string }) => (
+  <a href={`#contract/${id}`} className="text-[13px] font-semibold text-[#273A60] hover:underline">{id}</a>
+);
+
+const programBadgeColors: Record<string, string> = {
+  "Service Plus": "bg-[#e8f5e9] text-[#2e7d32]",
+  "Warranty Plus": "bg-[#fff3e0] text-[#e65100]",
+  "Lease Plus": "bg-[#e3f2fd] text-[#1565c0]",
+  "HyperCare": "bg-[#fce8e8] text-[#c44]",
+};
+
+/* ── A) ALLA — overview table ── */
+function AllaContractsTable() {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+            <TH>Avtals-ID</TH>
+            <TH>Program</TH>
+            <TH>Kund</TH>
+            <TH>Produkt</TH>
+            <TH>Start</TH>
+            <TH>Slut</TH>
+            <TH>Status</TH>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#f0f0f0]">
+          {contracts.map((c) => (
+            <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+              <TD><IDLink id={c.id} /></TD>
+              <TD>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${programBadgeColors[c.program] ?? "bg-[#f0f3f8] text-[#273A60]"}`}>
+                  {c.program}
+                </span>
+              </TD>
+              <TD>{c.customer}</TD>
+              <TD>{c.product}</TD>
+              <TD>{c.start}</TD>
+              <TD>{c.end}</TD>
+              <TD><StatusBadge status={c.status} /></TD>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-[#f0f0f0]">
-            {contracts.map((c) => {
-              const bonus = bonusLabels[c.bonus] ?? bonusLabels["—"];
-              return (
-                <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
-                  <td className="px-5 py-3">
-                    <a href={`#contract/${c.id}`} className="text-[13px] font-semibold text-[#273A60] hover:underline">{c.id}</a>
-                  </td>
-                  <td className="px-3 py-3">
-                    <span className="rounded-full bg-[#f0f3f8] px-2 py-0.5 text-[10px] font-semibold text-[#273A60]">{c.program}</span>
-                  </td>
-                  <td className="px-3 py-3 text-[12px] text-[#555]">{c.customer}</td>
-                  <td className="px-3 py-3 text-[12px] text-[#555]">{c.product}</td>
-                  <td className="px-3 py-3 text-[12px] text-[#555]">{c.start}</td>
-                  <td className="px-3 py-3 text-[12px] text-[#555]">{c.end}</td>
-                  <td className="px-3 py-3"><StatusBadge status={c.status} /></td>
-                  <td className="px-3 py-3">
-                    {bonus.label === "—" ? (
-                      <span className="text-[12px] text-[#ccc]">—</span>
-                    ) : (
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${bonus.style}`}>{bonus.label}</span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ── B) SERVICE PLUS — with winter storage toggle ── */
+function ServicePlusTable({
+  winterStorage,
+  onToggleStorage,
+}: {
+  winterStorage: Record<string, boolean>;
+  onToggleStorage: (id: string) => void;
+}) {
+  const rows = contracts.filter((c) => c.program === "Service Plus");
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+            <TH>Avtals-ID</TH>
+            <TH>Kund</TH>
+            <TH>Produkt</TH>
+            <TH>Start</TH>
+            <TH>Slut</TH>
+            <TH>Status</TH>
+            <TH className="text-center">Vinterförvaring</TH>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#f0f0f0]">
+          {rows.map((c) => {
+            const stored = winterStorage[c.id] ?? false;
+            return (
+              <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+                <TD><IDLink id={c.id} /></TD>
+                <TD>{c.customer}</TD>
+                <TD>{c.product}</TD>
+                <TD>{c.start}</TD>
+                <TD>{c.end}</TD>
+                <TD><StatusBadge status={c.status} /></TD>
+                <TD className="text-center">
+                  <button
+                    onClick={() => onToggleStorage(c.id)}
+                    className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold transition-all"
+                    title={stored ? "Markerad som invintrad" : "Ej invintrad"}
+                  >
+                    <span className={`relative inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-full transition-colors ${
+                      stored ? "bg-[#2a9d5c]" : "bg-[#d0d0d0]"
+                    }`}>
+                      <span className={`inline-block h-[14px] w-[14px] rounded-full bg-white shadow transition-transform ${
+                        stored ? "translate-x-[16px]" : "translate-x-[2px]"
+                      }`} />
+                    </span>
+                    <span className={stored ? "text-[#2a9d5c]" : "text-[#999]"}>
+                      {stored ? "Invintrad" : "Ej invintrad"}
+                    </span>
+                  </button>
+                </TD>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ── C) LEASING PLUS — with sales contact CTA ── */
+function LeasingPlusTable() {
+  const rows = contracts.filter((c) => c.program === "Lease Plus");
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+            <TH>Avtals-ID</TH>
+            <TH>Kund</TH>
+            <TH>Produkt</TH>
+            <TH>Start</TH>
+            <TH>Säljkontakt</TH>
+            <TH>Status</TH>
+            <TH className="text-center">Åtgärd</TH>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#f0f0f0]">
+          {rows.map((c) => {
+            const contact = c.salesContact ?? "—";
+            const isDate = /^\d{4}/.test(contact);
+            return (
+              <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+                <TD><IDLink id={c.id} /></TD>
+                <TD>{c.customer}</TD>
+                <TD>{c.product}</TD>
+                <TD>{c.start}</TD>
+                <TD>
+                  {isDate ? (
+                    <span className="text-[12px] text-[#555]">{contact}</span>
+                  ) : (
+                    <span className="rounded-full bg-[#fff3e0] px-2 py-0.5 text-[10px] font-semibold text-[#e65100]">{contact}</span>
+                  )}
+                </TD>
+                <TD><StatusBadge status={c.status} /></TD>
+                <TD className="text-center">
+                  <button className="rounded-lg border border-[#273A60] px-3 py-1.5 text-[11px] font-semibold text-[#273A60] transition-all hover:bg-[#273A60] hover:text-white">
+                    Kontakta kund
+                  </button>
+                </TD>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ── D) WARRANTY PLUS — status and claims ── */
+function WarrantyPlusTable() {
+  const rows = contracts.filter((c) => c.program === "Warranty Plus");
+
+  const claimColors: Record<string, string> = {
+    "Pågående": "bg-[#fff3e0] text-[#e65100]",
+    "Avslutad": "bg-[#e8f5e9] text-[#2e7d32]",
+  };
+  const warrantyColors: Record<string, string> = {
+    "Giltig": "bg-[#e8f5e9] text-[#2e7d32]",
+    "Löper ut": "bg-[#fff3e0] text-[#e65100]",
+  };
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+            <TH>Avtals-ID</TH>
+            <TH>Kund</TH>
+            <TH>Produkt</TH>
+            <TH>Start</TH>
+            <TH>Slut</TH>
+            <TH>Garantistatus</TH>
+            <TH>Reklamation</TH>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#f0f0f0]">
+          {rows.map((c) => (
+            <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+              <TD><IDLink id={c.id} /></TD>
+              <TD>{c.customer}</TD>
+              <TD>{c.product}</TD>
+              <TD>{c.start}</TD>
+              <TD>{c.end}</TD>
+              <TD>
+                {c.warrantyStatus ? (
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${warrantyColors[c.warrantyStatus] ?? "bg-[#f0f0f0] text-[#888]"}`}>
+                    {c.warrantyStatus}
+                  </span>
+                ) : <span className="text-[12px] text-[#ccc]">—</span>}
+              </TD>
+              <TD>
+                {c.claimStatus && c.claimStatus !== "—" ? (
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${claimColors[c.claimStatus] ?? "bg-[#f0f0f0] text-[#888]"}`}>
+                    {c.claimStatus}
+                  </span>
+                ) : <span className="text-[12px] text-[#ccc]">—</span>}
+              </TD>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ── E) HYPERCARE — priority and escalation ── */
+function HyperCareTable() {
+  const rows = contracts.filter((c) => c.program === "HyperCare");
+
+  const hcStatusColors: Record<string, string> = {
+    "Åtgärd krävs": "bg-[#fce8e8] text-[#c44]",
+    "Uppföljning": "bg-[#fff3e0] text-[#e65100]",
+    "Bevakning": "bg-[#e3f2fd] text-[#1565c0]",
+  };
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+            <TH>Case-ID</TH>
+            <TH>Kund</TH>
+            <TH>Produkt</TH>
+            <TH>Skapad</TH>
+            <TH>Status</TH>
+            <TH>Prioritet</TH>
+            <TH className="text-center">Åtgärd</TH>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#f0f0f0]">
+          {rows.map((c) => {
+            const prio = c.priority ?? ("medium" as Priority);
+            return (
+              <tr key={c.id} className={`transition-colors hover:bg-[#fafafa] ${prio === "high" ? "bg-[#fff8f8]" : ""}`}>
+                <TD><IDLink id={c.id} /></TD>
+                <TD>{c.customer}</TD>
+                <TD>{c.product}</TD>
+                <TD>{c.start}</TD>
+                <TD>
+                  {c.hyperCareStatus ? (
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${hcStatusColors[c.hyperCareStatus] ?? "bg-[#f0f0f0] text-[#888]"}`}>
+                      {c.hyperCareStatus}
+                    </span>
+                  ) : <StatusBadge status={c.status} />}
+                </TD>
+                <TD>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${priorityStyles[prio]}`}>
+                    {priorityLabels[prio]}
+                  </span>
+                </TD>
+                <TD className="text-center">
+                  <button className="rounded-lg border border-[#c44] px-3 py-1.5 text-[11px] font-semibold text-[#c44] transition-all hover:bg-[#c44] hover:text-white">
+                    Öppna ärende
+                  </button>
+                </TD>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
