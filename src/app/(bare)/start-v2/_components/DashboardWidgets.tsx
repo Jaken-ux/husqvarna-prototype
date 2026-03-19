@@ -27,7 +27,7 @@ const widgets: Widget[] = [
     cta: "Visa lista",
     statusColor: "amber",
     trend: { direction: "up", text: "+3 sedan igår" },
-    href: "#orders?status=pending",
+    href: "/nav-v2/min-verksamhet/orders",
   },
   {
     label: "Restorder",
@@ -36,24 +36,24 @@ const widgets: Widget[] = [
     cta: "Visa lista",
     statusColor: "red",
     trend: { direction: "up", text: "+1 denna vecka" },
-    href: "#orders?status=backorder",
+    href: "/nav-v2/min-verksamhet/orders",
   },
   {
     label: "Nya fakturor",
     value: 8,
     helper: "Sedan senaste login",
-    cta: "Visa lista",
+    cta: "Visa fakturor",
     statusColor: "neutral",
-    href: "#invoices?status=new",
+    href: "/nav-v2/min-verksamhet/fakturor",
   },
   {
     label: "Leveranser denna vecka",
     value: 12,
     helper: "Nästa: Imorgon 08:00",
-    cta: "Visa lista",
+    cta: "Visa leveranser",
     statusColor: "green",
     trend: { direction: "down", text: "-2 mot förra veckan" },
-    href: "#deliveries?period=week",
+    href: "/nav-v2/min-verksamhet/orders",
   },
   {
     label: "Att hantera",
@@ -61,7 +61,7 @@ const widgets: Widget[] = [
     helper: "Inkl. HyperCare-ärenden",
     cta: "Granska alla",
     statusColor: "red",
-    href: "#alerts",
+    href: "/nav-v2/min-verksamhet/workspace",
   },
 ];
 
