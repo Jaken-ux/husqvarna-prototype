@@ -1068,9 +1068,14 @@ function ServicePlusTable({
   );
 }
 
-/* ── C) LEASING PLUS — with sales contact CTA ── */
+/* ── C) LEASING PLUS — with sales status dropdown ── */
 function LeasingPlusTable() {
   const rows = contracts.filter((c) => c.program === "Lease Plus");
+  const [salesStatus, setSalesStatus] = useState<Record<string, string>>(
+    Object.fromEntries(rows.map((c) => [c.id, c.salesContact && /^\d{4}/.test(c.salesContact) ? "Kontaktad" : "Inte kontaktad"]))
+  );
+
+  const statusOptions = ["Inte kontaktad", "Kontaktad"];
 
   return (
     <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
@@ -1081,15 +1086,15 @@ function LeasingPlusTable() {
             <TH>Kund</TH>
             <TH>Produkt</TH>
             <TH>Start</TH>
-            <TH>Säljkontakt</TH>
+            <TH>Säljstatus</TH>
             <TH>Status</TH>
             <TH className="text-center">Åtgärd</TH>
           </tr>
         </thead>
         <tbody className="divide-y divide-[#f0f0f0]">
           {rows.map((c) => {
-            const contact = c.salesContact ?? "—";
-            const isDate = /^\d{4}/.test(contact);
+            const current = salesStatus[c.id] ?? "Inte kontaktad";
+            const isContacted = current === "Kontaktad";
             return (
               <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
                 <TD><IDLink id={c.id} /></TD>
@@ -1097,11 +1102,19 @@ function LeasingPlusTable() {
                 <TD>{c.product}</TD>
                 <TD>{c.start}</TD>
                 <TD>
-                  {isDate ? (
-                    <span className="text-[12px] text-[#555]">{contact}</span>
-                  ) : (
-                    <span className="rounded-full bg-[#fff3e0] px-2 py-0.5 text-[10px] font-semibold text-[#e65100]">{contact}</span>
-                  )}
+                  <select
+                    value={current}
+                    onChange={(e) => setSalesStatus((prev) => ({ ...prev, [c.id]: e.target.value }))}
+                    className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold outline-none transition-colors ${
+                      isContacted
+                        ? "border-[#2a9d5c]/30 bg-[#e8f5e9] text-[#2e7d32]"
+                        : "border-[#e65100]/30 bg-[#fff3e0] text-[#e65100]"
+                    }`}
+                  >
+                    {statusOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
                 </TD>
                 <TD><StatusBadge status={c.status} /></TD>
                 <TD className="text-center">
