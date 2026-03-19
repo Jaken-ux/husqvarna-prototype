@@ -950,6 +950,124 @@ function ContractsView({
   );
 }
 
+/* ── Shared filter bar ── */
+function ContractFilterBar({
+  statusOptions,
+  activeStatus,
+  onStatusChange,
+  dateFrom,
+  dateTo,
+  onDateFromChange,
+  onDateToChange,
+  search,
+  onSearchChange,
+  resultCount,
+}: {
+  statusOptions: string[];
+  activeStatus: string;
+  onStatusChange: (s: string) => void;
+  dateFrom: string;
+  dateTo: string;
+  onDateFromChange: (d: string) => void;
+  onDateToChange: (d: string) => void;
+  search: string;
+  onSearchChange: (q: string) => void;
+  resultCount: number;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-4 py-3">
+      {/* Search */}
+      <div className="relative">
+        <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#aaa]" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <circle cx="7" cy="7" r="4.5" />
+          <path d="M10.5 10.5L14 14" />
+        </svg>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Sök kund, produkt, ID..."
+          className="w-48 rounded-lg border border-[#d0d0d0] bg-white py-1.5 pl-8 pr-3 text-[11px] text-[#555] placeholder-[#bbb] outline-none focus:border-[#273A60]"
+        />
+      </div>
+
+      {/* Divider */}
+      <span className="hidden h-5 w-px bg-[#d0d0d0] sm:block" />
+
+      {/* Status filter */}
+      <div className="flex items-center gap-2">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#999]">Status</span>
+        <div className="flex gap-1">
+          {statusOptions.map((s) => (
+            <button
+              key={s}
+              onClick={() => onStatusChange(s)}
+              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-all ${
+                activeStatus === s
+                  ? "bg-[#273A60] text-white"
+                  : "bg-white text-[#666] border border-[#d0d0d0] hover:bg-[#f0f0f0]"
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <span className="hidden h-5 w-px bg-[#d0d0d0] sm:block" />
+
+      {/* Date range */}
+      <div className="flex items-center gap-2">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#999]">Period</span>
+        <input
+          type="date"
+          value={dateFrom}
+          onChange={(e) => onDateFromChange(e.target.value)}
+          className="rounded-lg border border-[#d0d0d0] bg-white px-2.5 py-1.5 text-[11px] text-[#555] outline-none focus:border-[#273A60]"
+        />
+        <span className="text-[11px] text-[#999]">—</span>
+        <input
+          type="date"
+          value={dateTo}
+          onChange={(e) => onDateToChange(e.target.value)}
+          className="rounded-lg border border-[#d0d0d0] bg-white px-2.5 py-1.5 text-[11px] text-[#555] outline-none focus:border-[#273A60]"
+        />
+      </div>
+
+      {/* Divider */}
+      <span className="hidden h-5 w-px bg-[#d0d0d0] sm:block" />
+
+      {/* Result count */}
+      <span className="text-[11px] text-[#999]">{resultCount} avtal</span>
+    </div>
+  );
+}
+
+function useContractFilters(defaults: { statuses: string[] }) {
+  const [status, setStatus] = useState("Alla");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [search, setSearch] = useState("");
+
+  const filterRows = <T extends { status: string; start: string; customer: string; product: string; id: string }>(rows: T[]): T[] => {
+    let filtered = rows;
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter((r) => r.customer.toLowerCase().includes(q) || r.product.toLowerCase().includes(q) || r.id.toLowerCase().includes(q));
+    }
+    if (status !== "Alla") {
+      const statusMap: Record<string, string> = { Aktiv: "active", "Löper ut": "expiring", Utgånget: "expired", Väntar: "pending" };
+      filtered = filtered.filter((r) => r.status === (statusMap[status] ?? status));
+    }
+    if (dateFrom) filtered = filtered.filter((r) => r.start >= dateFrom);
+    if (dateTo) filtered = filtered.filter((r) => r.start <= dateTo);
+    return filtered;
+  };
+
+  return { status, setStatus, dateFrom, setDateFrom, dateTo, setDateTo, search, setSearch, filterRows, statuses: ["Alla", ...defaults.statuses] };
+}
+
 /* ── Shared table wrapper ── */
 const TH = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <th className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] ${className}`}>{children}</th>
@@ -970,38 +1088,48 @@ const programBadgeColors: Record<string, string> = {
 
 /* ── A) ALLA — overview table ── */
 function AllaContractsTable() {
+  const f = useContractFilters({ statuses: ["Aktiv", "Löper ut", "Utgånget"] });
+  const rows = f.filterRows(contracts);
+
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
-            <TH>Avtals-ID</TH>
-            <TH>Program</TH>
-            <TH>Kund</TH>
-            <TH>Produkt</TH>
-            <TH>Start</TH>
-            <TH>Slut</TH>
-            <TH>Status</TH>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-[#f0f0f0]">
-          {contracts.map((c) => (
-            <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
-              <TD><IDLink id={c.id} /></TD>
-              <TD>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${programBadgeColors[c.program] ?? "bg-[#f0f3f8] text-[#273A60]"}`}>
-                  {c.program}
-                </span>
-              </TD>
-              <TD>{c.customer}</TD>
-              <TD>{c.product}</TD>
-              <TD>{c.start}</TD>
-              <TD>{c.end}</TD>
-              <TD><StatusBadge status={c.status} /></TD>
+    <div className="space-y-3">
+      <ContractFilterBar
+        statusOptions={f.statuses} activeStatus={f.status} onStatusChange={f.setStatus}
+        dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
+        search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
+      />
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              <TH>Avtals-ID</TH>
+              <TH>Program</TH>
+              <TH>Kund</TH>
+              <TH>Produkt</TH>
+              <TH>Start</TH>
+              <TH>Slut</TH>
+              <TH>Status</TH>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {rows.map((c) => (
+              <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+                <TD><IDLink id={c.id} /></TD>
+                <TD>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${programBadgeColors[c.program] ?? "bg-[#f0f3f8] text-[#273A60]"}`}>
+                    {c.program}
+                  </span>
+                </TD>
+                <TD>{c.customer}</TD>
+                <TD>{c.product}</TD>
+                <TD>{c.start}</TD>
+                <TD>{c.end}</TD>
+                <TD><StatusBadge status={c.status} /></TD>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -1014,71 +1142,88 @@ function ServicePlusTable({
   winterStorage: Record<string, boolean>;
   onToggleStorage: (id: string) => void;
 }) {
-  const rows = contracts.filter((c) => c.program === "Service Plus");
+  const allRows = contracts.filter((c) => c.program === "Service Plus");
+  const f = useContractFilters({ statuses: ["Aktiv", "Löper ut"] });
+  const rows = f.filterRows(allRows);
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
-            <TH>Avtals-ID</TH>
-            <TH>Kund</TH>
-            <TH>Produkt</TH>
-            <TH>Start</TH>
-            <TH>Slut</TH>
-            <TH>Status</TH>
-            <TH className="text-center">Vinterförvaring</TH>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-[#f0f0f0]">
-          {rows.map((c) => {
-            const stored = winterStorage[c.id] ?? false;
-            return (
-              <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
-                <TD><IDLink id={c.id} /></TD>
-                <TD>{c.customer}</TD>
-                <TD>{c.product}</TD>
-                <TD>{c.start}</TD>
-                <TD>{c.end}</TD>
-                <TD><StatusBadge status={c.status} /></TD>
-                <TD className="text-center">
-                  <button
-                    onClick={() => onToggleStorage(c.id)}
-                    className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold transition-all"
-                    title={stored ? "Markerad som invintrad" : "Ej invintrad"}
-                  >
-                    <span className={`relative inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-full transition-colors ${
-                      stored ? "bg-[#2a9d5c]" : "bg-[#d0d0d0]"
-                    }`}>
-                      <span className={`inline-block h-[14px] w-[14px] rounded-full bg-white shadow transition-transform ${
-                        stored ? "translate-x-[16px]" : "translate-x-[2px]"
-                      }`} />
-                    </span>
-                    <span className={stored ? "text-[#2a9d5c]" : "text-[#999]"}>
-                      {stored ? "Invintrad" : "Ej invintrad"}
-                    </span>
-                  </button>
-                </TD>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div className="space-y-3">
+      <ContractFilterBar
+        statusOptions={f.statuses} activeStatus={f.status} onStatusChange={f.setStatus}
+        dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
+        search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
+      />
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              <TH>Avtals-ID</TH>
+              <TH>Kund</TH>
+              <TH>Produkt</TH>
+              <TH>Start</TH>
+              <TH>Slut</TH>
+              <TH>Status</TH>
+              <TH className="text-center">Vinterförvaring</TH>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {rows.map((c) => {
+              const stored = winterStorage[c.id] ?? false;
+              return (
+                <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
+                  <TD><IDLink id={c.id} /></TD>
+                  <TD>{c.customer}</TD>
+                  <TD>{c.product}</TD>
+                  <TD>{c.start}</TD>
+                  <TD>{c.end}</TD>
+                  <TD><StatusBadge status={c.status} /></TD>
+                  <TD className="text-center">
+                    <button
+                      onClick={() => onToggleStorage(c.id)}
+                      className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold transition-all"
+                      title={stored ? "Markerad som invintrad" : "Ej invintrad"}
+                    >
+                      <span className={`relative inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-full transition-colors ${
+                        stored ? "bg-[#2a9d5c]" : "bg-[#d0d0d0]"
+                      }`}>
+                        <span className={`inline-block h-[14px] w-[14px] rounded-full bg-white shadow transition-transform ${
+                          stored ? "translate-x-[16px]" : "translate-x-[2px]"
+                        }`} />
+                      </span>
+                      <span className={stored ? "text-[#2a9d5c]" : "text-[#999]"}>
+                        {stored ? "Invintrad" : "Ej invintrad"}
+                      </span>
+                    </button>
+                  </TD>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
 /* ── C) LEASING PLUS — with sales status dropdown ── */
 function LeasingPlusTable() {
-  const rows = contracts.filter((c) => c.program === "Lease Plus");
+  const allRows = contracts.filter((c) => c.program === "Lease Plus");
+  const f = useContractFilters({ statuses: ["Aktiv", "Löper ut"] });
+  const rows = f.filterRows(allRows);
   const [salesStatus, setSalesStatus] = useState<Record<string, string>>(
-    Object.fromEntries(rows.map((c) => [c.id, c.salesContact && /^\d{4}/.test(c.salesContact) ? "Kontaktad" : "Inte kontaktad"]))
+    Object.fromEntries(allRows.map((c) => [c.id, c.salesContact && /^\d{4}/.test(c.salesContact) ? "Kontaktad" : "Inte kontaktad"]))
   );
 
   const statusOptions = ["Inte kontaktad", "Kontaktad"];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+    <div className="space-y-3">
+      <ContractFilterBar
+        statusOptions={f.statuses} activeStatus={f.status} onStatusChange={f.setStatus}
+        dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
+        search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
+      />
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
@@ -1127,13 +1272,16 @@ function LeasingPlusTable() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
 
 /* ── D) WARRANTY PLUS — status and claims ── */
 function WarrantyPlusTable() {
-  const rows = contracts.filter((c) => c.program === "Warranty Plus");
+  const allRows = contracts.filter((c) => c.program === "Warranty Plus");
+  const f = useContractFilters({ statuses: ["Aktiv", "Löper ut"] });
+  const rows = f.filterRows(allRows);
 
   const claimColors: Record<string, string> = {
     "Pågående": "bg-[#fff3e0] text-[#e65100]",
@@ -1145,7 +1293,13 @@ function WarrantyPlusTable() {
   };
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+    <div className="space-y-3">
+      <ContractFilterBar
+        statusOptions={f.statuses} activeStatus={f.status} onStatusChange={f.setStatus}
+        dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
+        search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
+      />
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
@@ -1184,13 +1338,16 @@ function WarrantyPlusTable() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
 
 /* ── E) HYPERCARE — priority and escalation ── */
 function HyperCareTable() {
-  const rows = contracts.filter((c) => c.program === "HyperCare");
+  const allRows = contracts.filter((c) => c.program === "HyperCare");
+  const f = useContractFilters({ statuses: ["Aktiv"] });
+  const rows = f.filterRows(allRows);
 
   const hcStatusColors: Record<string, string> = {
     "Åtgärd krävs": "bg-[#fce8e8] text-[#c44]",
@@ -1199,7 +1356,13 @@ function HyperCareTable() {
   };
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+    <div className="space-y-3">
+      <ContractFilterBar
+        statusOptions={f.statuses} activeStatus={f.status} onStatusChange={f.setStatus}
+        dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
+        search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
+      />
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
@@ -1243,6 +1406,7 @@ function HyperCareTable() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
