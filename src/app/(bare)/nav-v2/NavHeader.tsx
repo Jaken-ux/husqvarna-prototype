@@ -728,9 +728,8 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
                           className="absolute right-3 top-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#ccc] transition-all hover:bg-[#273A60]/10 hover:text-[#273A60] group-hover/card:text-[#aaa]"
                         >
                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 3h7v7" />
-                            <path d="M13 3L6 10" />
-                            <path d="M3 7v6h6" />
+                            <path d="M1 8c0-2.8 2.2-5.5 7-7 4.8 1.5 7 4.2 7 7s-2.2 5.5-7 7C3.2 13.5 1 10.8 1 8z" />
+                            <circle cx="8" cy="8" r="2.5" />
                           </svg>
                         </button>
                       )}
