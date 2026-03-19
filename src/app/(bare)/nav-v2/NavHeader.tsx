@@ -63,12 +63,6 @@ export default function NavHeader() {
                 <span className="rounded bg-white/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white/40">
                   Husqvarna Vision Prototype
                 </span>
-                <button
-                  onClick={(e) => { e.preventDefault(); setVisionOpen(true); }}
-                  className="ml-1 rounded-md bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60 transition-all hover:bg-white/20 hover:text-white/90"
-                >
-                  Scope
-                </button>
               </span>
             </Link>
           </div>
@@ -277,6 +271,21 @@ export default function NavHeader() {
           onClose={() => setMobileOpen(false)}
         />
       )}
+      {/* Floating vision scope button */}
+      <button
+        onClick={() => setVisionOpen(true)}
+        className="fixed bottom-6 right-6 z-[9998] flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#e55a00] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98]"
+      >
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="10" cy="10" r="8" />
+          <path d="M10 6v4l2.5 2.5" />
+        </svg>
+        Utforska prototypen
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold">
+          12
+        </span>
+      </button>
+
       {/* Vision Scope overlay */}
       {visionOpen && <VisionScopeOverlay onClose={() => setVisionOpen(false)} />}
     </header>
