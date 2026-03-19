@@ -65,8 +65,8 @@ export default function KampanjPage() {
         {/* Background image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/husqvarna.jpg"
-            alt="Husqvarna Automower på gräsmatta"
+            src="/images/H150-0083.webp"
+            alt="Husqvarna motorsåg i arbete"
             fill
             className="object-cover opacity-30"
             sizes="100vw"

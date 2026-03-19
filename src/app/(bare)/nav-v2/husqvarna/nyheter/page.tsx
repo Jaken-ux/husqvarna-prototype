@@ -36,7 +36,7 @@ const news: NewsItem[] = [
     excerpt: "Husqvarnas senaste professionella robotklippare för stora ytor lanseras till återförsäljare i april. EPOS-teknologi, nya knivsystem och förbättrad Fleet Services-integration. Förbeställning öppnar 1 april.",
     date: "2026-03-15",
     category: "launch",
-    image: "/images/husqvarna.jpg",
+    image: "/images/husqvarna-1920x630px_FX-256399_202409_001.webp",
     featured: true,
     tag: "Exklusivt",
   },
@@ -73,6 +73,7 @@ const news: NewsItem[] = [
   {
     id: "n6",
     title: "Ny batteriplattform POWER+ 700 — förhandsvisning",
+    image: "/images/nyheter-husqvarna.webp",
     excerpt: "Nästa generations batteriplattform avslöjad på World of Concrete. 40 % mer kapacitet, bakåtkompatibel med alla 500-serien-verktyg. Tillgänglig Q3 2026.",
     date: "2026-03-01",
     category: "launch",
@@ -212,8 +213,21 @@ export default function NyheterPage() {
               <a
                 key={item.id}
                 href="#"
-                className="group flex flex-col rounded-xl border border-[#e0e0e0] bg-white transition-all hover:border-[#273A60]/30 hover:shadow-md"
+                className="group flex flex-col overflow-hidden rounded-xl border border-[#e0e0e0] bg-white transition-all hover:border-[#273A60]/30 hover:shadow-md"
               >
+                {/* Card image */}
+                {item.image && (
+                  <div className="relative h-36 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      sizes="440px"
+                    />
+                  </div>
+                )}
+
                 {/* Card top */}
                 <div className="p-5 pb-0">
                   <div className="flex items-center justify-between">

@@ -52,6 +52,7 @@ const campaigns: Campaign[] = [
     daysLeft: 105,
     maxBonus: "8 %",
     categories: ["Kapmaskiner", "Diamantverktyg", "Borrmaskiner"],
+    image: "/images/H150-0083.webp",
     href: "#",
   },
 ];

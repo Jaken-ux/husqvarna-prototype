@@ -13,6 +13,7 @@ import { useShowroom } from "./ShowroomContext";
 export default function NavHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [visionOpen, setVisionOpen] = useState(false);
   const { showroom, setShowroom } = useShowroom();
   const pathname = usePathname();
   const isHusqvarna = pathname.startsWith("/nav-v2/husqvarna") || pathname.startsWith("/nav-v2/kampanj");
@@ -62,6 +63,12 @@ export default function NavHeader() {
                 <span className="rounded bg-white/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white/40">
                   Husqvarna Vision Prototype
                 </span>
+                <button
+                  onClick={(e) => { e.preventDefault(); setVisionOpen(true); }}
+                  className="ml-1 rounded-md bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60 transition-all hover:bg-white/20 hover:text-white/90"
+                >
+                  Scope
+                </button>
               </span>
             </Link>
           </div>
@@ -270,6 +277,8 @@ export default function NavHeader() {
           onClose={() => setMobileOpen(false)}
         />
       )}
+      {/* Vision Scope overlay */}
+      {visionOpen && <VisionScopeOverlay onClose={() => setVisionOpen(false)} />}
     </header>
   );
 }
@@ -503,6 +512,209 @@ function AccountDropdown({
           </a>
         </Fragment>
       ))}
+    </div>
+  );
+}
+
+/* ═══ VISION SCOPE OVERLAY ═══ */
+
+const visionAreas = [
+  {
+    category: "Navigation & Struktur",
+    color: "#273A60",
+    items: [
+      {
+        title: "Dual Navigation",
+        desc: "Tvådelad primärnavigation — Husqvarna (OEM-innehåll) och Min verksamhet (dealer workspace) — med kontextuell breadcrumb och mega-paneler.",
+        status: "Ny arkitektur" as const,
+      },
+      {
+        title: "Kontextuell sökning",
+        desc: "Enhetlig sökfunktion med realtidsresultat över produkter, dokument och senaste sökningar direkt i headern.",
+        status: "Ny design" as const,
+      },
+      {
+        title: "Showroom-läge",
+        desc: "Toggle i headern som växlar mellan återförsäljarpriser och kundpriser — för användning i butik/demo.",
+        status: "Ny funktion" as const,
+      },
+    ],
+  },
+  {
+    category: "Husqvarna (OEM-sida)",
+    color: "#ff6b00",
+    items: [
+      {
+        title: "Produktarbetsyta",
+        desc: "Omdesignad landningssida med identifieringshub (artikelnr, QR-skanning), AI-reservdelshjälp, snabbåtkomst och kategorinavigation.",
+        status: "Omdesign" as const,
+      },
+      {
+        title: "Kampanjsidor",
+        desc: "Ny kampanjlistning med progressindikatorer, bonusnivåer och kategori-pills. Detaljsida med hero-bild, villkor och quick-actions.",
+        status: "Ny design" as const,
+      },
+      {
+        title: "Nyheter & Lanseringar",
+        desc: "Nyhetssida med featured article, kategorifilter, bildkort och taggning. Samlar produktlanseringar, servicebulletiner och branschnyheter.",
+        status: "Ny sida" as const,
+      },
+    ],
+  },
+  {
+    category: "Min verksamhet (Dealer Workspace)",
+    color: "#2a9d5c",
+    items: [
+      {
+        title: "Orderhantering",
+        desc: "Konsoliderad ordervy med flikar för varukorg, aktiva order, levererade och returer. Mörk gradient-puff med live-metriker och alertprickar på Min verksamhet.",
+        status: "Ny sida" as const,
+      },
+      {
+        title: "Fakturor",
+        desc: "Fakturaöversikt med datumfilter, statusflaggor (betald/förfallen/kreditnota), sökfunktion och exportfunktion.",
+        status: "Ny design" as const,
+      },
+      {
+        title: "Betalningar & Saldo",
+        desc: "Saldokort med kreditgräns-progress, bonustracker, kommande betalningar och transaktionshistorik.",
+        status: "Ny design" as const,
+      },
+      {
+        title: "Rapporter",
+        desc: "Rapportkatalog med populära rapporter, senaste exporter, kategorifilter och formatbadges (PDF/Excel/CSV).",
+        status: "Ny design" as const,
+      },
+      {
+        title: "Wishlist",
+        desc: "Kundgrupperade önskelistor med prioritetssystem, lagerstatus-badges, kundavsiktsnoteringar och konvertering till offert.",
+        status: "Ny design" as const,
+      },
+    ],
+  },
+  {
+    category: "Offerter & Prissättning",
+    color: "#7b61ff",
+    items: [
+      {
+        title: "Offerthantering",
+        desc: "Offertlista med status-tabs, kundinfo, utgångsdatum och snabbåtgärder. Badges för ny offert-status.",
+        status: "Omdesign" as const,
+      },
+    ],
+  },
+];
+
+const statusColors: Record<string, { bg: string; text: string }> = {
+  "Ny arkitektur": { bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
+  "Ny design": { bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  "Ny funktion": { bg: "bg-[#e0f2f1]", text: "text-[#00695c]" },
+  "Ny sida": { bg: "bg-[#fce4ec]", text: "text-[#c62828]" },
+  "Omdesign": { bg: "bg-[#f3e5f5]", text: "text-[#6a1b9a]" },
+};
+
+function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  const totalItems = visionAreas.reduce((s, a) => s + a.items.length, 0);
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative mx-4 my-8 w-full max-w-3xl animate-panel-in rounded-2xl bg-white shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="relative overflow-hidden rounded-t-2xl bg-[#273A60] px-8 py-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
+          <div className="relative">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.2em] text-white/40">Husqvarna Dealer Portal</p>
+                <h2 className="mt-2 text-2xl font-bold text-white">Vision Prototype — Scope</h2>
+                <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-white/60">
+                  Översikt av alla ny- och omdesignade delar i visionsprototypen. Varje område representerar ett fokusområde med förbättrad UX, smartare interaktioner och modern design.
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M4 4l8 8M12 4l-8 8" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Stats row */}
+            <div className="mt-6 flex gap-6">
+              <div className="rounded-lg bg-white/10 px-4 py-2">
+                <span className="text-xl font-bold text-white">{visionAreas.length}</span>
+                <span className="ml-1.5 text-[12px] text-white/50">områden</span>
+              </div>
+              <div className="rounded-lg bg-white/10 px-4 py-2">
+                <span className="text-xl font-bold text-white">{totalItems}</span>
+                <span className="ml-1.5 text-[12px] text-white/50">funktioner</span>
+              </div>
+              <div className="rounded-lg bg-white/10 px-4 py-2">
+                <span className="text-xl font-bold text-white">8+</span>
+                <span className="ml-1.5 text-[12px] text-white/50">nya sidor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-6 px-8 py-8">
+          {visionAreas.map((area) => (
+            <div key={area.category}>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: area.color }} />
+                <h3 className="text-[15px] font-bold text-[#111]">{area.category}</h3>
+                <span className="text-[12px] text-[#bbb]">{area.items.length} delar</span>
+              </div>
+              <div className="grid gap-2">
+                {area.items.map((item) => {
+                  const sc = statusColors[item.status] ?? { bg: "bg-[#f5f5f5]", text: "text-[#666]" };
+                  return (
+                    <div
+                      key={item.title}
+                      className="flex items-start gap-4 rounded-xl border border-[#f0f0f0] bg-[#fafafa] px-5 py-4 transition-colors hover:border-[#e0e0e0] hover:bg-white"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-[14px] font-semibold text-[#111]">{item.title}</span>
+                          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${sc.bg} ${sc.text}`}>
+                            {item.status}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-[13px] leading-relaxed text-[#888]">{item.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="rounded-b-2xl border-t border-[#f0f0f0] bg-[#fafafa] px-8 py-5">
+          <p className="text-center text-[12px] text-[#bbb]">
+            Husqvarna Vision Prototype — Alla funktioner är mockups för konceptvalidering
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
