@@ -38,11 +38,11 @@ const IconRegister = () => (
   </svg>
 );
 
-const IconExploded = () => (
+const IconWorkspace = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="10" cy="10" r="2" />
-    <path d="M10 2v4M10 14v4M2 10h4M14 10h4" />
-    <path d="M4.93 4.93l2.83 2.83M12.24 12.24l2.83 2.83M4.93 15.07l2.83-2.83M12.24 7.76l2.83-2.83" />
+    <rect x="2" y="3" width="16" height="14" rx="2" />
+    <path d="M2 7h16" />
+    <path d="M8 7v10" />
   </svg>
 );
 
@@ -87,10 +87,10 @@ const groups: ActionGroup[] = [
         icon: <IconRegister />,
       },
       {
-        title: "Sprängskiss",
-        description: "Sök modell för att visa reservdelsuppdelning",
-        href: "#exploded-view",
-        icon: <IconExploded />,
+        title: "Dealer Workspace",
+        description: "Din arbetsyta — uppgifter, kunder och daglig översikt",
+        href: "/nav-v2/min-verksamhet/workspace",
+        icon: <IconWorkspace />,
       },
     ],
   },
