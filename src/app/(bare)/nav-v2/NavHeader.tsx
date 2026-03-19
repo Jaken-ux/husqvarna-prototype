@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { accountNav } from "./navData";
 import MobileDrawer from "./MobileDrawer";
 import ProfileSwitcher from "./ProfileSwitcher";
@@ -557,16 +557,19 @@ const visionAreas = [
         title: "Produktarbetsyta",
         desc: "Omdesignad landningssida med identifieringshub (artikelnr, QR-skanning), AI-reservdelshjälp, snabbåtkomst och kategorinavigation.",
         status: "Omdesign" as const,
+        href: "/nav-v2/husqvarna",
       },
       {
         title: "Kampanjsidor",
         desc: "Ny kampanjlistning med progressindikatorer, bonusnivåer och kategori-pills. Detaljsida med hero-bild, villkor och quick-actions.",
         status: "Ny design" as const,
+        href: "/nav-v2/husqvarna/kampanjer",
       },
       {
         title: "Nyheter & Lanseringar",
         desc: "Nyhetssida med featured article, kategorifilter, bildkort och taggning. Samlar produktlanseringar, servicebulletiner och branschnyheter.",
         status: "Ny sida" as const,
+        href: "/nav-v2/husqvarna/nyheter",
       },
     ],
   },
@@ -578,26 +581,31 @@ const visionAreas = [
         title: "Orderhantering",
         desc: "Konsoliderad ordervy med flikar för varukorg, aktiva order, levererade och returer. Mörk gradient-puff med live-metriker och alertprickar på Min verksamhet.",
         status: "Ny sida" as const,
+        href: "/nav-v2/min-verksamhet/orders",
       },
       {
         title: "Fakturor",
         desc: "Fakturaöversikt med datumfilter, statusflaggor (betald/förfallen/kreditnota), sökfunktion och exportfunktion.",
         status: "Ny design" as const,
+        href: "/nav-v2/min-verksamhet/fakturor",
       },
       {
         title: "Betalningar & Saldo",
         desc: "Saldokort med kreditgräns-progress, bonustracker, kommande betalningar och transaktionshistorik.",
         status: "Ny design" as const,
+        href: "/nav-v2/min-verksamhet/betalningar",
       },
       {
         title: "Rapporter",
         desc: "Rapportkatalog med populära rapporter, senaste exporter, kategorifilter och formatbadges (PDF/Excel/CSV).",
         status: "Ny design" as const,
+        href: "/nav-v2/min-verksamhet/rapporter",
       },
       {
         title: "Wishlist",
         desc: "Kundgrupperade önskelistor med prioritetssystem, lagerstatus-badges, kundavsiktsnoteringar och konvertering till offert.",
         status: "Ny design" as const,
+        href: "/nav-v2/min-verksamhet/wishlist",
       },
     ],
   },
@@ -609,6 +617,7 @@ const visionAreas = [
         title: "Offerthantering",
         desc: "Offertlista med status-tabs, kundinfo, utgångsdatum och snabbåtgärder. Badges för ny offert-status.",
         status: "Omdesign" as const,
+        href: "/nav-v2/offerter",
       },
     ],
   },
@@ -623,6 +632,8 @@ const statusColors: Record<string, { bg: string; text: string }> = {
 };
 
 function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -695,10 +706,11 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
               <div className="grid gap-2">
                 {area.items.map((item) => {
                   const sc = statusColors[item.status] ?? { bg: "bg-[#f5f5f5]", text: "text-[#666]" };
+                  const hasLink = "href" in item && item.href;
                   return (
                     <div
                       key={item.title}
-                      className="flex items-start gap-4 rounded-xl border border-[#f0f0f0] bg-[#fafafa] px-5 py-4 transition-colors hover:border-[#e0e0e0] hover:bg-white"
+                      className={`relative flex items-start gap-4 rounded-xl border border-[#f0f0f0] bg-[#fafafa] px-5 py-4 transition-colors hover:border-[#e0e0e0] hover:bg-white ${hasLink ? "group/card" : ""}`}
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2.5">
@@ -709,6 +721,19 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
                         </div>
                         <p className="mt-1 text-[13px] leading-relaxed text-[#888]">{item.desc}</p>
                       </div>
+                      {hasLink && (
+                        <button
+                          onClick={() => router.push(item.href!)}
+                          title={`Gå till ${item.title}`}
+                          className="absolute right-3 top-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#ccc] transition-all hover:bg-[#273A60]/10 hover:text-[#273A60] group-hover/card:text-[#aaa]"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6 3h7v7" />
+                            <path d="M13 3L6 10" />
+                            <path d="M3 7v6h6" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   );
                 })}
