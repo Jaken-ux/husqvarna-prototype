@@ -542,11 +542,6 @@ const visionAreas = [
         desc: "Enhetlig sökfunktion med realtidsresultat över produkter, dokument och senaste sökningar direkt i headern.",
         status: "Ny design" as const,
       },
-      {
-        title: "Showroom-läge",
-        desc: "Toggle i headern som växlar mellan återförsäljarpriser och kundpriser — för användning i butik/demo.",
-        status: "Ny funktion" as const,
-      },
     ],
   },
   {
@@ -577,6 +572,18 @@ const visionAreas = [
     category: "Min verksamhet (Dealer Workspace)",
     color: "#2a9d5c",
     items: [
+      {
+        title: "Min verksamhet — Landningssida",
+        desc: "Ny landningssida med puffar, live-indikatorer och snabbåtkomst till alla dealer-funktioner. Konsoliderad orderhanteringspuff med metriker.",
+        status: "Ny design" as const,
+        href: "/nav-v2/min-verksamhet",
+      },
+      {
+        title: "Dealer Workspace",
+        desc: "Dedikerad arbetsyta med AI-assisterat arbetsflöde, uppgiftshantering, kundöversikt och daglig sammanfattning. Den centrala hubben för dealerns dagliga arbete.",
+        status: "Ny sida" as const,
+        href: "/nav-v2/min-verksamhet/workspace",
+      },
       {
         title: "Orderhantering",
         desc: "Konsoliderad ordervy med flikar för varukorg, aktiva order, levererade och returer. Mörk gradient-puff med live-metriker och alertprickar på Min verksamhet.",
