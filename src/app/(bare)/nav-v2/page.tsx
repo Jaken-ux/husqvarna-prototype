@@ -11,7 +11,7 @@ export default function NavV2Page() {
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[1280px] space-y-10 px-6 py-10">
+      <main className="mx-auto max-w-[1280px] space-y-6 sm:space-y-10 px-4 sm:px-6 py-6 sm:py-10">
         <DashboardWidgets />
         <AlertsTasksPanel />
         {/* Campaign + Quick Actions side by side */}

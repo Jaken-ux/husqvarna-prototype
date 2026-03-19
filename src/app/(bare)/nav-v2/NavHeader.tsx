@@ -48,6 +48,21 @@ export default function NavHeader() {
               </svg>
             </button>
 
+            {/* Mobile brand */}
+            <Link href="/nav-v2" className="flex items-center gap-2 md:hidden">
+              <Image
+                src="/images/Husqvarna-logo.png"
+                alt="Husqvarna"
+                width={36}
+                height={36}
+                className="brightness-0 invert"
+              />
+              <span className="text-[15px] font-semibold tracking-tight text-white/90">
+                Dealer Portal
+              </span>
+            </Link>
+
+            {/* Desktop brand */}
             <Link href="/nav-v2" className="hidden items-center gap-2.5 md:flex">
               <Image
                 src="/images/Husqvarna-logo.png"
@@ -274,7 +289,7 @@ export default function NavHeader() {
       {/* Floating vision scope button */}
       <button
         onClick={() => setVisionOpen(true)}
-        className="fixed bottom-6 right-6 z-[9998] flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#e55a00] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98]"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex items-center gap-2 sm:gap-2.5 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#e55a00] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98]"
       >
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="10" cy="10" r="8" />

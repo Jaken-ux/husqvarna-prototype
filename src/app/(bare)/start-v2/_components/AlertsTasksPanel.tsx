@@ -119,7 +119,7 @@ export default function AlertsTasksPanel() {
         <div id="alerts-panel" className="mt-4 rounded-xl border border-[#d0d0d0] bg-white">
           <ul className="divide-y divide-[#e5e5e5]">
             {alerts.map((alert) => (
-              <li key={alert.id} className="flex items-start gap-4 px-5 py-4">
+              <li key={alert.id} className="flex items-start gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4">
                 {/* Priority dot */}
                 <span
                   className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${priorityDot[alert.priority]}`}
@@ -129,7 +129,7 @@ export default function AlertsTasksPanel() {
                 {/* Content */}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start gap-2">
-                    <p className="text-sm font-semibold text-[#222]">
+                    <p className="text-[13px] sm:text-sm font-semibold text-[#222]">
                       {alert.title}
                     </p>
                     <span
@@ -138,16 +138,24 @@ export default function AlertsTasksPanel() {
                       {priorityLabel[alert.priority]}
                     </span>
                   </div>
-                  <p className="mt-1 text-[12px] leading-relaxed text-[#888]">
+                  <p className="mt-1 text-[12px] leading-relaxed text-[#888] hidden sm:block">
                     {alert.description}
                   </p>
-                  <p className="mt-1 text-[11px] text-[#bbb]">{alert.timestamp}</p>
+                  <div className="mt-1.5 flex items-center gap-3 sm:mt-1">
+                    <p className="text-[11px] text-[#bbb]">{alert.timestamp}</p>
+                    <a
+                      href={alert.actionHref}
+                      className="sm:hidden shrink-0 rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-2.5 py-1 text-[11px] font-semibold text-[#444] transition-colors hover:bg-[#eee] hover:text-[#111]"
+                    >
+                      {alert.actionLabel}
+                    </a>
+                  </div>
                 </div>
 
-                {/* Action */}
+                {/* Action — desktop only */}
                 <a
                   href={alert.actionHref}
-                  className="shrink-0 self-center rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 py-1.5 text-[12px] font-semibold text-[#444] transition-colors hover:bg-[#eee] hover:text-[#111]"
+                  className="hidden sm:block shrink-0 self-center rounded-lg border border-[#d0d0d0] bg-[#fafafa] px-3 py-1.5 text-[12px] font-semibold text-[#444] transition-colors hover:bg-[#eee] hover:text-[#111]"
                 >
                   {alert.actionLabel}
                 </a>

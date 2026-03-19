@@ -67,14 +67,14 @@ export default function RecentActivity() {
 
   return (
     <section aria-labelledby="recent-heading">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 id="recent-heading" className="text-lg font-semibold text-[#111]">
           Senaste aktivitet
         </h2>
 
         {/* Time period segment control */}
         <div
-          className="flex rounded-lg border border-[#d0d0d0] bg-[#f5f5f5] p-0.5"
+          className="flex self-start rounded-lg border border-[#d0d0d0] bg-[#f5f5f5] p-0.5"
           role="tablist"
           aria-label="Tidsperiod"
         >

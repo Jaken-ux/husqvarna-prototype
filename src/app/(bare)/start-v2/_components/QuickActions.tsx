@@ -125,7 +125,7 @@ export default function QuickActions() {
     >
       <h2
         id="quick-actions-heading"
-        className="border-b border-[#e5e5e5] px-5 py-4 text-lg font-semibold text-[#111]"
+        className="border-b border-[#e5e5e5] px-4 sm:px-5 py-3 sm:py-4 text-base sm:text-lg font-semibold text-[#111]"
       >
         Snabbåtgärder
       </h2>
@@ -134,16 +134,16 @@ export default function QuickActions() {
           <a
             key={a.title}
             href={a.href}
-            className="group flex items-center gap-3.5 px-5 py-3.5 transition-colors hover:bg-[#fafafa] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#273A60]"
+            className="group flex items-center gap-3 sm:gap-3.5 px-4 sm:px-5 py-3 sm:py-3.5 transition-colors hover:bg-[#fafafa] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#273A60]"
           >
             <span className="shrink-0 rounded-lg bg-[#f5f5f5] p-2 text-[#555] transition-colors group-hover:bg-[#eee] group-hover:text-[#111]">
               {a.icon}
             </span>
             <div className="min-w-0 flex-1">
-              <span className="text-sm font-semibold text-[#111]">
+              <span className="text-[13px] sm:text-sm font-semibold text-[#111]">
                 {a.title}
               </span>
-              <span className="mt-0.5 block truncate text-[12px] text-[#888]">
+              <span className="mt-0.5 block truncate text-[11px] sm:text-[12px] text-[#888]">
                 {a.description}
               </span>
             </div>

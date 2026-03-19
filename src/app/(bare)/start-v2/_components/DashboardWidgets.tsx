@@ -71,20 +71,20 @@ export default function DashboardWidgets() {
       <h2 id="dashboard-heading" className="sr-only">
         Översikt
       </h2>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {widgets.map((w) => (
           <a
             key={w.label}
             href={w.href}
-            className={`group flex flex-col rounded-xl border border-[#d0d0d0] border-l-[3px] bg-white p-5 transition-all hover:border-[#ccc] hover:shadow-md ${statusColorMap[w.statusColor]}`}
+            className={`group flex flex-col rounded-xl border border-[#d0d0d0] border-l-[3px] bg-white p-3 sm:p-5 transition-all hover:border-[#ccc] hover:shadow-md ${statusColorMap[w.statusColor]}`}
           >
-            <p className="text-[12px] font-semibold uppercase tracking-widest text-[#999]">
+            <p className="text-[10px] sm:text-[12px] font-semibold uppercase tracking-widest text-[#999]">
               {w.label}
             </p>
-            <p className="mt-2 text-[2rem] font-extrabold leading-none text-[#111]">
+            <p className="mt-1 sm:mt-2 text-[1.5rem] sm:text-[2rem] font-extrabold leading-none text-[#111]">
               {w.value}
             </p>
-            <p className="mt-2 text-[12px] text-[#888]">{w.helper}</p>
+            <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] text-[#888]">{w.helper}</p>
             {w.trend && (
               <p
                 className={`mt-1 text-[11px] font-medium ${

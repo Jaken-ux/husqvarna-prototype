@@ -24,7 +24,7 @@ export default function QuickLinks() {
       >
         Snabblänkar
       </h2>
-      <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-4 grid grid-cols-1 gap-y-1 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-3 lg:grid-cols-4">
         {links.map((link) => (
           <a
             key={link.label}
