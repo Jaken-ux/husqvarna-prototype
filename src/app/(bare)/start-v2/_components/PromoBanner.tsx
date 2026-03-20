@@ -3,7 +3,7 @@ export default function PromoBanner() {
     <section aria-labelledby="promo-heading">
       <a
         href="/nav-v2/kampanj"
-        className="group relative block h-full overflow-hidden rounded-2xl border border-[#d0d0d0]"
+        className="group relative block h-full min-h-[240px] sm:min-h-0 overflow-hidden rounded-2xl border border-[#d0d0d0]"
       >
         <img
           src="/images/husqvarna.jpg"

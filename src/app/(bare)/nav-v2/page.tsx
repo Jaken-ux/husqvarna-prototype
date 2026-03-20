@@ -16,8 +16,8 @@ export default function NavV2Page() {
         <AlertsTasksPanel />
         {/* Campaign + Quick Actions side by side */}
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[1fr_1fr]">
-          <PromoBanner />
-          <QuickActions />
+          <div className="order-2 md:order-1"><PromoBanner /></div>
+          <div className="order-1 md:order-2"><QuickActions /></div>
         </div>
         <RecentActivity />
         <QuickLinks />

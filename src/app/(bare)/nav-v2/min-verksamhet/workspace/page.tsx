@@ -404,8 +404,8 @@ export default function MinVerksamhetPage() {
         </div>
 
         {/* ── Tab bar ── */}
-        <div className="mt-6 border-b border-[#d0d0d0]">
-          <nav className="-mb-px flex gap-0 overflow-x-auto" aria-label="Workspace-flikar">
+        <div className="relative mt-6 border-b border-[#d0d0d0]">
+          <nav className="-mb-px flex gap-0 overflow-x-auto" style={{ scrollbarWidth: "none" }} aria-label="Workspace-flikar">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -434,6 +434,15 @@ export default function MinVerksamhetPage() {
               </button>
             ))}
           </nav>
+          {/* Mobile scroll hint — fade + arrow */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 flex items-center sm:hidden">
+            <div className="h-full w-12 bg-gradient-to-l from-white to-transparent" />
+            <div className="absolute right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-sm">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round">
+                <path d="M4.5 2.5l3.5 3.5-3.5 3.5" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* ── Tab content ── */}
@@ -477,10 +486,12 @@ function DashboardView() {
 
   return (
     <div className="space-y-8">
-      {/* KPI row */}
+      {/* KPI row — desktop: grid cards */}
       <section aria-labelledby="kpi-heading">
         <h2 id="kpi-heading" className="sr-only">Nyckeltal</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+
+        {/* Desktop */}
+        <div className="hidden sm:grid grid-cols-4 gap-3 lg:grid-cols-7">
           {dashboardKpis.map((kpi) => (
             <a
               key={kpi.label}
@@ -492,6 +503,29 @@ function DashboardView() {
               <p className="mt-1 text-[11px] text-[#aaa]">{kpi.helper}</p>
             </a>
           ))}
+        </div>
+
+        {/* Mobile — compact single card */}
+        <div className="sm:hidden rounded-xl border border-[#d0d0d0] bg-white">
+          <div className="grid grid-cols-3 divide-x divide-[#f0f0f0] border-b border-[#f0f0f0]">
+            {dashboardKpis.slice(0, 3).map((kpi) => (
+              <a key={kpi.label} href={kpi.href} className="flex flex-col items-center py-3 px-2 active:bg-[#fafafa]">
+                <span className={`text-xl font-extrabold ${kpi.color ? "text-[#111]" : "text-[#111]"}`}>{kpi.value}</span>
+                <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#999] text-center leading-tight">{kpi.label}</span>
+              </a>
+            ))}
+          </div>
+          <div className="grid grid-cols-4 divide-x divide-[#f0f0f0]">
+            {dashboardKpis.slice(3).map((kpi) => {
+              const alertColor = kpi.color?.includes("c44") ? "text-[#c44]" : kpi.color?.includes("b8860b") ? "text-[#b8860b]" : "text-[#111]";
+              return (
+                <a key={kpi.label} href={kpi.href} className="flex flex-col items-center py-3 px-1 active:bg-[#fafafa]">
+                  <span className={`text-lg font-extrabold ${alertColor}`}>{kpi.value}</span>
+                  <span className="mt-0.5 text-[8px] font-semibold uppercase tracking-wider text-[#999] text-center leading-tight">{kpi.label}</span>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -756,8 +790,8 @@ function CustomersView({
       </div>
 
       {/* Customer list */}
-      <div className="rounded-xl border border-[#d0d0d0] bg-white">
-        <table className="w-full text-left">
+      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full min-w-[700px] text-left">
           <thead>
             <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
               <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Kund</th>
@@ -856,73 +890,19 @@ function ContractsView({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header — fixed height to prevent layout shift */}
       <div>
         <h2 className="text-base font-semibold text-[#111]">Avtal & program</h2>
-        <p className="text-[12px] text-[#888]">{viewDescriptions[activeView]}</p>
+        <p className="min-h-[2.5em] text-[12px] text-[#888]">{viewDescriptions[activeView]}</p>
       </div>
 
-      {/* Renewal radar — only in "alla" view */}
-      {activeView === "alla" && (
-        <div className="rounded-xl border border-[#d0d0d0] bg-gradient-to-r from-[#fff8f0] to-white p-5">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#b8860b]" />
-            <h3 className="text-[14px] font-semibold text-[#111]">Förnyelseradar</h3>
-          </div>
-          <p className="mt-1 text-[12px] text-[#888]">Avtal som löper ut inom 60 dagar</p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-3">
-            {renewalRadar.map((r) => (
-              <a
-                key={r.id}
-                href={`#contract/${r.id}`}
-                className="group flex items-center justify-between rounded-lg border border-[#e5e5e5] bg-white px-4 py-3 transition-all hover:border-[#b8860b]/40 hover:shadow-sm"
-              >
-                <div>
-                  <span className="text-[12px] font-semibold text-[#111]">{r.customer}</span>
-                  <span className="mt-0.5 block text-[11px] text-[#888]">{r.program} · {r.id}</span>
-                </div>
-                <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                  r.daysLeft <= 14 ? "bg-[#fce8e8] text-[#c44]" : "bg-[#fff3e0] text-[#e65100]"
-                }`}>
-                  {r.daysLeft} dagar
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Program summary cards — only in "alla" view */}
-      {activeView === "alla" && (
-        <div className="grid gap-3 sm:grid-cols-4">
-          {programBands.map((band) => (
-            <div key={band.label} className="rounded-xl border border-[#d0d0d0] bg-white p-5">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: band.color }} />
-                <h3 className="text-[13px] font-semibold text-[#111]">{band.label}</h3>
-              </div>
-              <div className="mt-3 flex gap-6">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Totalt</p>
-                  <p className="text-xl font-extrabold text-[#111]">{band.count}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#999]">Aktiva</p>
-                  <p className="text-xl font-extrabold" style={{ color: band.color }}>{band.active}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* ── View Switcher ── */}
-      <div className="flex items-center gap-1 rounded-xl border border-[#d0d0d0] bg-[#f5f5f5] p-1">
+      <div className="flex flex-wrap items-center gap-1 rounded-xl border border-[#d0d0d0] bg-[#f5f5f5] p-1 sm:flex-nowrap sm:overflow-x-auto" style={{ scrollbarWidth: "none" }}>
         {contractViews.map((v) => (
           <button
             key={v.id}
             onClick={() => onViewChange(v.id)}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-[12px] font-semibold transition-all ${
+            className={`flex shrink-0 grow sm:grow-0 items-center justify-center gap-1.5 rounded-lg px-3 sm:px-4 py-2 text-[12px] font-semibold transition-all ${
               activeView === v.id
                 ? "bg-white text-[#111] shadow-sm"
                 : "text-[#888] hover:text-[#555]"

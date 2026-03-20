@@ -5,15 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { accountNav } from "./navData";
-import MobileDrawer from "./MobileDrawer";
 import ProfileSwitcher from "./ProfileSwitcher";
-import { husqvarnaNav, minVerksamhetNav } from "./navData";
 import { useShowroom } from "./ShowroomContext";
 
 export default function NavHeader() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [visionOpen, setVisionOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const { showroom, setShowroom } = useShowroom();
   const pathname = usePathname();
   const isHusqvarna = pathname.startsWith("/nav-v2/husqvarna") || pathname.startsWith("/nav-v2/kampanj");
@@ -29,25 +27,6 @@ export default function NavHeader() {
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4 py-3.5 md:px-6">
           {/* Left: Brand — logo + text */}
           <div className="flex items-center gap-4">
-            {/* Mobile hamburger */}
-            <button
-              onClick={() => setMobileOpen(true)}
-              aria-label="Öppna meny"
-              className="flex h-8 w-8 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 md:hidden"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              >
-                <path d="M3 5h14M3 10h14M3 15h14" />
-              </svg>
-            </button>
-
             {/* Mobile brand */}
             <Link href="/nav-v2" className="flex items-center gap-2 md:hidden">
               <Image
@@ -94,26 +73,6 @@ export default function NavHeader() {
 
             {/* Icons — smaller */}
             <div className="flex items-center gap-0.5">
-              {/* Search icon mobile */}
-              <button
-                aria-label="Sök"
-                title="Sök"
-                className="flex h-8 w-8 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 md:hidden"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                >
-                  <circle cx="7" cy="7" r="4.5" />
-                  <path d="M10.5 10.5L14 14" />
-                </svg>
-              </button>
-
               {/* Showroom toggle */}
               <button
                 onClick={() => setShowroom(!showroom)}
@@ -279,13 +238,53 @@ export default function NavHeader() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <MobileDrawer
-          sections={[husqvarnaNav, minVerksamhetNav]}
-          onClose={() => setMobileOpen(false)}
-        />
-      )}
+      {/* ═══ Mobile Row 2: Compact dual navigation ═══ */}
+      <div className="flex border-b border-[#e0e0e0] bg-white md:hidden">
+        <Link
+          href="/nav-v2/husqvarna"
+          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
+            isHusqvarna ? "text-[#273A60]" : "text-[#999]"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" />
+            <path d="M9 8h6M9 12h6M9 16h3" />
+          </svg>
+          Husqvarna
+          {isHusqvarna && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+        </Link>
+        <button
+          onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
+            mobileSearchOpen ? "text-[#273A60]" : "text-[#999]"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M16 16l5 5" />
+          </svg>
+          Sök
+          {mobileSearchOpen && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+        </button>
+        <Link
+          href="/nav-v2/min-verksamhet"
+          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
+            isVerksamhet ? "text-[#273A60]" : "text-[#999]"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <path d="M3 9h18" />
+            <path d="M9 9v11" />
+          </svg>
+          Min verksamhet
+          {isVerksamhet && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+        </Link>
+      </div>
+
+      {/* ═══ Mobile search panel ═══ */}
+      {mobileSearchOpen && <MobileSearchPanel key={String(mobileSearchOpen)} onClose={() => setMobileSearchOpen(false)} />}
+
       {/* Floating vision scope button */}
       <button
         onClick={() => setVisionOpen(true)}
@@ -468,6 +467,164 @@ function SearchDropdown() {
             </a>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══ MOBILE SEARCH PANEL ═══ */
+
+function MobileSearchPanel({ onClose }: { onClose: () => void }) {
+  const [query, setQuery] = useState("");
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  return (
+    <div className="border-b border-[#e0e0e0] bg-white md:hidden">
+      {/* Search input — always visible */}
+      <div className="px-4 pt-3 pb-3">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#aaa]" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <circle cx="7" cy="7" r="4.5" />
+              <path d="M10.5 10.5L14 14" />
+            </svg>
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Sök produkter, artiklar, dokument..."
+              className="h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#f8f8f8] pl-10 pr-3 text-[14px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:bg-white focus:outline-none"
+            />
+          </div>
+          <button
+            onClick={() => setResultsOpen(true)}
+            className="flex h-10 shrink-0 items-center justify-center rounded-lg bg-[#273A60] px-4 text-[13px] font-semibold text-white transition-colors active:bg-[#1a2d4d]"
+          >
+            Sök
+          </button>
+          <button
+            onClick={onClose}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#d0d0d0] text-[#999] transition-colors active:bg-[#f0f0f0]"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M4 4l8 8M12 4l-8 8" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Results — only after interaction */}
+      {resultsOpen && (
+      <div>
+
+      {/* Recent searches */}
+      <div className="border-t border-[#f0f0f0] px-4 py-3">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#bbb]">Senaste sökningar</p>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {recentSearches.map((s) => (
+            <button
+              key={s}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#e5e5e5] bg-[#fafafa] px-3 py-1.5 text-[12px] text-[#555]"
+              onClick={() => setQuery(s)}
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                <path d="M1 8a7 7 0 1114 0A7 7 0 011 8z" />
+                <path d="M8 4v4l2.5 1.5" />
+              </svg>
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Products */}
+      <div className="border-t border-[#f0f0f0] px-4 py-3">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#bbb]">Produkter</p>
+          <span className="text-[11px] text-[#999]">{searchProducts.length} träffar</span>
+        </div>
+        <div className="mt-2 space-y-0.5">
+          {searchProducts.map((p) => (
+            <a
+              key={p.article}
+              href="#"
+              className="flex items-center gap-3 rounded-lg px-1 py-2.5 transition-colors active:bg-[#f5f5f5]"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f0f0f0]">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="14" height="14" rx="2" />
+                  <path d="M7 7h6M7 10h6M7 13h3" />
+                </svg>
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="truncate text-[13px] font-medium text-[#111]">{p.name}</span>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                    p.status === "active"
+                      ? "bg-[#e8f5e9] text-[#2e7d32]"
+                      : "bg-[#f5f5f5] text-[#999]"
+                  }`}>
+                    {p.status === "active" ? "Aktiv" : "Utgången"}
+                  </span>
+                </div>
+                <span className="text-[12px] text-[#888]">{p.article}</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ccc" strokeWidth="1.6" strokeLinecap="round">
+                <path d="M6 4l4 4-4 4" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Documents */}
+      <div className="border-t border-[#f0f0f0] px-4 py-3">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#bbb]">Dokument</p>
+          <span className="text-[11px] text-[#999]">{searchDocuments.length} träffar</span>
+        </div>
+        <div className="mt-2 space-y-0.5">
+          {searchDocuments.map((d) => (
+            <a
+              key={d.name}
+              href="#"
+              className="flex items-center gap-3 rounded-lg px-1 py-2.5 transition-colors active:bg-[#f5f5f5]"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#fef3e8]">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#c87c2a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13 2H5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6l-4-4z" />
+                  <path d="M13 2v4h4" />
+                </svg>
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-medium text-[#111]">{d.name}</span>
+                <span className="text-[12px] text-[#888]">{d.category} · {d.type}</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ccc" strokeWidth="1.6" strokeLinecap="round">
+                <path d="M6 4l4 4-4 4" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-3">
+        <a href="#" className="flex items-center justify-center gap-1.5 text-[13px] font-medium text-[#273A60]">
+          Visa alla resultat för &quot;{query}&quot;
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M5 8h6M8 5l3 3-3 3" />
+          </svg>
+        </a>
+      </div>
+
+      </div>
       )}
     </div>
   );
