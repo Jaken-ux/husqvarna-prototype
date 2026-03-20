@@ -65,26 +65,35 @@ const widgets: Widget[] = [
   },
 ];
 
+const statusDotMap: Record<StatusColor, string> = {
+  green: "bg-[#2a9d5c]",
+  amber: "bg-[#b8860b]",
+  red: "bg-[#c44]",
+  neutral: "bg-[#ccc]",
+};
+
 export default function DashboardWidgets() {
   return (
     <section aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading" className="sr-only">
         Översikt
       </h2>
-      <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
+
+      {/* Desktop — card grid */}
+      <div className="hidden sm:grid sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
         {widgets.map((w) => (
           <a
             key={w.label}
             href={w.href}
-            className={`group flex flex-col rounded-xl border border-[#d0d0d0] border-l-[3px] bg-white p-3 sm:p-5 transition-all hover:border-[#ccc] hover:shadow-md ${statusColorMap[w.statusColor]}`}
+            className={`group flex flex-col rounded-xl border border-[#d0d0d0] border-l-[3px] bg-white p-5 transition-all hover:border-[#ccc] hover:shadow-md ${statusColorMap[w.statusColor]}`}
           >
-            <p className="text-[10px] sm:text-[12px] font-semibold uppercase tracking-widest text-[#999]">
+            <p className="text-[12px] font-semibold uppercase tracking-widest text-[#999]">
               {w.label}
             </p>
-            <p className="mt-1 sm:mt-2 text-[1.5rem] sm:text-[2rem] font-extrabold leading-none text-[#111]">
+            <p className="mt-2 text-[2rem] font-extrabold leading-none text-[#111]">
               {w.value}
             </p>
-            <p className="mt-1 sm:mt-2 text-[11px] sm:text-[12px] text-[#888]">{w.helper}</p>
+            <p className="mt-2 text-[12px] text-[#888]">{w.helper}</p>
             {w.trend && (
               <p
                 className={`mt-1 text-[11px] font-medium ${
@@ -99,6 +108,42 @@ export default function DashboardWidgets() {
             <span className="mt-3 text-[11px] font-semibold text-[#273A60] opacity-0 transition-opacity group-hover:opacity-100">
               {w.cta} →
             </span>
+          </a>
+        ))}
+      </div>
+
+      {/* Mobile — compact list */}
+      <div className="sm:hidden rounded-xl border border-[#d0d0d0] bg-white divide-y divide-[#f0f0f0]">
+        {widgets.map((w) => (
+          <a
+            key={w.label}
+            href={w.href}
+            className="flex items-center gap-3 px-4 py-2.5 active:bg-[#fafafa]"
+          >
+            {/* Status dot */}
+            <span className={`h-2 w-2 shrink-0 rounded-full ${statusDotMap[w.statusColor]}`} />
+
+            {/* Label */}
+            <span className="flex-1 text-[12px] font-semibold text-[#555]">{w.label}</span>
+
+            {/* Value */}
+            <span className="text-[18px] font-extrabold text-[#111] tabular-nums">{w.value}</span>
+
+            {/* Trend */}
+            {w.trend ? (
+              <span className={`w-16 text-right text-[10px] font-semibold ${
+                w.trend.direction === "up" ? "text-[#c44]" : "text-[#2a9d5c]"
+              }`}>
+                {w.trend.direction === "up" ? "↑" : "↓"} {w.trend.text.split(" ")[0]}
+              </span>
+            ) : (
+              <span className="w-16" />
+            )}
+
+            {/* Chevron */}
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ccc" strokeWidth="1.8" strokeLinecap="round" className="shrink-0">
+              <path d="M6 4l4 4-4 4" />
+            </svg>
           </a>
         ))}
       </div>
