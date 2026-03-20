@@ -766,25 +766,35 @@ function CustomersView({
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold text-[#111]">Kundöversikt</h2>
-          <p className="text-[12px] text-[#888]">Alla kunder du stöttar — klicka för detaljer</p>
+      <div>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-[#111]">Kundöversikt</h2>
+            <p className="text-[12px] text-[#888]">Alla kunder du stöttar — klicka för detaljer</p>
+          </div>
+          <button className="hidden sm:flex items-center gap-1.5 rounded-lg bg-[#273A60] px-4 py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#1a2d4d]">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M8 3v10M3 8h10" />
+            </svg>
+            Registrera ny kund
+          </button>
         </div>
-        <div className="flex gap-2">
-          <div className="relative">
+        <div className="mt-3 flex items-center gap-2">
+          <div className="relative flex-1">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <circle cx="7" cy="7" r="4.5" />
               <path d="M10.5 10.5L14 14" />
             </svg>
             <input
               type="text"
-              placeholder="Sök kund..."
-              className="h-9 w-56 rounded-lg border border-[#d0d0d0] bg-white pl-8 pr-3 text-[12px] text-[#333] placeholder-[#aaa] focus:border-[#999] focus:outline-none"
+              placeholder="Sök kund, kontaktperson..."
+              className="h-9 w-full rounded-lg border border-[#d0d0d0] bg-[#fafafa] pl-9 pr-3 text-[12px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:bg-white focus:outline-none"
             />
           </div>
-          <button className="rounded-lg bg-[#273A60] px-4 py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#1a2d4d]">
-            + Registrera ny kund
+          <button className="sm:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#273A60] text-white">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M8 3v10M3 8h10" />
+            </svg>
           </button>
         </div>
       </div>
