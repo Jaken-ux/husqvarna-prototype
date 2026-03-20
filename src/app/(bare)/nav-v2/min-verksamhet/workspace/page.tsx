@@ -1200,7 +1200,7 @@ function LeasingPlusTable() {
     Object.fromEntries(allRows.map((c) => [c.id, c.salesContact && /^\d{4}/.test(c.salesContact) ? "Kontaktad" : "Inte kontaktad"]))
   );
 
-  const statusOptions = ["Inte kontaktad", "Kontaktad"];
+  const statusOptions = ["Inte kontaktad", "Kontaktad", "Dialog startad", "Kontakt avslutad"];
 
   return (
     <div className="space-y-3">
@@ -1219,13 +1219,17 @@ function LeasingPlusTable() {
             <TH>Start</TH>
             <TH>Säljstatus</TH>
             <TH>Status</TH>
-            <TH className="text-center">Åtgärd</TH>
           </tr>
         </thead>
         <tbody className="divide-y divide-[#f0f0f0]">
           {rows.map((c) => {
             const current = salesStatus[c.id] ?? "Inte kontaktad";
-            const isContacted = current === "Kontaktad";
+            const selectStyle: Record<string, string> = {
+              "Inte kontaktad": "border-[#e65100]/30 bg-[#fff3e0] text-[#e65100]",
+              "Kontaktad": "border-[#2a9d5c]/30 bg-[#e8f5e9] text-[#2e7d32]",
+              "Dialog startad": "border-[#1565c0]/30 bg-[#e3f2fd] text-[#1565c0]",
+              "Kontakt avslutad": "border-[#999]/30 bg-[#f5f5f5] text-[#666]",
+            };
             return (
               <tr key={c.id} className="transition-colors hover:bg-[#fafafa]">
                 <TD><IDLink id={c.id} /></TD>
@@ -1237,9 +1241,7 @@ function LeasingPlusTable() {
                     value={current}
                     onChange={(e) => setSalesStatus((prev) => ({ ...prev, [c.id]: e.target.value }))}
                     className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold outline-none transition-colors ${
-                      isContacted
-                        ? "border-[#2a9d5c]/30 bg-[#e8f5e9] text-[#2e7d32]"
-                        : "border-[#e65100]/30 bg-[#fff3e0] text-[#e65100]"
+                      selectStyle[current] ?? selectStyle["Inte kontaktad"]
                     }`}
                   >
                     {statusOptions.map((opt) => (
@@ -1248,11 +1250,6 @@ function LeasingPlusTable() {
                   </select>
                 </TD>
                 <TD><StatusBadge status={c.status} /></TD>
-                <TD className="text-center">
-                  <button className="rounded-lg border border-[#273A60] px-3 py-1.5 text-[11px] font-semibold text-[#273A60] transition-all hover:bg-[#273A60] hover:text-white">
-                    Kontakta kund
-                  </button>
-                </TD>
               </tr>
             );
           })}
