@@ -73,6 +73,20 @@ export default function NavHeader() {
 
             {/* Icons — smaller */}
             <div className="flex items-center gap-0.5">
+              {/* Mobile search icon */}
+              <button
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                aria-label="Sök"
+                className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors md:hidden ${
+                  mobileSearchOpen ? "bg-white/20 text-white" : "text-white/70 hover:bg-white/10"
+                }`}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <circle cx="7" cy="7" r="4.5" />
+                  <path d="M10.5 10.5L14 14" />
+                </svg>
+              </button>
+
               {/* Showroom toggle */}
               <button
                 onClick={() => setShowroom(!showroom)}
@@ -197,8 +211,22 @@ export default function NavHeader() {
       {/* ═══ Row 2: Primary navigation — links ═══ */}
       <div className="hidden border-b border-[#e0e0e0] bg-white shadow-sm md:block">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4 md:px-6">
-          {/* Left: Husqvarna link */}
+          {/* Left: Home + Husqvarna link */}
           <div className="flex items-center">
+            <Link
+              href="/nav-v2"
+              className={`relative flex items-center justify-center px-4 py-5 transition-colors focus:outline-none ${
+                pathname === "/nav-v2" ? "text-[#273A60]" : "text-[#bbb] hover:text-[#888]"
+              }`}
+              title="Startsidan"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 10.5L12 3l9 7.5" />
+                <path d="M5 9.5V19a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9.5" />
+              </svg>
+              {pathname === "/nav-v2" && <span className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full bg-[#273A60]" />}
+            </Link>
+            <span className="h-5 w-px bg-[#e0e0e0]" />
             <Link
               href="/nav-v2/husqvarna"
               className={`relative flex items-center gap-2.5 px-5 py-5 text-base transition-colors focus:outline-none ${
@@ -238,52 +266,54 @@ export default function NavHeader() {
         </div>
       </div>
 
-      {/* ═══ Mobile Row 2: Compact dual navigation ═══ */}
-      <div className="flex border-b border-[#e0e0e0] bg-white md:hidden">
-        <Link
-          href="/nav-v2/husqvarna"
-          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
-            isHusqvarna ? "text-[#273A60]" : "text-[#999]"
-          }`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3" />
-            <path d="M9 8h6M9 12h6M9 16h3" />
-          </svg>
-          Husqvarna
-          {isHusqvarna && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-        </Link>
-        <button
-          onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
-            mobileSearchOpen ? "text-[#273A60]" : "text-[#999]"
-          }`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M16 16l5 5" />
-          </svg>
-          Sök
-          {mobileSearchOpen && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-        </button>
-        <Link
-          href="/nav-v2/min-verksamhet"
-          className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[12px] font-bold transition-colors ${
-            isVerksamhet ? "text-[#273A60]" : "text-[#999]"
-          }`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="4" width="18" height="16" rx="2" />
-            <path d="M3 9h18" />
-            <path d="M9 9v11" />
-          </svg>
-          Min verksamhet
-          {isVerksamhet && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-        </Link>
-      </div>
-
-      {/* ═══ Mobile search panel ═══ */}
-      {mobileSearchOpen && <MobileSearchPanel key={String(mobileSearchOpen)} onClose={() => setMobileSearchOpen(false)} />}
+      {/* ═══ Mobile search panel — replaces nav row when open ═══ */}
+      {mobileSearchOpen ? (
+        <MobileSearchPanel key={String(mobileSearchOpen)} onClose={() => setMobileSearchOpen(false)} />
+      ) : (
+        /* ═══ Mobile Row 2: Triple navigation ═══ */
+        <div className="flex border-b border-[#e0e0e0] bg-white md:hidden">
+          <Link
+            href="/nav-v2"
+            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+              pathname === "/nav-v2" ? "text-[#273A60]" : "text-[#999]"
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 10.5L12 3l9 7.5" />
+              <path d="M5 9.5V19a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9.5" />
+            </svg>
+            Hem
+            {pathname === "/nav-v2" && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+          </Link>
+          <Link
+            href="/nav-v2/husqvarna"
+            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+              isHusqvarna ? "text-[#273A60]" : "text-[#999]"
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <path d="M9 8h6M9 12h6M9 16h3" />
+            </svg>
+            Husqvarna
+            {isHusqvarna && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+          </Link>
+          <Link
+            href="/nav-v2/min-verksamhet"
+            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+              isVerksamhet ? "text-[#273A60]" : "text-[#999]"
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18" />
+              <path d="M9 9v11" />
+            </svg>
+            Min verksamhet
+            {isVerksamhet && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+          </Link>
+        </div>
+      )}
 
       {/* Floating vision scope button */}
       <button
@@ -498,6 +528,7 @@ function MobileSearchPanel({ onClose }: { onClose: () => void }) {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setResultsOpen(true)}
               placeholder="Sök produkter, artiklar, dokument..."
               className="h-10 w-full rounded-lg border border-[#d0d0d0] bg-[#f8f8f8] pl-10 pr-3 text-[14px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:bg-white focus:outline-none"
             />

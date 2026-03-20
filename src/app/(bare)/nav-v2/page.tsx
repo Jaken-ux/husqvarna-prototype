@@ -12,12 +12,17 @@ export default function NavV2Page() {
       <NavHeader />
 
       <main className="mx-auto max-w-[1280px] space-y-6 sm:space-y-10 px-4 sm:px-6 py-6 sm:py-10">
+        {/* Mobile page header */}
+        <div className="sm:hidden">
+          <h1 className="text-[18px] font-bold text-[#111]">Översikt</h1>
+          <p className="mt-0.5 text-[12px] text-[#888]">Välkommen tillbaka, Lindström Maskin AB</p>
+        </div>
         <DashboardWidgets />
         <AlertsTasksPanel />
         {/* Campaign + Quick Actions side by side */}
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[1fr_1fr]">
-          <div className="order-2 md:order-1"><PromoBanner /></div>
-          <div className="order-1 md:order-2"><QuickActions /></div>
+          <div className="order-2 md:order-1 h-full"><PromoBanner /></div>
+          <div className="order-1 md:order-2 h-full"><QuickActions /></div>
         </div>
         <RecentActivity />
         <QuickLinks />
