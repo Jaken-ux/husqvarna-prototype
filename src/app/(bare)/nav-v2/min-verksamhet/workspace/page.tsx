@@ -209,6 +209,66 @@ const products = [
     leasing: "—",
     hypercare: "—",
   },
+  {
+    model: "Automower 405X NERA",
+    serial: "2025-405N-00312",
+    pnc: "967 85 40-01",
+    customer: "Fastighets AB Solbacken",
+    soldDate: "2025-01-15",
+    installed: "completed",
+    warranty: "active",
+    serviceContract: "active",
+    leasing: "—",
+    hypercare: "—",
+  },
+  {
+    model: "Husqvarna 562XP",
+    serial: "2024-562X-01987",
+    pnc: "966 57 03-18",
+    customer: "Lundgren Maskin AB",
+    soldDate: "2024-06-20",
+    installed: "completed",
+    warranty: "expiring",
+    serviceContract: "missing",
+    leasing: "—",
+    hypercare: "—",
+  },
+  {
+    model: "Automower 320 NERA",
+    serial: "2025-320N-00156",
+    pnc: "967 85 25-01",
+    customer: "Malmö Grönska HB",
+    soldDate: "2025-02-01",
+    installed: "completed",
+    warranty: "active",
+    serviceContract: "active",
+    leasing: "—",
+    hypercare: "—",
+  },
+  {
+    model: "Husqvarna 535RXT",
+    serial: "2024-535R-04521",
+    pnc: "967 86 12-03",
+    customer: "Eriksson Trädgård AB",
+    soldDate: "2024-11-08",
+    installed: "completed",
+    warranty: "active",
+    serviceContract: "active",
+    leasing: "—",
+    hypercare: "—",
+  },
+  {
+    model: "Automower 430X NERA",
+    serial: "2024-430N-02876",
+    pnc: "585 57 28-01",
+    customer: "Lindström Fastigheter",
+    soldDate: "2024-05-12",
+    installed: "completed",
+    warranty: "active",
+    serviceContract: "active",
+    leasing: "—",
+    hypercare: "—",
+  },
 ];
 
 const productFilters = [
@@ -258,6 +318,11 @@ const contracts = [
   { id: "WP-2025-003", program: "Warranty Plus" as const, customer: "Fastighets AB Solbacken", product: "Automower 405X NERA", start: "2025-01-15", end: "2027-01-15", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
   { id: "WP-2024-088", program: "Warranty Plus" as const, customer: "Lundgren Maskin AB", product: "Husqvarna 562XP", start: "2024-06-20", end: "2025-06-20", status: "expiring", bonus: "—", warrantyStatus: "Löper ut", claimStatus: "Pågående" },
   { id: "WP-2025-011", program: "Warranty Plus" as const, customer: "Malmö Grönska HB", product: "Automower 320 NERA", start: "2025-02-01", end: "2027-02-01", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
+  { id: "SP-2025-002", program: "Service Plus" as const, customer: "Fastighets AB Solbacken", product: "Automower 405X NERA", start: "2025-02-01", end: "2026-02-01", status: "active", bonus: "eligible", winterStorage: false },
+  { id: "SP-2025-005", program: "Service Plus" as const, customer: "Malmö Grönska HB", product: "Automower 320 NERA", start: "2025-03-01", end: "2026-03-01", status: "active", bonus: "eligible", winterStorage: true },
+  { id: "LP-2025-003", program: "Lease Plus" as const, customer: "Lindström Fastigheter", product: "Automower 435X AWD", start: "2025-01-10", end: "2028-01-10", status: "active", bonus: "—", salesContact: "Ej kontaktad" },
+  { id: "HC-210", program: "HyperCare" as const, customer: "Karlsson Park & Trädgård", product: "CEORA 526 EPOS", start: "2025-02-20", end: "—", status: "active", bonus: "—", priority: "high" as Priority, hyperCareStatus: "Åtgärd krävs" },
+  { id: "WP-2025-015", program: "Warranty Plus" as const, customer: "Lindström Fastigheter", product: "Automower 435X AWD", start: "2025-01-10", end: "2027-01-10", status: "active", bonus: "—", warrantyStatus: "Giltig", claimStatus: "—" },
 ];
 
 const renewalRadar = [
@@ -691,9 +756,9 @@ function ProductsView({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
         <table className="w-full text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
               <th className="w-8 px-4 py-3">
                 <input type="checkbox" className="rounded border-[#ccc]" aria-label="Välj alla" />
@@ -796,9 +861,9 @@ function CustomersView({
       </div>
 
       {/* Customer list */}
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
         <table className="w-full min-w-[700px] text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
               <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Kund</th>
               <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Kontaktperson</th>
@@ -1084,9 +1149,9 @@ function AllaContractsTable() {
         dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
         search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
       />
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
         <table className="w-full text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
               <TH>Avtals-ID</TH>
               <TH>Program</TH>
@@ -1139,9 +1204,9 @@ function ServicePlusTable({
         dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
         search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
       />
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
         <table className="w-full text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
               <TH>Avtals-ID</TH>
               <TH>Kund</TH>
@@ -1209,9 +1274,9 @@ function LeasingPlusTable() {
         dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
         search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
       />
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
-        <thead>
+        <thead className="sticky top-0 z-10">
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
             <TH>Avtals-ID</TH>
             <TH>Kund</TH>
@@ -1282,9 +1347,9 @@ function WarrantyPlusTable() {
         dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
         search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
       />
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
-        <thead>
+        <thead className="sticky top-0 z-10">
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
             <TH>Avtals-ID</TH>
             <TH>Kund</TH>
@@ -1345,9 +1410,9 @@ function HyperCareTable() {
         dateFrom={f.dateFrom} dateTo={f.dateTo} onDateFromChange={f.setDateFrom} onDateToChange={f.setDateTo}
         search={f.search} onSearchChange={f.setSearch} resultCount={rows.length}
       />
-      <div className="overflow-x-auto rounded-xl border border-[#d0d0d0] bg-white">
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
       <table className="w-full text-left">
-        <thead>
+        <thead className="sticky top-0 z-10">
           <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
             <TH>Case-ID</TH>
             <TH>Kund</TH>
