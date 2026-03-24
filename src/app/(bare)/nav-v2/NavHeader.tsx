@@ -755,12 +755,12 @@ type ScopeArea = {
 
 const visionAreas: ScopeArea[] = [
   {
-    category: "Navigation & Struktur",
+    category: "Navigation & Structure",
     color: "#273A60",
     items: [
       {
         title: "Dual Navigation",
-        status: "Ny arkitektur",
+        status: "New architecture",
         priority: "Tier 1",
         tags_user: ["Reduces cognitive load", "Improves findability", "Improves mental model alignment"],
         tags_business: ["Increased portal adoption", "Reduced training cost", "Reduced support dependency"],
@@ -774,72 +774,88 @@ const visionAreas: ScopeArea[] = [
         scope_note: "Foundation for future portal structure.",
       },
       {
-        title: "Kontextuell sökning",
-        status: "Ny design",
+        title: "EMT Number Switcher",
+        status: "Redesign",
+        priority: "Tier 2",
+        tags_user: ["Faster context switching", "Clearer account separation"],
+        tags_business: ["Reduced support inquiries"],
+        tags_strategic: ["Multi-account support"],
+        problem_today: "",
+        ux_rationale: "The EMT number switcher is separated from the account menu into its own dedicated control in the header utility bar.\n\nThis separates two distinct actions: switching dealer location (EMT) and managing personal account settings. Combining them in one menu introduces ambiguity about the scope of each action.",
+        user_impact: "Switching between dealer locations becomes a visible, persistent control rather than a nested menu item. Account settings remain independently accessible.",
+        business_impact: "Reduced support inquiries related to account context. Clearer separation between dealer identity and personal account.",
+        strategic_value: "Supports multi-location dealer scenarios and future role-based access where EMT context determines available features.",
+        dependencies: "EMT data API. Session context management.",
+        scope_note: "Prototype shows EMT switcher as a dropdown in the header utility bar, separate from the account menu.",
+      },
+      {
+        title: "Start Page — Dealer-Centric Dashboard",
+        status: "New design",
         priority: "Tier 1",
-        tags_user: ["Snabbare åtkomst", "Färre klick"],
-        tags_business: ["Ökad produktupptäckt", "Minskad söktid"],
-        tags_strategic: ["AI-readiness"],
-        problem_today: "⚠ Needs investigation — Current search experience and its limitations have not been validated.",
-        ux_rationale: "Kontextuell sökning direkt i headern möjliggör åtkomst utan sidnavigering. Grupperade resultat (produkter, dokument, senaste sökningar) introducerar tydlig informationshierarki.",
-        user_impact: "Produktinfo, dokument och ordrar blir tillgängliga med 1-2 tangenttryckningar istället för 3-5 klick genom menyer.",
-        business_impact: "Ökad exponering av produktdokumentation och sprängskisser. Kortare identifieringsprocess för reservdelar → kortare serviceärenden.",
-        strategic_value: "Sökinfrastrukturen förbereder för AI-driven sökning med naturligt språk, rekommendationer och prediktiva förslag.",
-        dependencies: "Kräver sökindex över produkter, dokument, order och kunder. Backend API för realtidsresultat.",
-        scope_note: "Prototypen visar desktop-dropdown med sektioner samt mobil sökning med tvåstegsinteraktion (tom input → fokus visar resultat). Mock-data demonstrerar gruppering.",
+        tags_user: ["Immediate status overview", "Faster task access"],
+        tags_business: ["Increased portal engagement", "Shift from sales portal to work portal"],
+        tags_strategic: ["Foundation capability", "Dealer engagement"],
+        problem_today: "",
+        ux_rationale: "The start page is redesigned as a dealer work dashboard rather than a promotional landing page.\n\nThe design prioritizes operational metrics (active orders, back orders, invoices, deliveries, action items) over campaign imagery and marketing content.\n\nQuick action links provide direct access to high-frequency tasks. Alerts and notifications surface items requiring attention.\n\nThe shift reflects a fundamental change in portal philosophy: from a sales channel directed at the dealer, to a work tool owned by the dealer.",
+        user_impact: "The portal entry point immediately communicates what requires attention. Operational status is visible without navigation. High-frequency actions are accessible within one click.",
+        business_impact: "Higher portal return frequency when the start page provides daily operational value. Shift from passive information consumption to active tool usage increases overall portal engagement.",
+        strategic_value: "Positions the portal as an indispensable daily work tool rather than an occasional information source. Creates the foundation for personalized dashboards, AI-driven daily summaries and proactive notifications.",
+        dependencies: "Real-time data feeds for KPI widgets. Alert/notification system. Integration with order, invoice and delivery status.",
+        scope_note: "Prototype shows 5 KPI widgets with trend indicators, collapsible alerts panel, quick actions grid, campaign banner (reduced prominence), recent activity feed and quick links. Mobile version uses compact list layout for KPIs.",
+        href: "/nav-v2",
       },
     ],
   },
   {
-    category: "Husqvarna (OEM-sida)",
+    category: "Husqvarna (OEM)",
     color: "#ff6b00",
     items: [
       {
-        title: "Produktarbetsyta",
-        status: "Omdesign",
+        title: "Product Workspace",
+        status: "Redesign",
         priority: "Tier 1",
-        tags_user: ["Snabbare identifiering", "Samlad vy"],
-        tags_business: ["Fler reservdelsorder", "Kortare serviceärenden"],
-        tags_strategic: ["AI-integration"],
-        problem_today: "⚠ Needs investigation — Current product page capabilities and spare parts identification workflow have not been validated.",
-        ux_rationale: "En arbetsyta istället för en katalog — med identifieringshub, AI-reservdelshjälp och snabb kategoriåtkomst — omvandlar produktsidan från informationsvisning till operativt verktyg.",
-        user_impact: "Reservdelsidentifiering kan ske direkt i portalen istället för via separata PDF-sprängskisser. QR-skanning eliminerar manuell sökning.",
-        business_impact: "Ökad reservdelsomsättning genom förenklad beställning. Kortare serviceärenden → fler jobb per dag.",
-        strategic_value: "AI-reservdelshjälpen är en första implementation av conversational commerce som kan expanderas till hela sortimentet.",
-        dependencies: "AI-modell för reservdelsidentifiering. QR-kodinfrastruktur på produkter. Produktdatabas med relationer.",
-        scope_note: "Prototypen visar identifieringshub, AI-chat mock, snabbåtkomst och kategoribläddrare med expanderbara underkategorier.",
+        tags_user: ["Faster identification", "Consolidated view"],
+        tags_business: ["Increased spare parts orders", "Shorter service cases"],
+        tags_strategic: ["AI integration"],
+        problem_today: "",
+        ux_rationale: "A workspace instead of a catalog — with identification hub, AI spare parts assistant and quick category access — transforms the product page from information display to operational tool.",
+        user_impact: "Spare parts identification can happen directly in the portal instead of via separate PDF exploded views. QR scanning eliminates manual search.",
+        business_impact: "Increased spare parts turnover through simplified ordering. Shorter service cases → more jobs per day.",
+        strategic_value: "The AI spare parts assistant is a first implementation of conversational commerce that can be expanded to the full product range.",
+        dependencies: "AI model for spare parts identification. QR code infrastructure on products. Product database with relational data.",
+        scope_note: "Prototype shows identification hub, AI chat mock, quick access and category browser with expandable subcategories.",
         href: "/nav-v2/husqvarna",
       },
       {
-        title: "Kampanjsidor",
-        status: "Ny design",
+        title: "Campaign Pages",
+        status: "New design",
         priority: "Tier 2",
-        tags_user: ["Bättre kampanjöversikt", "Tydligare incitament"],
-        tags_business: ["Högre kampanjdeltagande", "Ökad sell-through"],
+        tags_user: ["Better campaign overview", "Clearer incentives"],
+        tags_business: ["Higher campaign participation", "Increased sell-through"],
         tags_strategic: ["Dealer engagement"],
-        problem_today: "⚠ Needs investigation — Current campaign communication channels and dealer visibility into campaign status have not been validated.",
-        ux_rationale: "Visuella progressindikatorer och tydliga bonusnivåer gör kampanjstatus synlig i realtid. Strukturen visar exakt position i bonusstegen och vad som krävs för nästa nivå.",
-        user_impact: "Kampanjstatus och produktprioritering blir direkt synlig. Bonusprogressionen synliggör incitamentstrukturen.",
-        business_impact: "Ökad synlighet av kampanjvillkor kan bidra till högre sell-through. Kampanjinformation når dealers som idag inte nås via e-post.",
-        strategic_value: "Digital kampanjplattform ersätter manuell PDF-distribution. Möjliggör realtidsuppföljning av kampanjeffekt per dealer.",
-        dependencies: "Kampanjdata-API med bonusnivåer och progression. Integration med säljdata för realtidsuppdatering.",
-        scope_note: "Prototypen visar kampanjlistning med två aktiva kampanjer, progressbar, kategori-pills och tidigare kampanjresultat. Detaljsida med villkor.",
+        problem_today: "",
+        ux_rationale: "Visual progress indicators and clear bonus levels make campaign status visible in real time. The structure shows exact position in the bonus ladder and what is required for the next level.",
+        user_impact: "Campaign status and product prioritization become directly visible. Bonus progression makes the incentive structure transparent.",
+        business_impact: "Increased visibility of campaign terms may contribute to higher sell-through. Campaign information reaches dealers not currently reached via other channels.",
+        strategic_value: "Digital campaign platform enables real-time tracking of campaign effectiveness per dealer.",
+        dependencies: "Campaign data API with bonus levels and progression. Integration with sales data for real-time updates.",
+        scope_note: "Prototype shows campaign listing with two active campaigns, progress bar, category pills and past campaign results. Detail page with terms.",
         href: "/nav-v2/husqvarna/kampanjer",
       },
       {
-        title: "Nyheter & Lanseringar",
-        status: "Ny sida",
+        title: "News & Launches",
+        status: "New page",
         priority: "Tier 3",
-        tags_user: ["Samlad informationskanal", "Proaktiv uppdatering"],
-        tags_business: ["Snabbare produktadoption", "Bättre informerad dealer"],
+        tags_user: ["Consolidated information channel", "Proactive updates"],
+        tags_business: ["Faster product adoption", "Better informed dealers"],
         tags_strategic: ["Content hub"],
-        problem_today: "⚠ Needs investigation — Current news distribution channels and dealer access to product updates have not been validated.",
-        ux_rationale: "En samlad nyhetssida i portalen konsoliderar informationsflödet till en kanal. Kategorifilter möjliggör filtrering efter relevans.",
-        user_impact: "Kritiska servicebulletiner och produktlanseringar samlas på en plats. Informationstillgänglighet ökar.",
-        business_impact: "Snabbare adoption av nya produkter. Högre compliance med servicebulletiner → färre garantiärenden.",
-        strategic_value: "Nyhetskanalen kan expanderas med personalisering baserad på dealerns sortiment och kundtyper.",
-        dependencies: "CMS-integration för att publicera nyheter. Kategoritaxonomi för innehållsfiltrering.",
-        scope_note: "Prototypen visar featured article, kategorifilter (5 kategorier), nyhetskort med bilder och taggar. 8 mock-artiklar.",
+        problem_today: "",
+        ux_rationale: "A consolidated news page in the portal consolidates the information flow into one channel. Category filters enable filtering by relevance.",
+        user_impact: "Critical service bulletins and product launches are collected in one place. Information accessibility increases.",
+        business_impact: "Faster adoption of new products. Higher compliance with service bulletins → fewer warranty cases.",
+        strategic_value: "The news channel can be expanded with personalization based on dealer product range and customer types.",
+        dependencies: "CMS integration for publishing news. Category taxonomy for content filtering.",
+        scope_note: "Prototype shows featured article, category filter (5 categories), news cards with images and tags. 8 mock articles.",
         href: "/nav-v2/husqvarna/nyheter",
       },
     ],
@@ -849,40 +865,40 @@ const visionAreas: ScopeArea[] = [
     color: "#2a9d5c",
     items: [
       {
-        title: "Min verksamhet — Landningssida",
-        status: "Ny design",
+        title: "My Business — Landing Page",
+        status: "New design",
         priority: "Tier 1",
-        tags_user: ["Helhetsbild", "Färre klick till action"],
-        tags_business: ["Ökad feature-adoption", "Minskad bounce"],
+        tags_user: ["Full overview", "Fewer clicks to action"],
+        tags_business: ["Increased feature adoption", "Reduced bounce"],
         tags_strategic: ["Dealer engagement hub"],
-        problem_today: "⚠ Needs investigation — Current landing page structure and its effectiveness for dealer orientation have not been validated.",
-        ux_rationale: "Puffar med live-metriker introducerar en omedelbar statusbild. Konsoliderad orderhanteringspuff med alert-prickar ersätter fyra separata länkar och reducerar antalet navigeringssteg.",
-        user_impact: "Statusen för restorder, förfallna fakturor och andra åtgärdspunkter blir synlig utan att varje avsnitt behöver öppnas separat.",
-        business_impact: "Högre användning av underutnyttjade funktioner (rapporter, betalningsöversikt) genom synlighet. Snabbare ärendehantering.",
-        strategic_value: "Landningssidan som engagement hub möjliggör framtida personalisering, notifikationer och AI-sammanfattningar.",
-        dependencies: "Realtidsdata för metriker (orderantal, fakturastatus). Badge-system för notifikationer.",
-        scope_note: "Prototypen visar 50/50 grid med orderhanteringspuff (mörk gradient, glassmorphism-metriker) och staplade ekonomipuffar. NY-badges på alla nya sidor.",
+        problem_today: "",
+        ux_rationale: "Cards with live metrics introduce an immediate status overview. Consolidated order management card with alert dots replaces four separate links and reduces navigation steps.",
+        user_impact: "Status of back orders, overdue invoices and other action items becomes visible without opening each section separately.",
+        business_impact: "Higher usage of underutilized features (reports, payment overview) through visibility. Faster case handling.",
+        strategic_value: "The landing page as an engagement hub enables future personalization, notifications and AI summaries.",
+        dependencies: "Real-time data for metrics (order count, invoice status). Badge system for notifications.",
+        scope_note: "Prototype shows 50/50 grid with order management card (dark gradient, glassmorphism metrics) and stacked economy cards. NY badges on all new pages.",
         href: "/nav-v2/min-verksamhet",
       },
       {
         title: "Dealer Workspace",
-        status: "Ny sida",
+        status: "New page",
         priority: "Tier 1",
-        tags_user: ["Daglig arbetsyta", "Prioriterad uppgiftslista"],
-        tags_business: ["Ökad produktivitet", "Bättre dataunderlag"],
-        tags_strategic: ["Centralt arbetsverktyg"],
-        problem_today: "⚠ Needs investigation — Whether a consolidated workspace exists and how daily dealer tasks are currently structured has not been validated.",
-        ux_rationale: "En central arbetsyta med tabbar (Dashboard, Produkter, Kunder, Avtal & program, Idag) samlar dagliga uppgifter på en plats. Prioriterad task-lista strukturerar åtgärder efter angelägenhet.",
-        user_impact: "Dagligt arbete konsolideras till en sida. Prioritetssortering synliggör kritiska ärenden (HyperCare, utgående avtal) överst.",
-        business_impact: "Fler ärenden kan hanteras per session. Bättre datakvalitet genom att sellout-registrering och installationsrapportering presenteras som tydliga uppgifter.",
-        strategic_value: "Workspace blir den naturliga platsen för AI-assistans, automatiserade uppgifter och proaktiva rekommendationer.",
-        dependencies: "Integration med order, garanti, avtal och kunddata. Task-engine för att generera dagliga uppgifter.",
-        scope_note: "Prototypen visar 5 tabbar med fullständig mock-data: 7 KPI:er, prioritetslistor, programöversikt, produkttabell med livscykelstatus, kundöversikt med expanderbara detaljer, avtalsvyer med view-switcher, och daglig åtgärdslista.",
+        tags_user: ["Daily workspace", "Prioritized task list"],
+        tags_business: ["Increased productivity", "Better data quality"],
+        tags_strategic: ["Central work tool"],
+        problem_today: "",
+        ux_rationale: "A central workspace with tabs (Dashboard, Products, Customers, Contracts & programs, Today) consolidates daily tasks in one place. A prioritized task list structures actions by urgency.",
+        user_impact: "Daily work is consolidated to one page. Priority sorting surfaces critical items (HyperCare, expiring contracts) at the top.",
+        business_impact: "More cases can be handled per session. Better data quality by presenting sellout registration and installation reporting as clear tasks.",
+        strategic_value: "The workspace becomes the natural place for AI assistance, automated tasks and proactive recommendations.",
+        dependencies: "Integration with order, warranty, contract and customer data. Task engine to generate daily tasks.",
+        scope_note: "Prototype shows 5 tabs with full mock data: 7 KPIs, priority lists, program overview, product table with lifecycle status, customer overview with expandable details, contract views with view switcher, and daily action list.",
         href: "/nav-v2/min-verksamhet/workspace",
       },
       {
         title: "Unified Order Management",
-        status: "Ny sida",
+        status: "New page",
         priority: "Tier 1",
         tags_user: ["Improves overview", "Reduces navigation steps"],
         tags_business: ["Reduced support cost", "Increased order accuracy"],
@@ -897,56 +913,56 @@ const visionAreas: ScopeArea[] = [
         href: "/nav-v2/min-verksamhet/orders",
       },
       {
-        title: "Fakturor",
-        status: "Ny design",
+        title: "Invoices",
+        status: "New design",
         priority: "Tier 2",
-        tags_user: ["Bättre filtrerbarhet", "Snabbare export"],
-        tags_business: ["Snabbare betalningar", "Minskad administration"],
-        tags_strategic: ["Ekonomimodul"],
-        problem_today: "⚠ Needs investigation — Current invoice page capabilities and filtering options have not been validated.",
-        ux_rationale: "Statusflaggor (betald/förfallen/kreditnota) ger omedelbar överblick. Datumfilter + sök + export i ett gränssnitt eliminerar behovet av excel-workarounds.",
-        user_impact: "Specifika fakturor kan lokaliseras via sök och statusfilter istället för manuell genomgång av listor. Export-funktionen eliminerar manuellt arbete.",
-        business_impact: "Snabbare identifiering av förfallna fakturor → bättre betalningsflöde för Husqvarna.",
-        strategic_value: "Designmönstret (filter + statusflaggor + export) återanvänds som standard för alla listbaserade vyer.",
-        dependencies: "Faktura-API med statusflaggor. Exportfunktion (PDF/CSV).",
-        scope_note: "Prototypen visar datumfilter, statuspills, sökbar tabell med 8 mockfakturor, checkbox-markering och exportknapp.",
+        tags_user: ["Better filterability", "Faster export"],
+        tags_business: ["Faster payments", "Reduced administration"],
+        tags_strategic: ["Finance module"],
+        problem_today: "",
+        ux_rationale: "Status flags (paid/overdue/credit note) provide immediate overview. Date filter + search + export in one interface eliminates the need for spreadsheet workarounds.",
+        user_impact: "Specific invoices can be located via search and status filters instead of manual list review. The export function eliminates manual work.",
+        business_impact: "Faster identification of overdue invoices → improved payment flow for Husqvarna.",
+        strategic_value: "The design pattern (filter + status flags + export) is reusable as a standard for all list-based views.",
+        dependencies: "Invoice API with status flags. Export function (PDF/CSV).",
+        scope_note: "Prototype shows date filter, status pills, searchable table with 8 mock invoices, checkbox selection and export button.",
         href: "/nav-v2/min-verksamhet/fakturor",
       },
       {
-        title: "Betalningar & Saldo",
-        status: "Ny design",
+        title: "Payments & Balance",
+        status: "New design",
         priority: "Tier 2",
-        tags_user: ["Ekonomisk överblick", "Proaktiv planering"],
-        tags_business: ["Bättre cashflow", "Ökad kreditanvändning"],
-        tags_strategic: ["Ekonomimodul"],
-        problem_today: "⚠ Needs investigation — Current payment and balance visibility across systems has not been validated.",
-        ux_rationale: "Visuell kreditgräns-progress och bonustracker gör abstrakt finansiell data konkret. Kommande betalningar presenteras för proaktiv planering.",
-        user_impact: "Tillgänglig kredit och bonusstatus blir synlig på en plats. Finansiell information kräver inte åtkomst till separata system.",
-        business_impact: "Ökad kreditanvändning → högre ordervolym. Bättre betalningsdisciplin genom transparens.",
-        strategic_value: "Ekonomivyn kan expanderas med prognos, automatisk betalningsavisering och integration med dealers bokföringssystem.",
-        dependencies: "Saldo-API, kreditgräns-data, bonusprogramdata, betalningshistorik.",
-        scope_note: "Prototypen visar saldokort med kreditgräns-bar, bonustracker, kommande betalningar och transaktionshistorik.",
+        tags_user: ["Financial overview", "Proactive planning"],
+        tags_business: ["Better cashflow", "Increased credit utilization"],
+        tags_strategic: ["Finance module"],
+        problem_today: "",
+        ux_rationale: "Visual credit limit progress and bonus tracker make abstract financial data concrete. Upcoming payments are presented for proactive planning.",
+        user_impact: "Available credit and bonus status become visible in one place. Financial information does not require access to separate systems.",
+        business_impact: "Increased credit utilization → higher order volume. Better payment discipline through transparency.",
+        strategic_value: "The finance view can be expanded with forecasting, automatic payment notifications and integration with dealer accounting systems.",
+        dependencies: "Balance API, credit limit data, bonus program data, payment history.",
+        scope_note: "Prototype shows balance card with credit limit bar, bonus tracker, upcoming payments and transaction history.",
         href: "/nav-v2/min-verksamhet/betalningar",
       },
       {
-        title: "Rapporter",
-        status: "Ny design",
+        title: "Reports",
+        status: "New design",
         priority: "Tier 3",
-        tags_user: ["Enkel åtkomst", "Format-flexibilitet"],
-        tags_business: ["Bättre beslutsunderlag", "Ökad datadrivenhet"],
+        tags_user: ["Easy access", "Format flexibility"],
+        tags_business: ["Better decision-making data", "Increased data-drivenness"],
         tags_strategic: ["Business intelligence"],
-        problem_today: "⚠ Needs investigation — Current report access workflow and catalog structure have not been validated.",
-        ux_rationale: "Rapportkatalog med kategorifilter och populära rapporter minskar tröskeln. Formatbadges (PDF/Excel/CSV) sätter förväntningar direkt.",
-        user_impact: "Rapporter kan hittas via kategori och popularitetssortering utan att det exakta namnet behöver vara känt. Senaste exporter ger snabb åtkomst till återkommande rapporter.",
-        business_impact: "Bättre tillgång till beslutsunderlag. Ökad exponering av underutnyttjade rapporter.",
-        strategic_value: "Rapportplattformen förbereder för dynamiska dashboards och AI-genererade insikter.",
-        dependencies: "Rapportgenerering-API med formatstöd. Användningsstatistik för populärsortering.",
-        scope_note: "Prototypen visar populära rapporter, senaste exporter och fullständig katalog med kategorifilter och formatbadges.",
+        problem_today: "",
+        ux_rationale: "A report catalog with category filters and popular reports lowers the access threshold. Format badges (PDF/Excel/CSV) set expectations immediately.",
+        user_impact: "Reports can be found via category and popularity sorting without knowing the exact name. Recent exports provide quick access to recurring reports.",
+        business_impact: "Better access to decision-making data. Increased exposure of underutilized reports.",
+        strategic_value: "The report platform prepares for dynamic dashboards and AI-generated insights.",
+        dependencies: "Report generation API with format support. Usage statistics for popularity sorting.",
+        scope_note: "Prototype shows popular reports, recent exports and full catalog with category filters and format badges.",
         href: "/nav-v2/min-verksamhet/rapporter",
       },
       {
         title: "Wishlist",
-        status: "Ny design",
+        status: "New design",
         priority: "Tier 2",
         tags_user: ["Better decision support"],
         tags_business: ["Increased program sales"],
@@ -963,12 +979,12 @@ const visionAreas: ScopeArea[] = [
     ],
   },
   {
-    category: "Avtal & program (Workspace-vy)",
+    category: "Contracts & Programs (Workspace view)",
     color: "#b8860b",
     items: [
       {
         title: "Contract View Switcher",
-        status: "Ny arkitektur",
+        status: "New architecture",
         priority: "Tier 1",
         tags_user: ["Reduces cognitive load", "Improves overview", "Reduces errors"],
         tags_business: ["Increased program adoption", "Improved data quality"],
@@ -985,34 +1001,34 @@ const visionAreas: ScopeArea[] = [
     ],
   },
   {
-    category: "Offerter & Prissättning",
+    category: "Quotes & Pricing",
     color: "#7b61ff",
     items: [
       {
-        title: "Offerthantering",
-        status: "Omdesign",
+        title: "Quote Management",
+        status: "Redesign",
         priority: "Tier 2",
-        tags_user: ["Bättre offertöversikt", "Snabbare hantering"],
-        tags_business: ["Högre offert-till-order-konvertering"],
-        tags_strategic: ["Säljverktyg"],
-        problem_today: "⚠ Needs investigation — Current quote management interface and status visibility have not been validated.",
-        ux_rationale: "Status-tabbar, kundinfo och utgångsdatum direkt i listan introducerar omedelbar överblick. Snabbåtgärder reducerar antalet klick per åtgärd.",
-        user_impact: "Offerter som kräver uppföljning identifieras direkt i listan utan att varje offert behöver öppnas.",
-        business_impact: "Snabbare offerthantering → fler konverterade offerter.",
-        strategic_value: "Offertverktyget kan expanderas med automatiska påminnelser, mallar och integration med prissättningsmotor.",
-        dependencies: "Offert-API med statushantering. Kundkoppling.",
-        scope_note: "Prototypen visar offertlista med status-tabs, kundinfo, utgångsdatum och snabbåtgärder.",
+        tags_user: ["Better quote overview", "Faster handling"],
+        tags_business: ["Higher quote-to-order conversion"],
+        tags_strategic: ["Sales tool"],
+        problem_today: "",
+        ux_rationale: "Status tabs, customer info and expiry date directly in the list introduce immediate overview. Quick actions reduce the number of clicks per action.",
+        user_impact: "Quotes requiring follow-up are identified directly in the list without opening each quote individually.",
+        business_impact: "Faster quote handling → more converted quotes.",
+        strategic_value: "The quote tool can be expanded with automatic reminders, templates and integration with pricing engine.",
+        dependencies: "Quote API with status management. Customer linkage.",
+        scope_note: "Prototype shows quote list with status tabs, customer info, expiry dates and quick actions.",
         href: "/nav-v2/offerter",
       },
     ],
   },
   {
-    category: "Responsiv design & Mobilanpassning",
+    category: "Responsive Design & Mobile",
     color: "#c44",
     items: [
       {
         title: "Mobile UX Strategy",
-        status: "Ny design",
+        status: "New design",
         priority: "Tier 1",
         tags_user: ["Mobile usability", "Faster task completion"],
         tags_business: ["Increased portal usage frequency"],
@@ -1026,30 +1042,30 @@ const visionAreas: ScopeArea[] = [
         scope_note: "Necessary for long-term adoption.",
       },
       {
-        title: "Sticky table headers & scrolloptimering",
-        status: "Ny design",
+        title: "Sticky Table Headers & Scroll Optimization",
+        status: "New design",
         priority: "Tier 2",
-        tags_user: ["Bättre tabellnavigering", "Kontextbehållning"],
-        tags_business: ["Ökad dataanvändning"],
-        tags_strategic: ["UX-standard"],
-        problem_today: "⚠ Needs investigation — Current table scrolling behaviour and header visibility have not been validated.",
-        ux_rationale: "Sticky headers håller kolumnrubriker synliga vid vertikal scrollning. Horisontell scroll inom tabellcontainer förhindrar att hela sidan påverkas.",
-        user_impact: "Kolumnrubriker förblir synliga vid scrollning genom 20+ rader. Behovet att scrolla tillbaka elimineras.",
-        business_impact: "Snabbare arbete med stora datamängder → fler ärenden hanterade per session.",
-        strategic_value: "Etablerar en UX-standard för alla tabellytor i portalen.",
-        dependencies: "CSS sticky positioning med overflow-containers.",
-        scope_note: "Implementerat på alla 7 tabeller i Dealer Workspace. max-h-[70vh] scrollcontainer.",
+        tags_user: ["Better table navigation", "Context retention"],
+        tags_business: ["Increased data usage"],
+        tags_strategic: ["UX standard"],
+        problem_today: "",
+        ux_rationale: "Sticky headers keep column labels visible during vertical scrolling. Horizontal scroll within table containers prevents the entire page from being affected.",
+        user_impact: "Column headers remain visible when scrolling through 20+ rows. The need to scroll back is eliminated.",
+        business_impact: "Faster work with large data sets → more cases handled per session.",
+        strategic_value: "Establishes a UX standard for all table surfaces in the portal.",
+        dependencies: "CSS sticky positioning with overflow containers.",
+        scope_note: "Implemented on all 7 tables in Dealer Workspace. max-h-[70vh] scroll container.",
       },
     ],
   },
 ];
 
 const statusColors: Record<string, { bg: string; text: string }> = {
-  "Ny arkitektur": { bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
-  "Ny design": { bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
-  "Ny funktion": { bg: "bg-[#e0f2f1]", text: "text-[#00695c]" },
-  "Ny sida": { bg: "bg-[#fce4ec]", text: "text-[#c62828]" },
-  "Omdesign": { bg: "bg-[#f3e5f5]", text: "text-[#6a1b9a]" },
+  "New architecture": { bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
+  "New design": { bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  "New feature": { bg: "bg-[#e0f2f1]", text: "text-[#00695c]" },
+  "New page": { bg: "bg-[#fce4ec]", text: "text-[#c62828]" },
+  "Redesign": { bg: "bg-[#f3e5f5]", text: "text-[#6a1b9a]" },
 };
 
 const priorityColors: Record<string, string> = {
@@ -1124,16 +1140,17 @@ function ScopeItemCard({ item, router }: { item: ScopeItem; router: ReturnType<t
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {item.href && (
-            <span
-              onClick={(e) => { e.stopPropagation(); router.push(item.href!); }}
+            <a
+              href={item.href}
+              onClick={(e) => { e.stopPropagation(); }}
               className="flex h-8 w-8 items-center justify-center rounded-lg text-[#ccc] transition-all hover:bg-[#273A60]/10 hover:text-[#273A60]"
-              title={`Visa ${item.title}`}
+              title={`View ${item.title}`}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M1 8c0-2.8 2.2-5.5 7-7 4.8 1.5 7 4.2 7 7s-2.2 5.5-7 7C3.2 13.5 1 10.8 1 8z" />
                 <circle cx="8" cy="8" r="2.5" />
               </svg>
-            </span>
+            </a>
           )}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round" className={`transition-transform ${expanded ? "rotate-180" : ""}`}>
             <path d="M4 6l4 4 4-4" />
@@ -1144,13 +1161,13 @@ function ScopeItemCard({ item, router }: { item: ScopeItem; router: ReturnType<t
       {/* Expanded content */}
       {expanded && (
         <div className="border-t border-[#f0f0f0] px-5 pb-5 pt-4 space-y-4">
-          <ContentBlock label="UX-rationale" text={item.ux_rationale} />
-          <ContentBlock label="Användarnytta" text={item.user_impact} />
-          <ContentBlock label="Affärsnytta" text={item.business_impact} />
-          <ContentBlock label="Strategiskt värde" text={item.strategic_value} />
-          <ContentBlock label="Beroenden" text={item.dependencies} />
+          <ContentBlock label="UX Rationale" text={item.ux_rationale} />
+          <ContentBlock label="User Impact" text={item.user_impact} />
+          <ContentBlock label="Business Impact" text={item.business_impact} />
+          <ContentBlock label="Strategic Value" text={item.strategic_value} />
+          <ContentBlock label="Dependencies" text={item.dependencies} />
           <div className="rounded-lg bg-[#f8f9fb] px-4 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#999]">Scope i prototypen</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#999]">Prototype Scope</p>
             <p className="mt-1 text-[12px] leading-relaxed text-[#888]">{item.scope_note}</p>
           </div>
         </div>
@@ -1220,7 +1237,7 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
                 <p className="text-[10px] font-bold uppercase tracking-[.2em] text-white/40">Husqvarna Dealer Portal</p>
                 <h2 className="mt-2 text-2xl font-bold text-white">Vision Prototype — Scope</h2>
                 <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-white/60">
-                  Klicka på varje funktion för att se problem, rationale, affärsnytta och strategiskt värde.
+                  Click each feature to see rationale, user impact, business impact and strategic value.
                 </p>
               </div>
               <button
@@ -1237,11 +1254,11 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
             <div className="mt-6 flex flex-wrap gap-3 sm:gap-6">
               <div className="rounded-lg bg-white/10 px-4 py-2">
                 <span className="text-xl font-bold text-white">{visionAreas.length}</span>
-                <span className="ml-1.5 text-[12px] text-white/50">områden</span>
+                <span className="ml-1.5 text-[12px] text-white/50">areas</span>
               </div>
               <div className="rounded-lg bg-white/10 px-4 py-2">
                 <span className="text-xl font-bold text-white">{totalItems}</span>
-                <span className="ml-1.5 text-[12px] text-white/50">funktioner</span>
+                <span className="ml-1.5 text-[12px] text-white/50">features</span>
               </div>
               <div className="rounded-lg bg-white/10 px-4 py-2">
                 <span className="text-xl font-bold text-[#ff6b00]">{tier1Count}</span>
@@ -1249,7 +1266,7 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
               </div>
               <div className="rounded-lg bg-white/10 px-4 py-2">
                 <span className="text-xl font-bold text-white">8+</span>
-                <span className="ml-1.5 text-[12px] text-white/50">nya sidor</span>
+                <span className="ml-1.5 text-[12px] text-white/50">new pages</span>
               </div>
             </div>
           </div>
@@ -1284,7 +1301,7 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
               <div className="mb-3 flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full" style={{ backgroundColor: area.color }} />
                 <h3 className="text-[15px] font-bold text-[#111]">{area.category}</h3>
-                <span className="text-[12px] text-[#bbb]">{area.items.length} delar</span>
+                <span className="text-[12px] text-[#bbb]">{area.items.length} items</span>
               </div>
               <div className="grid gap-2">
                 {area.items.map((item) => (
@@ -1298,7 +1315,7 @@ function VisionScopeOverlay({ onClose }: { onClose: () => void }) {
         {/* Footer */}
         <div className="rounded-b-2xl border-t border-[#f0f0f0] bg-[#fafafa] px-6 py-5 sm:px-8">
           <p className="text-center text-[12px] text-[#bbb]">
-            Husqvarna Vision Prototype — Alla funktioner är mockups för konceptvalidering
+            Husqvarna Vision Prototype — All features are mockups for concept validation
           </p>
         </div>
       </div>
