@@ -12,6 +12,7 @@ export default function NavHeader() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [visionOpen, setVisionOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState<"husqvarna" | "verksamhet" | null>(null);
   const { showroom, setShowroom } = useShowroom();
   const pathname = usePathname();
   const isHusqvarna = pathname.startsWith("/nav-v2/husqvarna") || pathname.startsWith("/nav-v2/kampanj");
@@ -271,47 +272,107 @@ export default function NavHeader() {
         <MobileSearchPanel key={String(mobileSearchOpen)} onClose={() => setMobileSearchOpen(false)} />
       ) : (
         /* ═══ Mobile Row 2: Triple navigation ═══ */
-        <div className="flex border-b border-[#e0e0e0] bg-white md:hidden">
-          <Link
-            href="/nav-v2"
-            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
-              pathname === "/nav-v2" ? "text-[#273A60]" : "text-[#999]"
+        <div className="md:hidden">
+          <div className="flex border-b border-[#e0e0e0] bg-white">
+            {/* Husqvarna — left */}
+            <button
+              onClick={() => setMobileMenu(mobileMenu === "husqvarna" ? null : "husqvarna")}
+              className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+                mobileMenu === "husqvarna" || (isHusqvarna && !mobileMenu) ? "text-[#273A60]" : "text-[#999]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <path d="M9 8h6M9 12h6M9 16h3" />
+              </svg>
+              Husqvarna
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`transition-transform ${mobileMenu === "husqvarna" ? "rotate-180" : ""}`}>
+                <path d="M3 4.5l3 3 3-3" />
+              </svg>
+              {(mobileMenu === "husqvarna" || (isHusqvarna && !mobileMenu)) && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+            </button>
+
+            {/* Hem — center */}
+            <Link
+              href="/nav-v2"
+              onClick={() => setMobileMenu(null)}
+              className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+                pathname === "/nav-v2" && !mobileMenu ? "text-[#273A60]" : "text-[#999]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 10.5L12 3l9 7.5" />
+                <path d="M5 9.5V19a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9.5" />
+              </svg>
+              Hem
+              {pathname === "/nav-v2" && !mobileMenu && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+            </Link>
+
+            {/* Min verksamhet — right */}
+            <button
+              onClick={() => setMobileMenu(mobileMenu === "verksamhet" ? null : "verksamhet")}
+              className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
+                mobileMenu === "verksamhet" || (isVerksamhet && !mobileMenu) ? "text-[#273A60]" : "text-[#999]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="M3 9h18" />
+                <path d="M9 9v11" />
+              </svg>
+              Min verksamhet
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`transition-transform ${mobileMenu === "verksamhet" ? "rotate-180" : ""}`}>
+                <path d="M3 4.5l3 3 3-3" />
+              </svg>
+              {(mobileMenu === "verksamhet" || (isVerksamhet && !mobileMenu)) && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
+            </button>
+          </div>
+
+          {/* ═══ Fullscreen mobile menu: Husqvarna ═══ */}
+          <div
+            className={`fixed inset-0 top-[104px] z-[9990] overflow-y-auto bg-white transition-transform duration-250 ease-out ${
+              mobileMenu === "husqvarna" ? "translate-x-0" : "-translate-x-full"
             }`}
+            aria-hidden={mobileMenu !== "husqvarna"}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 10.5L12 3l9 7.5" />
-              <path d="M5 9.5V19a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9.5" />
-            </svg>
-            Hem
-            {pathname === "/nav-v2" && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-          </Link>
-          <Link
-            href="/nav-v2/husqvarna"
-            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
-              isHusqvarna ? "text-[#273A60]" : "text-[#999]"
+            <nav className="divide-y divide-[#f0f0f0]">
+              <MobileMenuItem href="/nav-v2/husqvarna" label="Sök & Kategorier" desc="Hitta produkter och reservdelar" onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/husqvarna/kampanjer" label="Kampanjer" badge="2" onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/husqvarna/nyheter" label="Nyheter & Lanseringar" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="#" label="Manualer & Servicebulletiner" onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="#" label="Pris & Tillgänglighet" onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="#" label="Lagerstatus" onClick={() => setMobileMenu(null)} />
+            </nav>
+            <div className="absolute bottom-0 left-0 right-0 border-t border-[#f0f0f0] bg-[#fafafa] p-4">
+              <button onClick={() => setMobileMenu(null)} className="w-full rounded-lg border border-[#d0d0d0] py-2.5 text-[13px] font-semibold text-[#555]">
+                Stäng
+              </button>
+            </div>
+          </div>
+
+          {/* ═══ Fullscreen mobile menu: Min verksamhet ═══ */}
+          <div
+            className={`fixed inset-0 top-[104px] z-[9990] overflow-y-auto bg-white transition-transform duration-250 ease-out ${
+              mobileMenu === "verksamhet" ? "translate-x-0" : "translate-x-full"
             }`}
+            aria-hidden={mobileMenu !== "verksamhet"}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="3" />
-              <path d="M9 8h6M9 12h6M9 16h3" />
-            </svg>
-            Husqvarna
-            {isHusqvarna && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-          </Link>
-          <Link
-            href="/nav-v2/min-verksamhet"
-            className={`relative flex flex-1 items-center justify-center gap-1.5 py-3 text-[13px] font-bold transition-colors ${
-              isVerksamhet ? "text-[#273A60]" : "text-[#999]"
-            }`}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="16" rx="2" />
-              <path d="M3 9h18" />
-              <path d="M9 9v11" />
-            </svg>
-            Min verksamhet
-            {isVerksamhet && <span className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-[#273A60]" />}
-          </Link>
+            <nav className="divide-y divide-[#f0f0f0]">
+              <MobileMenuItem href="/nav-v2/min-verksamhet/workspace" label="Dealer Workspace" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/min-verksamhet/orders" label="Orderhantering" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/min-verksamhet/fakturor" label="Fakturor" badge="8" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/min-verksamhet/betalningar" label="Betalningar & Saldo" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/min-verksamhet/rapporter" label="Rapporter" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/offerter" label="Offerter" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/min-verksamhet/wishlist" label="Wishlist" badgeNew onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/husqvarna/kampanjer" label="Kampanjer" badge="2" onClick={() => setMobileMenu(null)} />
+            </nav>
+            <div className="absolute bottom-0 left-0 right-0 border-t border-[#f0f0f0] bg-[#fafafa] p-4">
+              <button onClick={() => setMobileMenu(null)} className="w-full rounded-lg border border-[#d0d0d0] py-2.5 text-[13px] font-semibold text-[#555]">
+                Stäng
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -499,6 +560,44 @@ function SearchDropdown() {
         </div>
       )}
     </div>
+  );
+}
+
+/* ═══ MOBILE MENU ITEM ═══ */
+
+function MobileMenuItem({ href, label, desc, badge, badgeNew, onClick }: {
+  href: string;
+  label: string;
+  desc?: string;
+  badge?: string;
+  badgeNew?: boolean;
+  onClick: () => void;
+}) {
+  const pathname = usePathname();
+  const isActive = href !== "#" && pathname === href;
+
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`flex items-center gap-3 px-5 py-3 active:bg-[#fafafa] ${isActive ? "bg-[#f0f3f8] border-l-[3px] border-l-[#273A60]" : ""}`}
+    >
+      <div className="min-w-0 flex-1">
+        <span className={`text-[13px] font-semibold ${isActive ? "text-[#273A60]" : "text-[#333]"}`}>{label}</span>
+        {desc && <span className="mt-0.5 block text-[11px] text-[#999]">{desc}</span>}
+      </div>
+      <div className="flex shrink-0 items-center gap-1.5">
+        {badgeNew && (
+          <span className="rounded-full bg-[#ff6b00] px-1.5 py-0.5 text-[9px] font-bold text-white">NY</span>
+        )}
+        {badge && (
+          <span className="rounded-full bg-[#273A60] px-1.5 py-0.5 text-[9px] font-bold text-white">{badge}</span>
+        )}
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ccc" strokeWidth="1.8" strokeLinecap="round">
+          <path d="M6 4l4 4-4 4" />
+        </svg>
+      </div>
+    </Link>
   );
 }
 

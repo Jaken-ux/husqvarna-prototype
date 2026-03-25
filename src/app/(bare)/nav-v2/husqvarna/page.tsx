@@ -16,21 +16,29 @@ export default function HusqvarnaPage() {
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[1280px] px-6 py-8">
-        {/* 1) Page identity */}
-        <HusqvarnaLandingIntro />
+      <main className="mx-auto max-w-[1280px] px-4 sm:px-6 py-6 sm:py-8">
+        {/* Desktop: full landing page */}
+        <div className="hidden sm:block">
+          <HusqvarnaLandingIntro />
+        </div>
 
-        {/* 2) Primary: Search / Identify */}
+        {/* Mobile: simple heading */}
+        <div className="sm:hidden mb-2">
+          <h1 className="text-[18px] font-bold text-[#111]">Sök & Kategorier</h1>
+          <p className="mt-0.5 text-[12px] text-[#888]">Hitta produkter och reservdelar</p>
+        </div>
+
+        {/* Search / Identify — both mobile and desktop */}
         <IdentificationHub onOpenAi={() => setAiModalOpen(true)} />
 
-        {/* 3) Primary: Browse by category */}
+        {/* Browse by category — both mobile and desktop */}
         <BrowseByCategorySection />
 
-        {/* 4) Secondary: Operational quick actions */}
-        <QuickAccessSection />
-
-        {/* 5) Tertiary: Info & resources */}
-        <InfoResourcesSection />
+        {/* Desktop only: quick access + info resources */}
+        <div className="hidden sm:block">
+          <QuickAccessSection />
+          <InfoResourcesSection />
+        </div>
       </main>
 
       {aiModalOpen && <AiPartsFinderModal onClose={() => setAiModalOpen(false)} />}

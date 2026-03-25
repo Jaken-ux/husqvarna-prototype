@@ -178,7 +178,27 @@ export default function MinVerksamhetPage() {
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[1320px] px-6 py-6">
+      <main className="mx-auto max-w-[1320px] px-4 sm:px-6 py-6">
+        {/* ── Mobile: simple heading + prompt to use menu ── */}
+        <div className="sm:hidden">
+          <h1 className="text-[18px] font-bold text-[#111]">Min verksamhet</h1>
+          <p className="mt-1 text-[12px] text-[#888]">Använd menyn ovan för att navigera till dina verktyg.</p>
+          <Link
+            href="/nav-v2/min-verksamhet/workspace"
+            className="mt-4 flex items-center justify-between rounded-xl border-2 border-[#273A60]/15 bg-gradient-to-r from-[#273A60] to-[#3a5280] px-5 py-4 text-white active:opacity-90"
+          >
+            <div>
+              <span className="text-[15px] font-bold">Dealer Workspace</span>
+              <span className="mt-0.5 block text-[12px] text-white/70">Öppna din arbetsyta</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M6 4l4 4-4 4" />
+            </svg>
+          </Link>
+        </div>
+
+        {/* ── Desktop: full landing page ── */}
+        <div className="hidden sm:block">
         {/* ── Breadcrumb ── */}
         <Breadcrumb items={[{ label: "Min verksamhet", href: "/nav-v2/min-verksamhet" }]} />
 
@@ -415,6 +435,7 @@ export default function MinVerksamhetPage() {
             ))}
           </div>
         </section>
+        </div>
       </main>
     </div>
   );

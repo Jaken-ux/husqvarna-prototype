@@ -9,7 +9,7 @@ type Crumb = {
 
 export default function Breadcrumb({ items }: { items: Crumb[] }) {
   return (
-    <nav aria-label="Länkstig" className="flex items-center gap-1.5 text-[13px]">
+    <nav aria-label="Länkstig" className="hidden sm:flex items-center gap-1.5 text-[13px]">
       <Link
         href="/nav-v2"
         className="text-[#888] transition-colors hover:text-[#273A60]"
