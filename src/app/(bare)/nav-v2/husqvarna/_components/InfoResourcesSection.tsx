@@ -17,6 +17,13 @@ const items = [
     badge: "NY",
     badgeColor: "orange",
   },
+  {
+    label: "Försäljning & Resurser",
+    desc: "Prislistor, material, utbildning & säljverktyg",
+    href: "/nav-v2/husqvarna/forsaljning",
+    badge: "NY",
+    badgeColor: "orange",
+  },
 ];
 
 export default function InfoResourcesSection() {
