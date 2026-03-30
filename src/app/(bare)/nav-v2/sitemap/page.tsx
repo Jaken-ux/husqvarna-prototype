@@ -150,35 +150,75 @@ function SitemapBranch({ node, depth = 0, domain }: { node: SitemapNode; depth?:
    ═══════════════════════════════════════════════════════ */
 
 export default function SitemapPage() {
+  const husqvarnaTree = sitemap[0].children![0]; // Husqvarna
+  const verksamhetTree = sitemap[0].children![1]; // Min verksamhet
+
   return (
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[960px] px-4 sm:px-6 py-8 sm:py-12">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 py-8 sm:py-12">
         <h1 className="text-[22px] sm:text-[28px] font-bold text-[#111]">Sitemap</h1>
         <p className="mt-1 text-[13px] text-[#888]">
           Visuell översikt av portalens navigationsstruktur
         </p>
 
-        {/* Two-column layout on desktop */}
-        <div className="mt-8">
-          {/* Root node */}
-          <SitemapBranch node={sitemap[0]} />
+        {/* Root node — centered */}
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/nav-v2"
+            className="group flex items-center gap-3 rounded-xl bg-[#273A60] px-6 py-3.5 text-white transition-all hover:shadow-lg"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 10.5L12 3l9 7.5" />
+              <path d="M5 9.5V19a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9.5" />
+            </svg>
+            <span className="text-[16px] font-bold">Startsidan</span>
+          </Link>
+        </div>
 
-          {/* Legend */}
-          <div className="mt-10 flex flex-wrap gap-4 rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-5 py-4">
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-[#ff6b00]" />
-              <span className="text-[12px] font-medium text-[#666]">Husqvarna (OEM-innehåll)</span>
+        {/* Connector lines from root */}
+        <div className="flex justify-center">
+          <div className="h-8 w-px bg-[#d0d0d0]" />
+        </div>
+        <div className="hidden sm:flex justify-center">
+          <div className="h-px w-[50%] bg-[#d0d0d0]" />
+        </div>
+
+        {/* Two-column layout */}
+        <div className="mt-0 grid gap-8 sm:grid-cols-2">
+          {/* Left: Husqvarna */}
+          <div>
+            {/* Connector */}
+            <div className="hidden sm:flex justify-center mb-4">
+              <div className="h-6 w-px bg-[#ff6b00]/40" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-[#2a9d5c]" />
-              <span className="text-[12px] font-medium text-[#666]">Min verksamhet (Dealer workspace)</span>
+            <SitemapBranch node={husqvarnaTree} depth={1} domain="OEM" />
+          </div>
+
+          {/* Right: Min verksamhet */}
+          <div>
+            {/* Connector */}
+            <div className="hidden sm:flex justify-center mb-4">
+              <div className="h-6 w-px bg-[#2a9d5c]/40" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-[#273A60]" />
-              <span className="text-[12px] font-medium text-[#666]">Startpunkt</span>
-            </div>
+            <SitemapBranch node={verksamhetTree} depth={1} domain="Dealer" />
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="mt-10 flex flex-wrap gap-4 rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-5 py-4">
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#ff6b00]" />
+            <span className="text-[12px] font-medium text-[#666]">Husqvarna (OEM-innehåll)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#2a9d5c]" />
+            <span className="text-[12px] font-medium text-[#666]">Min verksamhet (Dealer workspace)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#273A60]" />
+            <span className="text-[12px] font-medium text-[#666]">Startpunkt</span>
           </div>
         </div>
       </main>
