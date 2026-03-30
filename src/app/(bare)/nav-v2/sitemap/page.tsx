@@ -53,7 +53,22 @@ const sitemap: SitemapNode[] = [
           { label: "Rapporter", href: "/nav-v2/min-verksamhet/rapporter" },
           { label: "Offerter", href: "/nav-v2/offerter" },
           { label: "Wishlist", href: "/nav-v2/min-verksamhet/wishlist" },
-          { label: "Varukorg", href: "/nav-v2/varukorg" },
+        ],
+      },
+      {
+        label: "Varukorg",
+        href: "/nav-v2/varukorg",
+      },
+      {
+        label: "Mitt konto",
+        href: "#profile",
+        badge: "Konto",
+        children: [
+          { label: "Min profil", href: "#profile" },
+          { label: "Notifikationsinställningar", href: "#notification-settings" },
+          { label: "Språk", href: "#language" },
+          { label: "Lösenord", href: "#password" },
+          { label: "Användarpreferenser", href: "#preferences" },
         ],
       },
     ],
@@ -67,6 +82,7 @@ const sitemap: SitemapNode[] = [
 const domainColors: Record<string, { line: string; dot: string; bg: string; text: string }> = {
   OEM: { line: "bg-[#ff6b00]", dot: "bg-[#ff6b00]", bg: "bg-[#fff8f2]", text: "text-[#e65100]" },
   Dealer: { line: "bg-[#2a9d5c]", dot: "bg-[#2a9d5c]", bg: "bg-[#f0faf4]", text: "text-[#2e7d32]" },
+  Konto: { line: "bg-[#7b61ff]", dot: "bg-[#7b61ff]", bg: "bg-[#f5f0ff]", text: "text-[#6a1b9a]" },
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -119,7 +135,9 @@ function SitemapBranch({ node, depth = 0, domain }: { node: SitemapNode; depth?:
         {/* Badge */}
         {node.badge && (
           <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-            node.badge === "OEM" ? "bg-[#ff6b00]/10 text-[#e65100]" : "bg-[#2a9d5c]/10 text-[#2e7d32]"
+            node.badge === "OEM" ? "bg-[#ff6b00]/10 text-[#e65100]"
+            : node.badge === "Konto" ? "bg-[#7b61ff]/10 text-[#6a1b9a]"
+            : "bg-[#2a9d5c]/10 text-[#2e7d32]"
           }`}>
             {node.badge}
           </span>
@@ -150,6 +168,8 @@ function SitemapBranch({ node, depth = 0, domain }: { node: SitemapNode; depth?:
 export default function SitemapPage() {
   const husqvarnaTree = sitemap[0].children![0]; // Husqvarna
   const verksamhetTree = sitemap[0].children![1]; // Min verksamhet
+  const varukorgNode = sitemap[0].children![2]; // Varukorg
+  const kontoTree = sitemap[0].children![3]; // Mitt konto
 
   return (
     <div className="min-h-screen bg-white">
@@ -204,6 +224,16 @@ export default function SitemapPage() {
           </div>
         </div>
 
+        {/* Bottom row: Varukorg + Mitt konto */}
+        <div className="mt-8 grid gap-8 sm:grid-cols-2">
+          <div>
+            <SitemapBranch node={varukorgNode} depth={1} />
+          </div>
+          <div>
+            <SitemapBranch node={kontoTree} depth={1} domain="Konto" />
+          </div>
+        </div>
+
         {/* Legend */}
         <div className="mt-10 flex flex-wrap gap-4 rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-5 py-4">
           <div className="flex items-center gap-2">
@@ -213,6 +243,10 @@ export default function SitemapPage() {
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full bg-[#2a9d5c]" />
             <span className="text-[12px] font-medium text-[#666]">Min verksamhet (Dealer workspace)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#7b61ff]" />
+            <span className="text-[12px] font-medium text-[#666]">Mitt konto</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full bg-[#273A60]" />
