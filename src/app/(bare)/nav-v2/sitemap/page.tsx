@@ -175,7 +175,7 @@ export default function SitemapPage() {
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 py-8 sm:py-12">
+      <main className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-12">
         <h1 className="text-[22px] sm:text-[28px] font-bold text-[#111]">Sitemap</h1>
         <p className="mt-1 text-[13px] text-[#888]">
           Visuell översikt av portalens navigationsstruktur
@@ -199,38 +199,45 @@ export default function SitemapPage() {
         <div className="flex justify-center">
           <div className="h-8 w-px bg-[#d0d0d0]" />
         </div>
-        <div className="hidden sm:flex justify-center">
+        <div className="hidden lg:flex justify-center">
+          <div className="h-px w-[75%] bg-[#d0d0d0]" />
+        </div>
+        <div className="hidden sm:flex lg:hidden justify-center">
           <div className="h-px w-[50%] bg-[#d0d0d0]" />
         </div>
 
-        {/* Two-column layout */}
-        <div className="mt-0 grid gap-8 sm:grid-cols-2">
-          {/* Left: Husqvarna */}
+        {/* Four-column layout */}
+        <div className="mt-0 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Husqvarna */}
           <div>
-            {/* Connector */}
             <div className="hidden sm:flex justify-center mb-4">
               <div className="h-6 w-px bg-[#ff6b00]/40" />
             </div>
             <SitemapBranch node={husqvarnaTree} depth={1} domain="OEM" />
           </div>
 
-          {/* Right: Min verksamhet */}
+          {/* Varukorg */}
           <div>
-            {/* Connector */}
+            <div className="hidden sm:flex justify-center mb-4">
+              <div className="h-6 w-px bg-[#d0d0d0]" />
+            </div>
+            <SitemapBranch node={varukorgNode} depth={1} />
+          </div>
+
+          {/* Mitt konto */}
+          <div>
+            <div className="hidden sm:flex justify-center mb-4">
+              <div className="h-6 w-px bg-[#7b61ff]/40" />
+            </div>
+            <SitemapBranch node={kontoTree} depth={1} domain="Konto" />
+          </div>
+
+          {/* Min verksamhet */}
+          <div>
             <div className="hidden sm:flex justify-center mb-4">
               <div className="h-6 w-px bg-[#2a9d5c]/40" />
             </div>
             <SitemapBranch node={verksamhetTree} depth={1} domain="Dealer" />
-          </div>
-        </div>
-
-        {/* Bottom row: Varukorg + Mitt konto */}
-        <div className="mt-8 grid gap-8 sm:grid-cols-2">
-          <div>
-            <SitemapBranch node={varukorgNode} depth={1} />
-          </div>
-          <div>
-            <SitemapBranch node={kontoTree} depth={1} domain="Konto" />
           </div>
         </div>
 
