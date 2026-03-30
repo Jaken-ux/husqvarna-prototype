@@ -217,12 +217,12 @@ export default function SitemapPage() {
             <SitemapBranch node={husqvarnaTree} depth={1} domain="OEM" />
           </div>
 
-          {/* Varukorg */}
+          {/* Min verksamhet */}
           <div>
             <div className="hidden sm:flex justify-center mb-4">
-              <div className="h-6 w-px bg-[#d0d0d0]" />
+              <div className="h-6 w-px bg-[#2a9d5c]/40" />
             </div>
-            <SitemapBranch node={varukorgNode} depth={1} />
+            <SitemapBranch node={verksamhetTree} depth={1} domain="Dealer" />
           </div>
 
           {/* Mitt konto */}
@@ -233,12 +233,12 @@ export default function SitemapPage() {
             <SitemapBranch node={kontoTree} depth={1} domain="Konto" />
           </div>
 
-          {/* Min verksamhet */}
+          {/* Varukorg */}
           <div>
             <div className="hidden sm:flex justify-center mb-4">
-              <div className="h-6 w-px bg-[#2a9d5c]/40" />
+              <div className="h-6 w-px bg-[#d0d0d0]" />
             </div>
-            <SitemapBranch node={verksamhetTree} depth={1} domain="Dealer" />
+            <SitemapBranch node={varukorgNode} depth={1} />
           </div>
         </div>
 
