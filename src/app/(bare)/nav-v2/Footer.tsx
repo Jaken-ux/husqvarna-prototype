@@ -31,6 +31,7 @@ export default function Footer() {
               <Link href="/nav-v2/husqvarna" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Sök & Kategorier</Link>
               <Link href="/nav-v2/husqvarna/kampanjer" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Kampanjer</Link>
               <Link href="/nav-v2/husqvarna/nyheter" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Nyheter & Lanseringar</Link>
+              <Link href="/nav-v2/husqvarna/forsaljning" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Försäljning & Resurser</Link>
             </nav>
           </div>
 

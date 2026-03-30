@@ -339,9 +339,7 @@ export default function NavHeader() {
               <MobileMenuItem href="/nav-v2/husqvarna" label="Sök & Kategorier" desc="Hitta produkter och reservdelar" onClick={() => setMobileMenu(null)} />
               <MobileMenuItem href="/nav-v2/husqvarna/kampanjer" label="Kampanjer" badge="2" onClick={() => setMobileMenu(null)} />
               <MobileMenuItem href="/nav-v2/husqvarna/nyheter" label="Nyheter & Lanseringar" badgeNew onClick={() => setMobileMenu(null)} />
-              <MobileMenuItem href="#" label="Manualer & Servicebulletiner" onClick={() => setMobileMenu(null)} />
-              <MobileMenuItem href="#" label="Pris & Tillgänglighet" onClick={() => setMobileMenu(null)} />
-              <MobileMenuItem href="#" label="Lagerstatus" onClick={() => setMobileMenu(null)} />
+              <MobileMenuItem href="/nav-v2/husqvarna/forsaljning" label="Försäljning & Resurser" badgeNew onClick={() => setMobileMenu(null)} />
             </nav>
             <div className="absolute bottom-0 left-0 right-0 border-t border-[#f0f0f0] bg-[#fafafa] p-4">
               <button onClick={() => setMobileMenu(null)} className="w-full rounded-lg border border-[#d0d0d0] py-2.5 text-[13px] font-semibold text-[#555]">

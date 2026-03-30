@@ -29,6 +29,7 @@ const sitemap: SitemapNode[] = [
             { label: "Kampanjdetalj", href: "/nav-v2/kampanj" },
           ] },
           { label: "Nyheter & Lanseringar", href: "/nav-v2/husqvarna/nyheter" },
+          { label: "Försäljning & Resurser", href: "/nav-v2/husqvarna/forsaljning" },
         ],
       },
       {
