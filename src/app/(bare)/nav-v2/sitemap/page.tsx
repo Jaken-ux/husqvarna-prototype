@@ -25,11 +25,9 @@ const sitemap: SitemapNode[] = [
         badge: "OEM",
         children: [
           { label: "Sök & Kategorier", href: "/nav-v2/husqvarna" },
-          { label: "Kampanjer", href: "/nav-v2/husqvarna/kampanjer" },
-          {
-            label: "Kampanjdetalj",
-            href: "/nav-v2/kampanj",
-          },
+          { label: "Kampanjer", href: "/nav-v2/husqvarna/kampanjer", children: [
+            { label: "Kampanjdetalj", href: "/nav-v2/kampanj" },
+          ] },
           { label: "Nyheter & Lanseringar", href: "/nav-v2/husqvarna/nyheter" },
         ],
       },
