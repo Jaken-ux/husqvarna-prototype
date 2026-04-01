@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { accountNav } from "./navData";
 import ProfileSwitcher from "./ProfileSwitcher";
 import { useShowroom } from "./ShowroomContext";
+import { useCart } from "./CartContext";
 
 export default function NavHeader() {
   const [accountOpen, setAccountOpen] = useState(false);
@@ -14,6 +15,8 @@ export default function NavHeader() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileMenu, setMobileMenu] = useState<"husqvarna" | "verksamhet" | null>(null);
   const { showroom, setShowroom } = useShowroom();
+  const { getTotalItemCount } = useCart();
+  const cartCount = getTotalItemCount();
   const pathname = usePathname();
   const isHusqvarna = pathname.startsWith("/nav-v2/husqvarna") || pathname.startsWith("/nav-v2/kampanj");
   const isVerksamhet = pathname.startsWith("/nav-v2/min-verksamhet") || pathname.startsWith("/nav-v2/offerter") || pathname.startsWith("/nav-v2/varukorg") || pathname.startsWith("/nav-v2/task-flows");
@@ -183,7 +186,7 @@ export default function NavHeader() {
               <Link
                 href="/nav-v2/varukorg"
                 aria-label="Varukorg"
-                title="Varukorg (3)"
+                title={`Varukorg (${cartCount})`}
                 className="relative flex h-8 w-8 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10"
               >
                 <svg
@@ -200,9 +203,11 @@ export default function NavHeader() {
                   <circle cx="7" cy="15.5" r="1" />
                   <circle cx="13.5" cy="15.5" r="1" />
                 </svg>
-                <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#ff6b00] text-[8px] font-bold text-white">
-                  3
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#ff6b00] text-[8px] font-bold text-white">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -374,20 +379,39 @@ export default function NavHeader() {
         </div>
       )}
 
-      {/* Floating vision scope button */}
-      <button
-        onClick={() => setVisionOpen(true)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex items-center gap-2 sm:gap-2.5 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#e55a00] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98]"
-      >
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="10" cy="10" r="8" />
-          <path d="M10 6v4l2.5 2.5" />
-        </svg>
-        Utforska prototypen
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold">
-          12
-        </span>
-      </button>
+      {/* Floating buttons */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex flex-col items-end gap-2.5">
+        {/* Task Flows Spec */}
+        <Link
+          href="/nav-v2/task-flows"
+          className="flex items-center gap-2 sm:gap-2.5 rounded-full bg-[#273A60] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-[#273A60]/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#273A60]/30 active:scale-[0.98]"
+        >
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M13 2H5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6l-4-4z" />
+            <path d="M13 2v4h4" />
+            <path d="M7 10h6M7 13h4" />
+          </svg>
+          Task Flows Spec
+          <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold">
+            7
+          </span>
+        </Link>
+
+        {/* Vision Scope */}
+        <button
+          onClick={() => setVisionOpen(true)}
+          className="flex items-center gap-2 sm:gap-2.5 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#e55a00] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98]"
+        >
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="10" cy="10" r="8" />
+            <path d="M10 6v4l2.5 2.5" />
+          </svg>
+          Utforska prototypen
+          <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold">
+            {visionAreas.reduce((s, a) => s + a.items.length, 0)}
+          </span>
+        </button>
+      </div>
 
       {/* Vision Scope overlay */}
       {visionOpen && <VisionScopeOverlay onClose={() => setVisionOpen(false)} />}

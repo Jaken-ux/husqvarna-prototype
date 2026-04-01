@@ -269,6 +269,30 @@ const products = [
     leasing: "—",
     hypercare: "—",
   },
+  {
+    model: "Automower 310 Mark II",
+    serial: "2025-310M-03401",
+    pnc: "967 85 21-03",
+    customer: "Villa Ekbacken",
+    soldDate: "missing",
+    installed: "missing",
+    warranty: "missing",
+    serviceContract: "missing",
+    leasing: "—",
+    hypercare: "—",
+  },
+  {
+    model: "Husqvarna 562XP",
+    serial: "2025-562X-02100",
+    pnc: "966 57 03-18",
+    customer: "Skog & Mark HB",
+    soldDate: "missing",
+    installed: "missing",
+    warranty: "missing",
+    serviceContract: "missing",
+    leasing: "—",
+    hypercare: "—",
+  },
 ];
 
 const productFilters = [
@@ -701,6 +725,191 @@ function DashboardView() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   SELLOUT REGISTRATION PANEL
+   ═══════════════════════════════════════════════════════ */
+
+const existingCustomers = [
+  "Lindström Fastigheter",
+  "Eriksson Trädgård AB",
+  "AB Grönytor",
+  "Skogsservice Norr AB",
+  "Nilsson Villaservice",
+  "Karlsson Park & Trädgård",
+  "BRF Solsidan",
+  "Fastighets AB Solbacken",
+  "Lundgren Maskin AB",
+  "Malmö Grönska HB",
+  "Villa Ekbacken",
+  "Skog & Mark HB",
+];
+
+function SelloutPanel({
+  product,
+  onClose,
+  onRegister,
+}: {
+  product: typeof products[0];
+  onClose: () => void;
+  onRegister: (serial: string, date: string, customer: string) => void;
+}) {
+  const [date, setDate] = useState("");
+  const [customer, setCustomer] = useState(product.customer);
+  const [customerSearch, setCustomerSearch] = useState(product.customer);
+  const [showCustomerList, setShowCustomerList] = useState(false);
+  const [comment, setComment] = useState("");
+  const [registered, setRegistered] = useState(false);
+
+  const filteredCustomers = existingCustomers.filter((c) =>
+    c.toLowerCase().includes(customerSearch.toLowerCase())
+  );
+
+  function handleRegister() {
+    if (!date) return;
+    setRegistered(true);
+    setTimeout(() => onRegister(product.serial, date, customer), 1000);
+  }
+
+  return (
+    <>
+      <div className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed right-0 top-0 z-[9999] flex h-full w-full max-w-md flex-col bg-white shadow-2xl sm:w-[440px]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+          <h2 className="text-[16px] font-bold text-[#111]">Registrera säljdatum</h2>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] hover:bg-[#f5f5f5]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M4 4l8 8M12 4l-8 8" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Product info */}
+          <div className="mx-6 mt-5 rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-[14px] font-semibold text-[#111]">{product.model}</h3>
+                <p className="mt-0.5 text-[12px] text-[#888]">Serienr: {product.serial}</p>
+                <p className="text-[12px] text-[#888]">Art.nr: {product.pnc}</p>
+              </div>
+              <span className="rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-bold text-[#c44]">Saknar säljdatum</span>
+            </div>
+          </div>
+
+          {/* Sold date */}
+          <div className="px-6 pt-5">
+            <label className="text-[13px] font-bold text-[#111]">
+              Säljdatum *
+            </label>
+            <p className="mt-0.5 text-[11px] text-[#888]">Datum då produkten såldes till slutkund</p>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="mt-2 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] focus:border-[#273A60] focus:outline-none"
+            />
+          </div>
+
+          {/* Customer */}
+          <div className="px-6 pt-5">
+            <label className="text-[13px] font-bold text-[#111]">
+              Kund
+            </label>
+            <p className="mt-0.5 text-[11px] text-[#888]">Slutkund som köpt produkten</p>
+            <div className="relative mt-2">
+              <input
+                type="text"
+                value={customerSearch}
+                onChange={(e) => {
+                  setCustomerSearch(e.target.value);
+                  setCustomer(e.target.value);
+                  setShowCustomerList(true);
+                }}
+                onFocus={() => setShowCustomerList(true)}
+                onBlur={() => setTimeout(() => setShowCustomerList(false), 200)}
+                placeholder="Sök eller skriv kundnamn..."
+                className="h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+              />
+              {showCustomerList && filteredCustomers.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border border-[#d0d0d0] bg-white shadow-lg">
+                  {filteredCustomers.map((c) => (
+                    <button
+                      key={c}
+                      onMouseDown={() => {
+                        setCustomer(c);
+                        setCustomerSearch(c);
+                        setShowCustomerList(false);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[#333] hover:bg-[#f5f5f5]"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#bbb" strokeWidth="1.6" strokeLinecap="round">
+                        <circle cx="8" cy="5" r="3" />
+                        <path d="M2 14c0-3 2.7-5 6-5s6 2 6 5" />
+                      </svg>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Comment */}
+          <div className="px-6 pt-5 pb-6">
+            <label className="text-[13px] font-bold text-[#111]">
+              Kommentar
+            </label>
+            <p className="mt-0.5 text-[11px] text-[#888]">Valfri anteckning om försäljningen</p>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="T.ex. installationsdatum, kontaktperson..."
+              rows={3}
+              className="mt-2 w-full resize-none rounded-lg border border-[#d0d0d0] px-3 py-2.5 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+            />
+          </div>
+
+          {/* Info box */}
+          <div className="mx-6 mb-6 rounded-lg bg-[#f0f3f8] px-4 py-3">
+            <p className="text-[11px] font-semibold text-[#273A60]">Vad händer efter registrering?</p>
+            <ul className="mt-1 space-y-0.5 text-[11px] text-[#888]">
+              <li>• Garantiperioden kan aktiveras baserat på säljdatum</li>
+              <li>• Produkten kopplas till kunden i systemet</li>
+              <li>• Sell-out rapporteras till Husqvarna</li>
+              <li>• Kampanjbonusar beräknas baserat på registreringen</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex gap-3 border-t border-[#e5e5e5] px-6 py-4">
+          <button
+            onClick={onClose}
+            className="flex-1 rounded-lg border border-[#d0d0d0] py-3 text-[13px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+          >
+            Avbryt
+          </button>
+          <button
+            onClick={handleRegister}
+            disabled={!date || registered}
+            className={`flex-1 rounded-lg py-3 text-[13px] font-bold text-white transition-all ${
+              registered
+                ? "bg-[#2e7d32]"
+                : date
+                ? "bg-[#273A60] hover:bg-[#1a2d4d]"
+                : "bg-[#273A60]/50 cursor-not-allowed"
+            }`}
+          >
+            {registered ? "✓ Registrerat!" : "Registrera säljdatum"}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
    B) PRODUCTS VIEW
    ═══════════════════════════════════════════════════════ */
 
@@ -711,6 +920,18 @@ function ProductsView({
   filter: string;
   onFilterChange: (f: string) => void;
 }) {
+  const [selloutProduct, setSelloutProduct] = useState<typeof products[0] | null>(null);
+  const [productData, setProductData] = useState(products);
+
+  function handleSelloutRegistered(serial: string, date: string, customer: string) {
+    setProductData((prev) =>
+      prev.map((p) => p.serial === serial ? { ...p, soldDate: date, customer: customer || p.customer } : p)
+    );
+    setSelloutProduct(null);
+  }
+
+  const missingCount = productData.filter((p) => p.soldDate === "missing").length;
+
   return (
     <div className="space-y-5">
       {/* Header + bulk actions */}
@@ -720,9 +941,6 @@ function ProductsView({
           <p className="text-[12px] text-[#888]">Produkter under din hantering — filtrera efter program och status</p>
         </div>
         <div className="flex gap-2">
-          <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">
-            Registrera säljdatum
-          </button>
           <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">
             Starta installation
           </button>
@@ -734,6 +952,17 @@ function ProductsView({
           </button>
         </div>
       </div>
+
+      {/* Missing sellout alert */}
+      {missingCount > 0 && (
+        <div className="flex items-center gap-3 rounded-xl border-l-4 border-l-[#e65100] bg-[#fff8f0] px-5 py-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e65100] text-[12px] font-bold text-white">{missingCount}</span>
+          <div className="flex-1">
+            <p className="text-[13px] font-semibold text-[#111]">Produkter saknar säljdatum</p>
+            <p className="text-[12px] text-[#888]">Klicka på &quot;Saknas&quot; i tabellen för att registrera</p>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
@@ -771,7 +1000,7 @@ function ProductsView({
             </tr>
           </thead>
           <tbody className="divide-y divide-[#f0f0f0]">
-            {products.map((p) => (
+            {productData.map((p) => (
               <tr key={p.serial} className="transition-colors hover:bg-[#fafafa]">
                 <td className="px-4 py-3">
                   <input type="checkbox" className="rounded border-[#ccc]" aria-label={`Välj ${p.model}`} />
@@ -786,7 +1015,15 @@ function ProductsView({
                 <td className="px-3 py-3 text-[12px] text-[#555]">{p.customer}</td>
                 <td className="px-3 py-3">
                   {p.soldDate === "missing" ? (
-                    <StatusBadge status="missing" />
+                    <button
+                      onClick={() => setSelloutProduct(p)}
+                      className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44] transition-colors hover:bg-[#c44] hover:text-white"
+                    >
+                      Saknas
+                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <path d="M6 3v6M3 6h6" />
+                      </svg>
+                    </button>
                   ) : (
                     <span className="text-[12px] text-[#555]">{p.soldDate}</span>
                   )}
@@ -801,6 +1038,15 @@ function ProductsView({
           </tbody>
         </table>
       </div>
+
+      {/* Sellout registration panel */}
+      {selloutProduct && (
+        <SelloutPanel
+          product={selloutProduct}
+          onClose={() => setSelloutProduct(null)}
+          onRegister={handleSelloutRegistered}
+        />
+      )}
 
       {/* Table footer */}
       <div className="flex items-center justify-between">

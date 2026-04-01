@@ -475,8 +475,8 @@ function JourneyView() {
                       <div className="mt-3 border-t border-[#e5e5e5] pt-2">
                         <p className="text-[9px] font-semibold uppercase tracking-widest text-[#bbb]">Leads to</p>
                         <div className="mt-1 flex flex-wrap gap-1">
-                          {flow.transitions.map((t) => (
-                            <span key={t.to} className="rounded bg-[#f0f0f0] px-1.5 py-0.5 text-[9px] font-medium text-[#888]">{t.to}</span>
+                          {flow.transitions.map((t, ti) => (
+                            <span key={`${t.from}-${t.to}-${ti}`} className="rounded bg-[#f0f0f0] px-1.5 py-0.5 text-[9px] font-medium text-[#888]">{t.to}</span>
                           ))}
                         </div>
                       </div>

@@ -54,6 +54,7 @@ export default function Footer() {
             <nav className="mt-3 flex flex-col gap-2">
               <Link href="/nav-v2" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Startsidan</Link>
               <Link href="/nav-v2/sitemap" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Sitemap</Link>
+              <Link href="/nav-v2/task-flows" className="text-[13px] text-[#666] transition-colors hover:text-[#273A60]">Task Flows Spec</Link>
             </nav>
           </div>
         </div>

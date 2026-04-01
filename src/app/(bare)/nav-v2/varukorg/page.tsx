@@ -2,116 +2,68 @@
 
 import { useState } from "react";
 import NavHeader from "../NavHeader";
-
-/* ═══ CART DATA ═══ */
-const carts = [
-  {
-    id: "cart-1",
-    name: "Vårorder 2026",
-    items: [
-      {
-        id: "967 86 19-03",
-        name: "Husqvarna 120 Mark II",
-        variant: '120 Mark II (14" - 3/8" mini - S93G)',
-        line: "Golden",
-        netPrice: 164938,
-        rrp: 199200,
-        discount: 17.2,
-        qty: 1,
-        availability: { date: "26-06-02", status: "info" as const },
-        comment: "Test QA 1 line",
-      },
-      {
-        id: "967 29 61-01",
-        name: "Automower 430X NERA",
-        variant: "430X NERA",
-        line: "Platinum",
-        netPrice: 2199900,
-        rrp: 2999000,
-        discount: 26.7,
-        qty: 2,
-        availability: { date: "I lager", status: "ok" as const },
-        comment: "",
-      },
-      {
-        id: "970 51 68-01",
-        name: "Husqvarna 535i XP",
-        variant: "535i XP (utan batteri/laddare)",
-        line: "Professional",
-        netPrice: 549900,
-        rrp: 699000,
-        discount: 21.3,
-        qty: 1,
-        availability: { date: "26-04-15", status: "warning" as const },
-        comment: "",
-      },
-    ],
-  },
-];
+import { useCart } from "../CartContext";
 
 function formatPrice(cents: number) {
   return (cents / 100).toLocaleString("sv-SE", { minimumFractionDigits: 2 }) + " kr";
 }
 
 export default function VarukorgPage() {
+  const { carts, createCart, removeFromCart, updateQuantity } = useCart();
+  const [activeCartId, setActiveCartId] = useState(carts[0]?.id ?? "");
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [quantities, setQuantities] = useState<Record<string, number>>(
-    Object.fromEntries(carts[0].items.map((item) => [item.id, item.qty]))
-  );
   const [showTip, setShowTip] = useState(true);
+  const [newCartName, setNewCartName] = useState("");
+  const [showNewCart, setShowNewCart] = useState(false);
 
-  const cart = carts[0];
+  const cart = carts.find((c) => c.id === activeCartId) ?? carts[0];
+  const items = cart?.items ?? [];
 
-  const toggleSelect = (id: string) => {
+  const toggleSelect = (articleNr: string) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(articleNr)) next.delete(articleNr);
+      else next.add(articleNr);
       return next;
     });
   };
 
   const toggleAll = () => {
-    if (selected.size === cart.items.length) {
+    if (selected.size === items.length) {
       setSelected(new Set());
     } else {
-      setSelected(new Set(cart.items.map((i) => i.id)));
+      setSelected(new Set(items.map((i) => i.articleNr)));
     }
   };
 
-  const updateQty = (id: string, delta: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: Math.max(1, (prev[id] || 1) + delta),
-    }));
-  };
+  const totalNet = items.reduce((sum, item) => sum + (item.netPrice ?? 0) * item.qty, 0);
 
-  const totalNet = cart.items.reduce(
-    (sum, item) => sum + item.netPrice * (quantities[item.id] || item.qty),
-    0
-  );
-
-  const totalRows = cart.items.length;
+  function handleCreateCart() {
+    if (newCartName.trim()) {
+      const id = createCart(newCartName.trim());
+      setActiveCartId(id);
+      setNewCartName("");
+      setShowNewCart(false);
+      setSelected(new Set());
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
       <NavHeader />
 
-      <main className="mx-auto max-w-[1280px] px-6 py-10">
+      <main className="mx-auto max-w-[1280px] px-4 sm:px-6 py-6 sm:py-10">
         {/* ═══ HEADER ═══ */}
         <div className="flex flex-wrap items-start gap-3">
-          <h1 className="text-[26px] font-bold text-[#111]">Din varukorg</h1>
-          <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full bg-[#e3f2fd] px-3 py-1 text-[12px] font-medium text-[#1565c0]">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
-            Flera varukorgar
+          <h1 className="text-[22px] sm:text-[26px] font-bold text-[#111]">Din varukorg</h1>
+          <span className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#e3f2fd] px-3 py-1 text-[12px] font-medium text-[#1565c0]">
+            {carts.length} varukorgar
           </span>
         </div>
 
-        <p className="mt-3 max-w-3xl text-[14px] leading-relaxed text-[#555]">
-          Här hittar du alla dina varor som du har lagt till i olika varukorgar. Du kan lägga till kommentarer,
-          ändra kvantitet, välja rader och ta dem till kassan. Eller ta bort enskilda rader från varukorgen.
+        <p className="mt-3 max-w-3xl text-[13px] sm:text-[14px] leading-relaxed text-[#555]">
+          Här hittar du alla dina varor som du har lagt till i olika varukorgar. Du kan ändra kvantitet,
+          välja rader och ta dem till kassan.
         </p>
 
         {/* ═══ TIP BOX ═══ */}
@@ -120,240 +72,200 @@ export default function VarukorgPage() {
             <button
               onClick={() => setShowTip(false)}
               className="absolute right-4 top-4 text-[#999] transition-colors hover:text-[#555]"
-              aria-label="Stäng tips"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
-            <p className="text-[13px] font-bold uppercase tracking-wide text-[#333]">Visste du?</p>
+            <p className="text-[13px] font-bold uppercase tracking-wide text-[#333]">Tips</p>
             <p className="mt-1 text-[13px] leading-relaxed text-[#555]">
-              När du markerar en eller flera artiklar i din varukorg aktiveras sidfoten och låter dig:
-            </p>
-            <ul className="mt-1 list-inside text-[13px] leading-relaxed text-[#555]">
-              <li>• Flytta utvalda artiklar till en annan varukorg;</li>
-              <li>• Ta bort flera artiklar på en gång;</li>
-              <li>• Gå direkt till kassan med endast utvalda artiklar.</li>
-            </ul>
-            <p className="mt-1 text-[13px] leading-relaxed text-[#555]">
-              Markera helt enkelt rutorna bredvid produkterna du vill hantera och använd sedan alternativen
-              i sidfoten för att spara tid och organisera din varukorg mer effektivt.
+              Markera artiklar för att flytta, ta bort eller gå till kassan med utvalda rader.
             </p>
           </div>
         )}
 
-        {/* ═══ ACTION BUTTONS ═══ */}
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button className="inline-flex items-center gap-2 rounded-md border border-[#d0d0d0] bg-white px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wide text-[#333] transition-colors hover:bg-[#f5f5f5]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+        {/* ═══ CART TABS ═══ */}
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          {carts.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => { setActiveCartId(c.id); setSelected(new Set()); }}
+              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition-all ${
+                activeCartId === c.id
+                  ? "bg-[#273A60] text-white"
+                  : "bg-white text-[#555] border border-[#d0d0d0] hover:bg-[#f5f5f5]"
+              }`}
+            >
+              {c.name}
+              {c.items.length > 0 && (
+                <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                  activeCartId === c.id ? "bg-white/20 text-white" : "bg-[#e5e5e5] text-[#888]"
+                }`}>
+                  {c.items.length}
+                </span>
+              )}
+            </button>
+          ))}
+          <button
+            onClick={() => setShowNewCart(true)}
+            className="flex items-center gap-1.5 rounded-full border border-dashed border-[#d0d0d0] px-4 py-2 text-[13px] font-semibold text-[#888] transition-colors hover:border-[#273A60] hover:text-[#273A60]"
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M8 3v10M3 8h10" />
             </svg>
-            Ladda upp order
-          </button>
-          <button className="inline-flex items-center gap-2 rounded-md border border-[#d0d0d0] bg-white px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wide text-[#333] transition-colors hover:bg-[#f5f5f5]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-            Skapa ny varukorg
+            Ny varukorg
           </button>
         </div>
 
-        {/* ═══ CART SECTION ═══ */}
-        <div className="mt-8 rounded-lg border border-[#e5e5e5] bg-white">
-          {/* Cart name + actions */}
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 pb-4 pt-5">
-            <h2 className="text-[18px] font-semibold text-[#111]">{cart.name}</h2>
-            <div className="flex items-center gap-2">
-              {/* Edit */}
-              <button className="flex h-8 w-8 items-center justify-center rounded text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#555]" title="Redigera namn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-              </button>
-              {/* Add */}
-              <button className="flex h-8 w-8 items-center justify-center rounded text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#555]" title="Lägg till artikel">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-              {/* Delete */}
-              <button className="flex h-8 w-8 items-center justify-center rounded text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#c44]" title="Ta bort varukorg">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                </svg>
-              </button>
+        {/* New cart input */}
+        {showNewCart && (
+          <div className="mt-3 flex items-center gap-2">
+            <input
+              type="text"
+              value={newCartName}
+              onChange={(e) => setNewCartName(e.target.value)}
+              placeholder="Namn på ny varukorg..."
+              autoFocus
+              onKeyDown={(e) => e.key === "Enter" && handleCreateCart()}
+              className="h-9 w-64 rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+            />
+            <button onClick={handleCreateCart} className="rounded-lg bg-[#273A60] px-4 py-2 text-[12px] font-semibold text-white hover:bg-[#1a2d4d]">
+              Skapa
+            </button>
+            <button onClick={() => { setShowNewCart(false); setNewCartName(""); }} className="text-[12px] text-[#999] hover:text-[#555]">
+              Avbryt
+            </button>
+          </div>
+        )}
+
+        {/* ═══ CART CONTENT ═══ */}
+        {cart && (
+          <div className="mt-6 rounded-lg border border-[#e5e5e5] bg-white">
+            {/* Cart header */}
+            <div className="flex items-center justify-between border-b border-[#e5e5e5] px-5 sm:px-6 py-4">
+              <h2 className="text-[16px] sm:text-[18px] font-semibold text-[#111]">{cart.name}</h2>
+              <span className="text-[12px] text-[#999]">{items.length} artiklar</span>
             </div>
-          </div>
 
-          {/* ═══ TABLE ═══ */}
-          <div className="overflow-x-auto px-6 pt-4">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-[#e5e5e5]">
-                  <th className="w-10 pb-3 pr-2">
-                    <input
-                      type="checkbox"
-                      checked={selected.size === cart.items.length}
-                      onChange={toggleAll}
-                      className="h-4 w-4 rounded border-[#d0d0d0] accent-[#273A60]"
-                    />
-                  </th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Art. nr</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Nettopris</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">
-                    <span className="hidden sm:inline">Rekommenderat</span> cirkapris
-                  </th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Rabatt</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Antal</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Totalt nettopris</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Tillgänglighet</th>
-                  <th className="pb-3 pr-4 text-[11px] font-semibold uppercase tracking-wide text-[#999]">Kommentar</th>
-                  <th className="w-10 pb-3" />
-                </tr>
-              </thead>
-              <tbody>
-                {cart.items.map((item) => {
-                  const qty = quantities[item.id] || item.qty;
-                  return (
-                    <tr key={item.id} className="border-b border-[#f0f0f0] transition-colors hover:bg-[#fafafa]">
-                      {/* Checkbox */}
-                      <td className="py-4 pr-2">
-                        <input
-                          type="checkbox"
-                          checked={selected.has(item.id)}
-                          onChange={() => toggleSelect(item.id)}
-                          className="h-4 w-4 rounded border-[#d0d0d0] accent-[#273A60]"
-                        />
-                      </td>
-
-                      {/* Art. nr + product info */}
-                      <td className="py-4 pr-4">
-                        <div className="flex items-center gap-1.5">
-                          <a href="#" className="text-[13px] font-medium text-[#1565c0] underline decoration-[#1565c0]/30 hover:decoration-[#1565c0]">
-                            {item.id}
-                          </a>
-                          <button className="text-[#bbb] hover:text-[#888]" title="Kopiera">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-                            </svg>
-                          </button>
-                        </div>
-                        <div className="mt-2">
-                          <p className="text-[12px] text-[#999]">{item.line}</p>
-                          <p className="text-[13px] font-semibold text-[#111]">{item.name}</p>
-                          <p className="text-[12px] text-[#888]">{item.variant}</p>
-                        </div>
-                      </td>
-
-                      {/* Nettopris */}
-                      <td className="py-4 pr-4 text-[13px] text-[#333]">
-                        {formatPrice(item.netPrice)}
-                      </td>
-
-                      {/* Cirkapris */}
-                      <td className="py-4 pr-4 text-[13px] text-[#333]">
-                        {formatPrice(item.rrp)}
-                      </td>
-
-                      {/* Rabatt */}
-                      <td className="py-4 pr-4 text-[13px] text-[#333]">
-                        {item.discount}%
-                      </td>
-
-                      {/* Antal */}
-                      <td className="py-4 pr-4">
-                        <div className="inline-flex items-center rounded border border-[#d0d0d0]">
-                          <button
-                            onClick={() => updateQty(item.id, -1)}
-                            className="flex h-8 w-8 items-center justify-center text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#333]"
-                          >
-                            −
-                          </button>
-                          <span className="flex h-8 w-8 items-center justify-center border-x border-[#d0d0d0] text-[13px] font-medium text-[#111]">
-                            {qty}
-                          </span>
-                          <button
-                            onClick={() => updateQty(item.id, 1)}
-                            className="flex h-8 w-8 items-center justify-center text-[#999] transition-colors hover:bg-[#f5f5f5] hover:text-[#333]"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
-
-                      {/* Totalt nettopris */}
-                      <td className="py-4 pr-4 text-[13px] font-medium text-[#111]">
-                        {formatPrice(item.netPrice * qty)}
-                      </td>
-
-                      {/* Tillgänglighet */}
-                      <td className="py-4 pr-4">
-                        <div className="inline-flex items-center gap-1.5">
-                          <span
-                            className={`flex h-4 w-4 items-center justify-center rounded-full text-white ${
-                              item.availability.status === "ok"
-                                ? "bg-[#2a9d5c]"
-                                : item.availability.status === "warning"
-                                ? "bg-[#e6a817]"
-                                : "bg-[#ff6b00]"
-                            }`}
-                          >
-                            {item.availability.status === "ok" ? (
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-                                <path d="M20 6L9 17l-5-5" />
-                              </svg>
+            {items.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <p className="text-[14px] text-[#999]">Varukorgen är tom</p>
+                <p className="mt-1 text-[12px] text-[#ccc]">Lägg till produkter via produktkatalogen</p>
+              </div>
+            ) : (
+              <>
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[700px] text-left">
+                    <thead>
+                      <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+                        <th className="w-10 px-4 py-3">
+                          <input
+                            type="checkbox"
+                            checked={selected.size === items.length && items.length > 0}
+                            onChange={toggleAll}
+                            className="h-4 w-4 rounded border-[#d0d0d0] accent-[#273A60]"
+                          />
+                        </th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Produkt</th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Art.nr</th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] text-center">Antal</th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Lager</th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] text-right">Nettopris</th>
+                        <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Kommentar</th>
+                        <th className="w-10 px-3 py-3" />
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#f0f0f0]">
+                      {items.map((item) => (
+                        <tr key={item.articleNr} className={`transition-colors hover:bg-[#fafafa] ${selected.has(item.articleNr) ? "bg-[#f0f3f8]" : ""}`}>
+                          <td className="px-4 py-3">
+                            <input
+                              type="checkbox"
+                              checked={selected.has(item.articleNr)}
+                              onChange={() => toggleSelect(item.articleNr)}
+                              className="h-4 w-4 rounded border-[#d0d0d0] accent-[#273A60]"
+                            />
+                          </td>
+                          <td className="px-3 py-3">
+                            <span className="text-[13px] font-semibold text-[#111]">{item.name}</span>
+                            {item.variant && <span className="mt-0.5 block text-[11px] text-[#888]">{item.variant}</span>}
+                          </td>
+                          <td className="px-3 py-3">
+                            <span className="text-[12px] font-mono text-[#555]">{item.articleNr}</span>
+                          </td>
+                          <td className="px-3 py-3">
+                            <div className="flex items-center justify-center gap-0">
+                              <button
+                                onClick={() => updateQuantity(cart.id, item.articleNr, Math.max(1, item.qty - 1))}
+                                className="flex h-8 w-8 items-center justify-center rounded-l-lg border border-[#d0d0d0] text-[#555] hover:bg-[#f5f5f5]"
+                              >
+                                −
+                              </button>
+                              <span className="flex h-8 w-10 items-center justify-center border-y border-[#d0d0d0] text-[13px] font-semibold text-[#111]">
+                                {item.qty}
+                              </span>
+                              <button
+                                onClick={() => updateQuantity(cart.id, item.articleNr, item.qty + 1)}
+                                className="flex h-8 w-8 items-center justify-center rounded-r-lg border border-[#d0d0d0] text-[#555] hover:bg-[#f5f5f5]"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td className="px-3 py-3">
+                            {item.inStock !== false ? (
+                              <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#2e7d32]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#2e7d32]" />
+                                I lager
+                              </span>
                             ) : (
-                              <span className="text-[9px] font-bold">i</span>
+                              <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#999]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#ccc]" />
+                                Ej i lager
+                              </span>
                             )}
-                          </span>
-                          <span className="text-[12px] text-[#555]">{item.availability.date}</span>
-                          <button className="text-[#bbb] hover:text-[#888]" title="Mer info">
-                            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
+                          </td>
+                          <td className="px-3 py-3 text-right">
+                            {item.netPrice ? (
+                              <span className="text-[13px] font-semibold text-[#111]">{formatPrice(item.netPrice * item.qty)}</span>
+                            ) : (
+                              <span className="text-[12px] text-[#ccc]">—</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-3">
+                            <span className="text-[12px] text-[#888]">{item.comment || "—"}</span>
+                          </td>
+                          <td className="px-3 py-3">
+                            <button
+                              onClick={() => removeFromCart(cart.id, item.articleNr)}
+                              className="flex h-7 w-7 items-center justify-center rounded text-[#ccc] transition-colors hover:bg-[#fce8e8] hover:text-[#c44]"
+                              title="Ta bort"
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
-                      {/* Kommentar */}
-                      <td className="py-4 pr-4">
-                        <input
-                          type="text"
-                          defaultValue={item.comment}
-                          placeholder="Lägg till kommentar..."
-                          className="w-full min-w-[140px] rounded border border-[#e5e5e5] bg-[#fafafa] px-3 py-1.5 text-[12px] text-[#333] placeholder:text-[#ccc] focus:border-[#999] focus:outline-none"
-                        />
-                      </td>
-
-                      {/* Delete */}
-                      <td className="py-4">
-                        <button className="flex h-7 w-7 items-center justify-center rounded text-[#ccc] transition-colors hover:bg-[#fce8e8] hover:text-[#c44]" title="Ta bort">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                {/* Footer */}
+                <div className="flex items-center justify-between border-t border-[#e5e5e5] px-5 sm:px-6 py-4">
+                  <p className="text-[13px] font-medium text-[#1565c0]">{items.length} rader totalt</p>
+                  {totalNet > 0 && (
+                    <p className="text-[15px] font-semibold text-[#111]">{formatPrice(totalNet)}</p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
+        )}
 
-          {/* ═══ TABLE FOOTER ═══ */}
-          <div className="mx-6 flex items-center justify-between border-t border-[#e5e5e5] pb-5 pt-4">
-            <p className="text-[13px] font-medium text-[#1565c0]">
-              {totalRows} rader totalt
-            </p>
-            <p className="text-[15px] font-semibold text-[#111]">
-              {formatPrice(totalNet)}
-            </p>
-          </div>
-        </div>
-
-        {/* ═══ BULK ACTION BAR (shown when items selected) ═══ */}
+        {/* ═══ BULK ACTION BAR ═══ */}
         {selected.size > 0 && (
           <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#e5e5e5] bg-white shadow-[0_-4px_16px_rgba(0,0,0,.08)]">
             <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3">
@@ -361,9 +273,6 @@ export default function VarukorgPage() {
                 <strong className="text-[#111]">{selected.size}</strong> artikel{selected.size > 1 ? "ar" : ""} markerade
               </p>
               <div className="flex items-center gap-3">
-                <button className="rounded-md border border-[#d0d0d0] px-4 py-2 text-[12px] font-medium text-[#333] transition-colors hover:bg-[#f5f5f5]">
-                  Flytta till annan varukorg
-                </button>
                 <button className="rounded-md border border-[#c44] px-4 py-2 text-[12px] font-medium text-[#c44] transition-colors hover:bg-[#fce8e8]">
                   Ta bort markerade
                 </button>
