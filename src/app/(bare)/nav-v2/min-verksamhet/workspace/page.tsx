@@ -725,6 +725,335 @@ function DashboardView() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   ADD PRODUCT PANEL
+   ═══════════════════════════════════════════════════════ */
+
+function AddProductPanel({
+  onClose,
+  onAdd,
+}: {
+  onClose: () => void;
+  onAdd: (product: typeof products[0]) => void;
+}) {
+  const [mode, setMode] = useState<"scan" | "manual" | "upload">("scan");
+  const [scanning, setScanning] = useState(false);
+  const [scanned, setScanned] = useState(false);
+
+  // Manual fields
+  const [model, setModel] = useState("");
+  const [serial, setSerial] = useState("");
+  const [pnc, setPnc] = useState("");
+  const [customer, setCustomer] = useState("");
+  const [added, setAdded] = useState(false);
+
+  function handleScan() {
+    setScanning(true);
+    setTimeout(() => {
+      setScanning(false);
+      setScanned(true);
+      setModel("Husqvarna 545 Mark II");
+      setSerial("2025-545M-00" + Math.floor(Math.random() * 900 + 100));
+      setPnc("967 69 07-35");
+    }, 2000);
+  }
+
+  function handleAdd() {
+    if (!model || !serial) return;
+    setAdded(true);
+    setTimeout(() => {
+      onAdd({
+        model,
+        serial,
+        pnc: pnc || "—",
+        customer: customer || "Ej tilldelad",
+        soldDate: "missing",
+        installed: "missing",
+        warranty: "missing",
+        serviceContract: "missing",
+        leasing: "—",
+        hypercare: "—",
+      });
+    }, 1000);
+  }
+
+  return (
+    <>
+      <div className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed right-0 top-0 z-[9999] flex h-full w-full max-w-md flex-col bg-white shadow-2xl sm:w-[440px]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+          <h2 className="text-[16px] font-bold text-[#111]">Lägg till produkt</h2>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] hover:bg-[#f5f5f5]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M4 4l8 8M12 4l-8 8" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto">
+          {/* Mode switcher */}
+          <div className="mx-6 mt-5 flex gap-1 rounded-lg bg-[#f5f5f5] p-1">
+            <button
+              onClick={() => { setMode("scan"); setScanned(false); }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-[12px] font-semibold transition-all ${
+                mode === "scan" ? "bg-white text-[#111] shadow-sm" : "text-[#888]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="5" height="5" rx="1" />
+                <rect x="12" y="3" width="5" height="5" rx="1" />
+                <rect x="3" y="12" width="5" height="5" rx="1" />
+                <rect x="12" y="12" width="5" height="5" rx="1" />
+              </svg>
+              QR / Streckkod
+            </button>
+            <button
+              onClick={() => setMode("manual")}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-[12px] font-semibold transition-all ${
+                mode === "manual" ? "bg-white text-[#111] shadow-sm" : "text-[#888]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+              Manuell
+            </button>
+            <button
+              onClick={() => setMode("upload")}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-[12px] font-semibold transition-all ${
+                mode === "upload" ? "bg-white text-[#111] shadow-sm" : "text-[#888]"
+              }`}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 14v2a2 2 0 002 2h10a2 2 0 002-2v-2" />
+                <polyline points="6 7 10 3 14 7" />
+                <line x1="10" y1="3" x2="10" y2="13" />
+              </svg>
+              Ladda upp fil
+            </button>
+          </div>
+
+          {/* QR Scanner mode */}
+          {mode === "scan" && !scanned && (
+            <div className="px-6 pt-6">
+              <div className="relative flex h-56 flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#d0d0d0] bg-[#fafafa]">
+                {scanning ? (
+                  <>
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#273A60]/20 border-t-[#273A60]" />
+                    <p className="mt-3 text-[13px] font-semibold text-[#555]">Skannar...</p>
+                    <p className="mt-1 text-[11px] text-[#999]">Håll kameran mot QR-koden eller streckkoden</p>
+                  </>
+                ) : (
+                  <>
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="6" y="6" width="12" height="12" rx="2" />
+                      <rect x="30" y="6" width="12" height="12" rx="2" />
+                      <rect x="6" y="30" width="12" height="12" rx="2" />
+                      <rect x="30" y="30" width="12" height="12" rx="2" />
+                      <path d="M24 2v4M24 42v4M2 24h4M42 24h4" />
+                    </svg>
+                    <p className="mt-3 text-[13px] font-semibold text-[#555]">Skanna produktens QR-kod</p>
+                    <p className="mt-1 text-[11px] text-[#999]">Eller streckkod på förpackningen</p>
+                    <button
+                      onClick={handleScan}
+                      className="mt-4 rounded-lg bg-[#273A60] px-5 py-2.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#1a2d4d]"
+                    >
+                      Starta kamera
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div className="mt-4 flex items-center gap-3">
+                <div className="h-px flex-1 bg-[#e5e5e5]" />
+                <span className="text-[11px] font-semibold text-[#bbb]">ELLER</span>
+                <div className="h-px flex-1 bg-[#e5e5e5]" />
+              </div>
+
+              <div className="mt-4">
+                <label className="text-[12px] font-semibold text-[#555]">Ange serienummer manuellt</label>
+                <input
+                  type="text"
+                  placeholder="T.ex. 2025-545M-00123"
+                  onChange={(e) => {
+                    setSerial(e.target.value);
+                    if (e.target.value.length > 5) {
+                      setMode("manual");
+                    }
+                  }}
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Upload mode */}
+          {mode === "upload" && (
+            <div className="px-6 pt-6 space-y-4">
+              {/* Drop zone */}
+              <div className="flex h-44 flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#d0d0d0] bg-[#fafafa] transition-colors hover:border-[#273A60]/40 hover:bg-[#f5f8ff]">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 28v4a2 2 0 002 2h24a2 2 0 002-2v-4" />
+                  <polyline points="12 14 20 6 28 14" />
+                  <line x1="20" y1="6" x2="20" y2="26" />
+                </svg>
+                <p className="mt-3 text-[13px] font-semibold text-[#555]">Dra och släpp fil här</p>
+                <p className="mt-0.5 text-[11px] text-[#999]">eller klicka för att välja</p>
+                <button className="mt-3 rounded-lg border border-[#d0d0d0] bg-white px-4 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">
+                  Välj fil
+                </button>
+              </div>
+
+              {/* Accepted formats */}
+              <div className="rounded-lg bg-[#f8f9fb] px-4 py-3">
+                <p className="text-[11px] font-semibold text-[#273A60]">Accepterade format</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <span className="rounded-full bg-[#e8f5e9] px-2 py-0.5 text-[10px] font-bold text-[#2e7d32]">CSV</span>
+                  <span className="rounded-full bg-[#e3f2fd] px-2 py-0.5 text-[10px] font-bold text-[#1565c0]">Excel (.xlsx)</span>
+                  <span className="rounded-full bg-[#fff3e0] px-2 py-0.5 text-[10px] font-bold text-[#e65100]">XML</span>
+                </div>
+                <p className="mt-2 text-[11px] text-[#888]">Filen ska innehålla kolumner för modell, serienummer och artikelnummer. En mall kan laddas ned nedan.</p>
+              </div>
+
+              {/* Download template */}
+              <button className="flex w-full items-center gap-3 rounded-lg border border-[#e5e5e5] px-4 py-3 text-left transition-colors hover:bg-[#fafafa]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e3f2fd]">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#1565c0" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 14v2a2 2 0 002 2h10a2 2 0 002-2v-2" />
+                    <polyline points="6 10 10 14 14 10" />
+                    <line x1="10" y1="14" x2="10" y2="3" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="text-[13px] font-semibold text-[#111]">Ladda ned importmall</span>
+                  <span className="mt-0.5 block text-[11px] text-[#888]">Excel-mall med rätt kolumner och exempeldata</span>
+                </div>
+              </button>
+
+              {/* Bulk info */}
+              <div className="rounded-lg bg-[#f0f3f8] px-4 py-3">
+                <p className="text-[11px] font-semibold text-[#273A60]">Bulkimport</p>
+                <ul className="mt-1 space-y-0.5 text-[11px] text-[#888]">
+                  <li>• Importera flera produkter samtidigt från en fil</li>
+                  <li>• Duplicerade serienummer ignoreras automatiskt</li>
+                  <li>• En sammanfattning visas innan import bekräftas</li>
+                  <li>• Felaktiga rader markeras för manuell korrigering</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* Scanned result / Manual mode */}
+          {(mode === "manual" || scanned) && (
+            <div className="px-6 pt-5 space-y-4">
+              {scanned && (
+                <div className="rounded-xl border border-[#2a9d5c]/30 bg-[#f0faf4] p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2a9d5c] text-white">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M3.5 8.5l3 3 6-6" /></svg>
+                    </span>
+                    <span className="text-[13px] font-semibold text-[#2e7d32]">Produkt identifierad via QR</span>
+                  </div>
+                  <p className="mt-1 ml-8 text-[12px] text-[#888]">Fälten har fyllts i automatiskt</p>
+                </div>
+              )}
+
+              {/* Model */}
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Modell *</label>
+                <input
+                  type="text"
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                  placeholder="T.ex. Husqvarna 545 Mark II"
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+                />
+              </div>
+
+              {/* Serial */}
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Serienummer *</label>
+                <input
+                  type="text"
+                  value={serial}
+                  onChange={(e) => setSerial(e.target.value)}
+                  placeholder="T.ex. 2025-545M-00123"
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+                />
+              </div>
+
+              {/* PNC */}
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Artikelnummer (PNC)</label>
+                <input
+                  type="text"
+                  value={pnc}
+                  onChange={(e) => setPnc(e.target.value)}
+                  placeholder="T.ex. 967 69 07-35"
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
+                />
+                <p className="mt-1 text-[11px] text-[#999]">Fylls i automatiskt vid QR-skanning</p>
+              </div>
+
+              {/* Customer */}
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Tilldela kund</label>
+                <select
+                  value={customer}
+                  onChange={(e) => setCustomer(e.target.value)}
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] bg-white px-3 text-[13px] text-[#333] focus:border-[#273A60] focus:outline-none"
+                >
+                  <option value="">Välj kund (valfritt)</option>
+                  {existingCustomers.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <p className="mt-1 text-[11px] text-[#999]">Kan tilldelas senare vid sellout-registrering</p>
+              </div>
+
+              {/* Info */}
+              <div className="rounded-lg bg-[#f0f3f8] px-4 py-3">
+                <p className="text-[11px] font-semibold text-[#273A60]">Vad händer efter registrering?</p>
+                <ul className="mt-1 space-y-0.5 text-[11px] text-[#888]">
+                  <li>• Produkten läggs till i din produktöversikt</li>
+                  <li>• Säljdatum, installation och garanti kan registreras efteråt</li>
+                  <li>• Produkten kopplas till ditt EMT-nummer</li>
+                  <li>• Husqvarna får information om produktplacering</li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex gap-3 border-t border-[#e5e5e5] px-6 py-4">
+          <button
+            onClick={onClose}
+            className="flex-1 rounded-lg border border-[#d0d0d0] py-3 text-[13px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+          >
+            Avbryt
+          </button>
+          <button
+            onClick={handleAdd}
+            disabled={!model || !serial || added}
+            className={`flex-1 rounded-lg py-3 text-[13px] font-bold text-white transition-all ${
+              added
+                ? "bg-[#2e7d32]"
+                : model && serial
+                ? "bg-[#273A60] hover:bg-[#1a2d4d]"
+                : "bg-[#273A60]/50 cursor-not-allowed"
+            }`}
+          >
+            {added ? "✓ Tillagd!" : "Registrera produkt"}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
    SELLOUT REGISTRATION PANEL
    ═══════════════════════════════════════════════════════ */
 
@@ -922,6 +1251,12 @@ function ProductsView({
 }) {
   const [selloutProduct, setSelloutProduct] = useState<typeof products[0] | null>(null);
   const [productData, setProductData] = useState(products);
+  const [showAddProduct, setShowAddProduct] = useState(false);
+
+  function handleAddProduct(product: typeof products[0]) {
+    setProductData((prev) => [product, ...prev]);
+    setShowAddProduct(false);
+  }
 
   function handleSelloutRegistered(serial: string, date: string, customer: string) {
     setProductData((prev) =>
@@ -941,8 +1276,11 @@ function ProductsView({
           <p className="text-[12px] text-[#888]">Produkter under din hantering — filtrera efter program och status</p>
         </div>
         <div className="flex gap-2">
-          <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">
-            Starta installation
+          <button
+            onClick={() => setShowAddProduct(true)}
+            className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+          >
+            + Lägg till produkt
           </button>
           <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">
             Nytt serviceavtal
@@ -1045,6 +1383,13 @@ function ProductsView({
           product={selloutProduct}
           onClose={() => setSelloutProduct(null)}
           onRegister={handleSelloutRegistered}
+        />
+      )}
+
+      {showAddProduct && (
+        <AddProductPanel
+          onClose={() => setShowAddProduct(false)}
+          onAdd={handleAddProduct}
         />
       )}
 
