@@ -889,14 +889,6 @@ export default function UserTest2026Page() {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2">
-                {filterConfig.map((f) => (
-                  <button key={f.key} onClick={() => setProductFilter(f.key)}
-                    className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-all ${productFilter === f.key ? "bg-[#273A60] text-white" : "bg-white text-[#555] border border-[#d0d0d0] hover:bg-[#f5f5f5]"}`}>
-                    {f.label} <span className={`ml-1.5 ${productFilter === f.key ? "text-white/70" : "text-[#aaa]"}`}>{f.count}</span>
-                  </button>
-                ))}
-              </div>
 
               <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
                 <table className="w-full text-left">
