@@ -381,6 +381,18 @@ export default function NavHeader() {
 
       {/* Floating buttons */}
       <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex flex-col items-end gap-2.5">
+        {/* UserTest 2026 */}
+        <Link
+          href="/usertest2026"
+          className="flex items-center gap-2 sm:gap-2.5 rounded-full bg-[#2a9d5c] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-[#2a9d5c]/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#2a9d5c]/30 active:scale-[0.98]"
+        >
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2z" />
+            <path d="M7 10l2 2 4-4" />
+          </svg>
+          UserTest 2026
+        </Link>
+
         {/* Task Flows Spec */}
         <Link
           href="/nav-v2/task-flows"
