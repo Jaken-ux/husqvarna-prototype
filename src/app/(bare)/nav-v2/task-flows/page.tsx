@@ -45,11 +45,31 @@ export default function TaskFlowsPage() {
       <NavHeader />
 
       <main className="mx-auto max-w-[1320px] px-6 py-6">
+        {/* Showcase banner */}
+        <div className="rounded-xl border border-[#e65100]/20 bg-[#fff8f0] px-6 py-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e65100] text-white">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M8 5v3M8 10.5v.5" />
+              </svg>
+            </span>
+            <div>
+              <h2 className="text-[14px] font-bold text-[#111]">Documentation showcase — not validated content</h2>
+              <p className="mt-1 text-[13px] leading-relaxed text-[#888]">
+                This page demonstrates how task flows, user journeys and technical specifications <strong className="text-[#555]">could be documented</strong> within the portal vision.
+                The flow content (steps, fields, validation rules) is <strong className="text-[#555]">conceptual and has not been validated</strong> against actual system processes.
+                The format itself — structured flows with entry points, states, transitions, field inventories and JSON export — is ready to be populated with verified data.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Header */}
-        <div className="flex items-end justify-between">
+        <div className="mt-6 flex items-end justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[#111]">Task Flows</h1>
-            <p className="mt-1 text-[13px] text-[#888]">2026 Sellout & Customer Registration — 7 kärnflöden</p>
+            <p className="mt-1 text-[13px] text-[#888]">2026 Sellout & Customer Registration — 7 core flows</p>
           </div>
           <div className="flex gap-1 rounded-lg bg-[#f3f3f3] p-1">
             {(["flows", "journey", "json"] as const).map((v) => (
