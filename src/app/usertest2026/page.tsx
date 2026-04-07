@@ -130,6 +130,64 @@ const t: Record<Lang, Record<string, string>> = {
     q8placeholder: "Share any observations, concerns or ideas...",
     qSubmit: "Submit answers",
     qSubmitted: "Thank you! Your answers have been recorded.",
+    // Sell-out tab
+    tabSellout: "Sell-out",
+    selloutTitle: "Sell-out",
+    selloutSubtitle: "Report sales to Husqvarna and unlock benefits",
+    soInStock: "In stock",
+    soInStockSub: "across products",
+    soSoldMonth: "Sold this month",
+    soSoldMonthSub: "March 2026",
+    soPendingBonus: "Pending bonus",
+    soPendingBonusSub: "awaiting review",
+    soInventory: "Your inventory",
+    soInStockBadge: "in stock",
+    soReportSale: "Report sale",
+    soRecentSellouts: "Recent sell-outs",
+    soReportSellout: "+ Report sell-out",
+    soStep: "Step",
+    soWhatReport: "What would you like to report?",
+    soChooseMode: "Choose single or bulk reporting.",
+    soSingleProduct: "Single product",
+    soSingleDesc: "One product with full details",
+    soBulkReport: "Bulk report",
+    soBulkDesc: "Multiple products in one go",
+    soWhichProduct: "Which product was sold?",
+    soWhichProductDesc: "Select from inventory, enter PNC manually, or scan with photo.",
+    soTabInventory: "Inventory",
+    soTabPnc: "Enter PNC",
+    soTabPhoto: "Photo",
+    soPncNumber: "PNC number",
+    soPncPlaceholder: "e.g. 967 62 25-03",
+    soPhotoDesc: "Take a photo of the product label — we'll detect the PNC automatically.",
+    soSimulateScan: "Simulate scan",
+    soContinue: "Continue",
+    soEnterSaleDetails: "Enter sale details",
+    soSaleDate: "Sale date *",
+    soSerialNumber: "Serial number",
+    soSerialRecommended: "(recommended)",
+    soSerialHelper: "Needed to activate warranty per unit and register the product.",
+    soSerialPlaceholder: "e.g. AMX-2026-00123",
+    soReviewSubmit: "Review & submit",
+    soReviewTitle: "Review your sell-out",
+    soProduct: "Product",
+    soPnc: "PNC",
+    soSerialNumberLabel: "Serial number",
+    soNotProvided: "— not provided",
+    soWhatUnlocks: "What this unlocks for you:",
+    soUnlockWarranty: "Warranty activated from sale date",
+    soUnlockAnalytics: "Sale tracked in your analytics",
+    soUnlockBonus: "Bonus eligibility opened at Husqvarna",
+    soUnlockServices: "Follow-up services now available",
+    soSubmitSellout: "Submit sell-out",
+    soSelloutReported: "Sell-out reported!",
+    soSelloutReportedDesc: "Husqvarna has been notified. Here's what's been activated:",
+    soBackToOverview: "Back to overview",
+    soReportAnother: "Report another",
+    soAddSoldProducts: "Add sold products",
+    soAddSoldProductsDesc: "Add each product sold. Serial number is optional but recommended.",
+    soAddAnotherProduct: "+ Add another product",
+    soSubmitBulk: "Submit sell-outs",
   },
   de: {
     title: "Händler-Arbeitsbereich",
@@ -246,6 +304,63 @@ const t: Record<Lang, Record<string, string>> = {
     q8placeholder: "Teilen Sie Beobachtungen, Bedenken oder Ideen...",
     qSubmit: "Antworten absenden",
     qSubmitted: "Vielen Dank! Ihre Antworten wurden erfasst.",
+    tabSellout: "Sell-out",
+    selloutTitle: "Sell-out",
+    selloutSubtitle: "Verkäufe an Husqvarna melden und Vorteile freischalten",
+    soInStock: "Auf Lager",
+    soInStockSub: "über Produkte",
+    soSoldMonth: "Diesen Monat verkauft",
+    soSoldMonthSub: "März 2026",
+    soPendingBonus: "Ausstehender Bonus",
+    soPendingBonusSub: "wird überprüft",
+    soInventory: "Ihr Inventar",
+    soInStockBadge: "auf Lager",
+    soReportSale: "Verkauf melden",
+    soRecentSellouts: "Letzte Sell-outs",
+    soReportSellout: "+ Sell-out melden",
+    soStep: "Schritt",
+    soWhatReport: "Was möchten Sie melden?",
+    soChooseMode: "Wählen Sie Einzel- oder Massenmeldung.",
+    soSingleProduct: "Einzelnes Produkt",
+    soSingleDesc: "Ein Produkt mit allen Details",
+    soBulkReport: "Massenmeldung",
+    soBulkDesc: "Mehrere Produkte auf einmal",
+    soWhichProduct: "Welches Produkt wurde verkauft?",
+    soWhichProductDesc: "Aus Inventar wählen, PNC eingeben oder per Foto scannen.",
+    soTabInventory: "Inventar",
+    soTabPnc: "PNC eingeben",
+    soTabPhoto: "Foto",
+    soPncNumber: "PNC-Nummer",
+    soPncPlaceholder: "z.B. 967 62 25-03",
+    soPhotoDesc: "Fotografieren Sie das Produktetikett — die PNC wird automatisch erkannt.",
+    soSimulateScan: "Scan simulieren",
+    soContinue: "Weiter",
+    soEnterSaleDetails: "Verkaufsdetails eingeben",
+    soSaleDate: "Verkaufsdatum *",
+    soSerialNumber: "Seriennummer",
+    soSerialRecommended: "(empfohlen)",
+    soSerialHelper: "Zur Garantieaktivierung pro Einheit und Produktregistrierung erforderlich.",
+    soSerialPlaceholder: "z.B. AMX-2026-00123",
+    soReviewSubmit: "Überprüfen & absenden",
+    soReviewTitle: "Überprüfen Sie Ihren Sell-out",
+    soProduct: "Produkt",
+    soPnc: "PNC",
+    soSerialNumberLabel: "Seriennummer",
+    soNotProvided: "— nicht angegeben",
+    soWhatUnlocks: "Was das für Sie freischaltet:",
+    soUnlockWarranty: "Garantie ab Verkaufsdatum aktiviert",
+    soUnlockAnalytics: "Verkauf in Ihren Analysen erfasst",
+    soUnlockBonus: "Bonusberechtigung bei Husqvarna eröffnet",
+    soUnlockServices: "Folgedienste jetzt verfügbar",
+    soSubmitSellout: "Sell-out absenden",
+    soSelloutReported: "Sell-out gemeldet!",
+    soSelloutReportedDesc: "Husqvarna wurde benachrichtigt. Folgendes wurde aktiviert:",
+    soBackToOverview: "Zurück zur Übersicht",
+    soReportAnother: "Weiteren melden",
+    soAddSoldProducts: "Verkaufte Produkte hinzufügen",
+    soAddSoldProductsDesc: "Fügen Sie jedes verkaufte Produkt hinzu. Seriennummer ist optional, aber empfohlen.",
+    soAddAnotherProduct: "+ Weiteres Produkt hinzufügen",
+    soSubmitBulk: "Sell-outs absenden",
   },
   fr: {
     title: "Espace de travail concessionnaire",
@@ -362,6 +477,63 @@ const t: Record<Lang, Record<string, string>> = {
     q8placeholder: "Partagez vos observations, préoccupations ou idées...",
     qSubmit: "Envoyer les réponses",
     qSubmitted: "Merci ! Vos réponses ont été enregistrées.",
+    tabSellout: "Sell-out",
+    selloutTitle: "Sell-out",
+    selloutSubtitle: "Déclarez vos ventes à Husqvarna et débloquez des avantages",
+    soInStock: "En stock",
+    soInStockSub: "sur les produits",
+    soSoldMonth: "Vendus ce mois",
+    soSoldMonthSub: "Mars 2026",
+    soPendingBonus: "Bonus en attente",
+    soPendingBonusSub: "en cours de vérification",
+    soInventory: "Votre inventaire",
+    soInStockBadge: "en stock",
+    soReportSale: "Déclarer vente",
+    soRecentSellouts: "Sell-outs récents",
+    soReportSellout: "+ Déclarer un sell-out",
+    soStep: "Étape",
+    soWhatReport: "Que souhaitez-vous déclarer ?",
+    soChooseMode: "Choisissez une déclaration unique ou groupée.",
+    soSingleProduct: "Produit unique",
+    soSingleDesc: "Un produit avec tous les détails",
+    soBulkReport: "Déclaration groupée",
+    soBulkDesc: "Plusieurs produits en une fois",
+    soWhichProduct: "Quel produit a été vendu ?",
+    soWhichProductDesc: "Sélectionnez dans l'inventaire, saisissez le PNC ou scannez par photo.",
+    soTabInventory: "Inventaire",
+    soTabPnc: "Saisir PNC",
+    soTabPhoto: "Photo",
+    soPncNumber: "Numéro PNC",
+    soPncPlaceholder: "ex. 967 62 25-03",
+    soPhotoDesc: "Prenez une photo de l'étiquette — le PNC sera détecté automatiquement.",
+    soSimulateScan: "Simuler le scan",
+    soContinue: "Continuer",
+    soEnterSaleDetails: "Saisir les détails de vente",
+    soSaleDate: "Date de vente *",
+    soSerialNumber: "Numéro de série",
+    soSerialRecommended: "(recommandé)",
+    soSerialHelper: "Nécessaire pour activer la garantie par unité et enregistrer le produit.",
+    soSerialPlaceholder: "ex. AMX-2026-00123",
+    soReviewSubmit: "Vérifier & soumettre",
+    soReviewTitle: "Vérifiez votre sell-out",
+    soProduct: "Produit",
+    soPnc: "PNC",
+    soSerialNumberLabel: "Numéro de série",
+    soNotProvided: "— non fourni",
+    soWhatUnlocks: "Ce que cela débloque pour vous :",
+    soUnlockWarranty: "Garantie activée à partir de la date de vente",
+    soUnlockAnalytics: "Vente suivie dans vos analyses",
+    soUnlockBonus: "Éligibilité au bonus ouverte chez Husqvarna",
+    soUnlockServices: "Services de suivi maintenant disponibles",
+    soSubmitSellout: "Soumettre le sell-out",
+    soSelloutReported: "Sell-out déclaré !",
+    soSelloutReportedDesc: "Husqvarna a été notifié. Voici ce qui a été activé :",
+    soBackToOverview: "Retour à l'aperçu",
+    soReportAnother: "Déclarer un autre",
+    soAddSoldProducts: "Ajouter les produits vendus",
+    soAddSoldProductsDesc: "Ajoutez chaque produit vendu. Le numéro de série est facultatif mais recommandé.",
+    soAddAnotherProduct: "+ Ajouter un autre produit",
+    soSubmitBulk: "Soumettre les sell-outs",
   },
 };
 
@@ -369,7 +541,20 @@ const t: Record<Lang, Record<string, string>> = {
    TYPES & SHARED
    ═══════════════════════════════════════════════════════ */
 
-type Tab = "products" | "customers" | "contracts" | "today";
+type Tab = "products" | "sellout" | "customers" | "contracts" | "today";
+
+type ProductRow = {
+  model: string;
+  serial: string;
+  pnc: string;
+  customer: string;
+  soldDate: string;
+  installed: string;
+  warranty: string;
+  serviceContract: string;
+  leasing: string;
+  hypercare: string;
+};
 
 function StatusBadge({ status, lang }: { status: string; lang: Lang }) {
   if (status === "—") return <span className="text-[12px] text-[#ccc]">—</span>;
@@ -706,6 +891,566 @@ function SalesDatePickerPanel({
 }
 
 /* ═══════════════════════════════════════════════════════
+   SELL-OUT VIEW + REPORT DRAWER
+   ═══════════════════════════════════════════════════════ */
+
+type InventoryItem = { name: string; pnc: string; category: string; stock: number };
+
+const inventoryData: InventoryItem[] = [
+  { name: "Automower 430X", pnc: "967 62 25-03", category: "Robotic Mower", stock: 8 },
+  { name: "Automower 320 Nera", pnc: "967 65 48-01", category: "Robotic Mower", stock: 3 },
+  { name: "LC 353iV", pnc: "967 77 20-02", category: "Lawnmower", stock: 12 },
+  { name: "535i XP", pnc: "967 84 10-05", category: "Chainsaw", stock: 5 },
+];
+
+const recentSellouts = [
+  { product: "Automower 430X", serial: "AMX-2026-0328", date: "28 Mar" },
+  { product: "Automower 320 Nera", serial: "AMN-2026-0325", date: "25 Mar" },
+  { product: "LC 353iV", serial: "LC3-2026-0320", date: "20 Mar" },
+  { product: "535i XP", serial: "535-2026-0315", date: "15 Mar" },
+  { product: "Automower 430X", serial: "AMX-2026-0310", date: "10 Mar" },
+];
+
+type SelloutStep = "choose" | "select-product" | "sale-details" | "review" | "done";
+type SelloutMode = "single" | "bulk";
+type ProductSelectTab = "inventory" | "pnc" | "photo";
+
+type BulkItem = { product: string; pnc: string; date: string; serial: string };
+
+function SelloutView({ lang, products, onRegisterSale }: { lang: Lang; products: ProductRow[]; onRegisterSale: (serial: string, date: string) => void }) {
+  const i = t[lang];
+  const [showReport, setShowReport] = useState(false);
+  const [preselectedProduct, setPreselectedProduct] = useState<InventoryItem | null>(null);
+  const totalStock = inventoryData.reduce((s, p) => s + p.stock, 0);
+  const soldThisMonth = recentSellouts.length;
+  const missingProducts = products.filter((p) => p.soldDate === "missing");
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold text-[#111]">{i.selloutTitle}</h2>
+          <p className="text-[12px] text-[#888]">{i.selloutSubtitle}</p>
+        </div>
+        <button
+          onClick={() => { setPreselectedProduct(null); setShowReport(true); }}
+          className="rounded-lg bg-[#e65100] px-5 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+        >
+          {i.soReportSellout}
+        </button>
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#e65100]">{totalStock}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">{i.soInStock}</span>
+          <span className="text-[11px] text-[#bbb]">{inventoryData.length} {i.soInStockSub}</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#111]">{soldThisMonth}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">{i.soSoldMonth}</span>
+          <span className="text-[11px] text-[#bbb]">{i.soSoldMonthSub}</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#2e7d32]">3</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">{i.soPendingBonus}</span>
+          <span className="text-[11px] text-[#bbb]">{i.soPendingBonusSub}</span>
+        </div>
+      </div>
+
+      {/* Inventory list */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">{i.soInventory}</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {inventoryData.map((item) => (
+            <div key={item.pnc} className="flex items-center justify-between px-5 py-3.5">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{item.name}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">PNC {item.pnc} · {item.category}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[11px] font-bold text-[#2e7d32]">{item.stock} {i.soInStockBadge}</span>
+                <button
+                  onClick={() => { setPreselectedProduct(item); setShowReport(true); }}
+                  className="rounded-lg border border-[#d0d0d0] px-3 py-1.5 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+                >
+                  {i.soReportSale}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Missing sell-outs alert */}
+      {missingProducts.length > 0 && (
+        <div className="flex items-center gap-3 rounded-xl border-l-4 border-l-[#e65100] bg-[#fff8f0] px-5 py-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e65100] text-[12px] font-bold text-white">{missingProducts.length}</span>
+          <div>
+            <p className="text-[13px] font-semibold text-[#111]">{i.missingSoldDate}</p>
+            <p className="text-[12px] text-[#888]">{missingProducts.map((p) => p.model).join(", ")}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Recent sell-outs */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">{i.soRecentSellouts}</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {recentSellouts.map((so, idx) => (
+            <div key={idx} className="flex items-center justify-between px-5 py-3">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{so.product}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">S/N: {so.serial}</span>
+              </div>
+              <span className="text-[12px] text-[#999]">{so.date}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {showReport && <ReportSelloutDrawer lang={lang} preselected={preselectedProduct} onClose={() => { setShowReport(false); setPreselectedProduct(null); }} onRegisterSale={onRegisterSale} />}
+    </div>
+  );
+}
+
+function ReportSelloutDrawer({ lang, preselected, onClose, onRegisterSale }: { lang: Lang; preselected?: InventoryItem | null; onClose: () => void; onRegisterSale: (serial: string, date: string) => void }) {
+  const i = t[lang];
+  const [step, setStep] = useState<SelloutStep>(preselected ? "sale-details" : "choose");
+  const [mode, setMode] = useState<SelloutMode>("single");
+
+  // Single flow state
+  const [productTab, setProductTab] = useState<ProductSelectTab>("inventory");
+  const [selectedProduct, setSelectedProduct] = useState<InventoryItem | null>(preselected ?? null);
+  const [pncInput, setPncInput] = useState("");
+  const [photoScanned, setPhotoScanned] = useState(false);
+  const [saleDate, setSaleDate] = useState("2026-04-02");
+  const [serialNumber, setSerialNumber] = useState("");
+
+  // Bulk flow state
+  const [bulkItems, setBulkItems] = useState<BulkItem[]>([
+    { product: "", pnc: "", date: "2026-04-02", serial: "" },
+  ]);
+
+  function handleSelectFromInventory(item: InventoryItem) {
+    setSelectedProduct(item);
+    setStep("sale-details");
+  }
+
+  function handlePncContinue() {
+    const match = inventoryData.find((p) => p.pnc === pncInput.trim());
+    setSelectedProduct(match ?? { name: pncInput, pnc: pncInput, category: "—", stock: 0 });
+    setStep("sale-details");
+  }
+
+  function handlePhotoScan() {
+    setPhotoScanned(true);
+    setTimeout(() => {
+      setSelectedProduct(inventoryData[0]);
+      setStep("sale-details");
+    }, 2000);
+  }
+
+  function handleSubmitSingle() {
+    if (selectedProduct) {
+      onRegisterSale(serialNumber || `${selectedProduct.name.substring(0, 3).toUpperCase()}-${Date.now()}`, saleDate);
+    }
+    setStep("done");
+  }
+
+  function handleSubmitBulk() {
+    bulkItems.forEach((item) => {
+      if (item.product) onRegisterSale(item.serial || `BULK-${Date.now()}`, item.date);
+    });
+    setStep("done");
+  }
+
+  function addBulkRow() {
+    setBulkItems([...bulkItems, { product: "", pnc: "", date: "2026-04-02", serial: "" }]);
+  }
+
+  function updateBulkItem(idx: number, field: keyof BulkItem, value: string) {
+    setBulkItems(bulkItems.map((item, j) => j === idx ? { ...item, [field]: value } : item));
+  }
+
+  function removeBulkItem(idx: number) {
+    if (bulkItems.length > 1) setBulkItems(bulkItems.filter((_, j) => j !== idx));
+  }
+
+  const stepNumber = step === "choose" ? 1 : step === "select-product" ? 1 : step === "sale-details" ? 2 : 3;
+  const totalSteps = mode === "single" ? 3 : 2;
+
+  return (
+    <>
+      <div className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed right-0 top-0 z-[9999] flex h-full w-full max-w-lg flex-col bg-white shadow-2xl sm:w-[520px]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+          <div className="flex items-center gap-3">
+            {step !== "choose" && step !== "done" && (
+              <div className="flex gap-1">
+                {Array.from({ length: totalSteps }).map((_, idx) => (
+                  <span key={idx} className={`h-2 w-2 rounded-full ${idx < stepNumber ? "bg-[#e65100]" : "bg-[#e0e0e0]"}`} />
+                ))}
+              </div>
+            )}
+            <span className="text-[12px] text-[#999]">
+              {step !== "choose" && step !== "done" && `${i.soStep} ${stepNumber} / ${totalSteps}`}
+            </span>
+          </div>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] hover:bg-[#f5f5f5]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          {/* ── Step: Choose single/bulk ── */}
+          {step === "choose" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[18px] font-bold text-[#111]">{i.soWhatReport}</h3>
+                <p className="mt-1 text-[13px] text-[#888]">{i.soChooseMode}</p>
+              </div>
+              <button
+                onClick={() => { setMode("single"); setStep("select-product"); }}
+                className="flex w-full items-center gap-4 rounded-xl border border-[#d0d0d0] bg-white p-5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-md"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#fff3e0]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e65100" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                    <path d="M9 12l2 2 4-4" />
+                  </svg>
+                </span>
+                <div>
+                  <span className="text-[15px] font-bold text-[#111]">{i.soSingleProduct}</span>
+                  <span className="mt-0.5 block text-[13px] text-[#888]">{i.soSingleDesc}</span>
+                </div>
+              </button>
+              <button
+                onClick={() => { setMode("bulk"); setStep("sale-details"); }}
+                className="flex w-full items-center gap-4 rounded-xl border border-[#d0d0d0] bg-white p-5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-md"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#fff3e0]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e65100" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                    <path d="M8 8h8M8 12h8M8 16h5" />
+                  </svg>
+                </span>
+                <div>
+                  <span className="text-[15px] font-bold text-[#111]">{i.soBulkReport}</span>
+                  <span className="mt-0.5 block text-[13px] text-[#888]">{i.soBulkDesc}</span>
+                </div>
+              </button>
+            </div>
+          )}
+
+          {/* ── Step: Select product (single) ── */}
+          {step === "select-product" && mode === "single" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[18px] font-bold text-[#111]">{i.soWhichProduct}</h3>
+                <p className="mt-1 text-[13px] text-[#888]">{i.soWhichProductDesc}</p>
+              </div>
+
+              {/* Product select tabs */}
+              <div className="flex rounded-lg border border-[#e0e0e0] bg-[#f5f5f5] p-0.5">
+                {([
+                  { id: "inventory" as const, label: i.soTabInventory },
+                  { id: "pnc" as const, label: i.soTabPnc },
+                  { id: "photo" as const, label: "📷 " + i.soTabPhoto },
+                ]).map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setProductTab(tab.id)}
+                    className={`flex-1 rounded-md px-3 py-2 text-[12px] font-semibold transition-all ${
+                      productTab === tab.id ? "bg-white text-[#111] shadow-sm" : "text-[#888] hover:text-[#555]"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Inventory selection */}
+              {productTab === "inventory" && (
+                <div className="space-y-2">
+                  {inventoryData.map((item) => (
+                    <button
+                      key={item.pnc}
+                      onClick={() => handleSelectFromInventory(item)}
+                      className="flex w-full items-center justify-between rounded-xl border border-[#d0d0d0] bg-white px-5 py-3.5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-sm"
+                    >
+                      <div>
+                        <span className="text-[14px] font-semibold text-[#111]">{item.name}</span>
+                        <span className="mt-0.5 block text-[11px] text-[#888]">PNC {item.pnc}</span>
+                      </div>
+                      <span className="rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[11px] font-bold text-[#2e7d32]">{item.stock} {i.soInStockBadge}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* PNC entry */}
+              {productTab === "pnc" && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[13px] font-bold text-[#111]">{i.soPncNumber}</label>
+                    <input
+                      type="text"
+                      value={pncInput}
+                      onChange={(e) => setPncInput(e.target.value)}
+                      placeholder={i.soPncPlaceholder}
+                      className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none"
+                    />
+                  </div>
+                  <button
+                    onClick={handlePncContinue}
+                    disabled={!pncInput.trim()}
+                    className={`w-full rounded-lg py-3 text-[13px] font-bold text-white transition-colors ${pncInput.trim() ? "bg-[#e65100] hover:bg-[#d84300]" : "bg-[#e0e0e0] cursor-not-allowed"}`}
+                  >
+                    {i.soContinue} →
+                  </button>
+                </div>
+              )}
+
+              {/* Photo scan */}
+              {productTab === "photo" && (
+                <div className="space-y-4">
+                  <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#d0d0d0] bg-[#fafafa]">
+                    {photoScanned ? (
+                      <div className="text-center">
+                        <span className="text-[32px]">✅</span>
+                        <p className="mt-2 text-[13px] font-semibold text-[#2e7d32]">{i.productIdentified}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="5" width="18" height="14" rx="2" />
+                          <circle cx="12" cy="12" r="3.5" />
+                          <path d="M8 5V3h8v2" />
+                        </svg>
+                        <p className="mt-2 text-[13px] text-[#888]">{i.soPhotoDesc}</p>
+                      </>
+                    )}
+                  </div>
+                  {!photoScanned && (
+                    <button
+                      onClick={handlePhotoScan}
+                      className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+                    >
+                      {i.soSimulateScan}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Step: Sale details (single) ── */}
+          {step === "sale-details" && mode === "single" && selectedProduct && (
+            <div className="space-y-5">
+              {/* Selected product card */}
+              <div className="rounded-xl border border-[#d0d0d0] bg-[#fafafa] px-5 py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-[14px] font-bold text-[#111]">{selectedProduct.name}</span>
+                    <span className="mt-0.5 block text-[11px] text-[#888]">PNC {selectedProduct.pnc}</span>
+                  </div>
+                  <span className="rounded-full bg-[#fff3e0] px-2.5 py-0.5 text-[10px] font-bold text-[#e65100]">{selectedProduct.category}</span>
+                </div>
+              </div>
+
+              <h3 className="text-[16px] font-bold text-[#111]">{i.soEnterSaleDetails}</h3>
+
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">{i.soSaleDate}</label>
+                <input
+                  type="date"
+                  value={saleDate}
+                  onChange={(e) => setSaleDate(e.target.value)}
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] focus:border-[#e65100] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">
+                  {i.soSerialNumber} <span className="font-normal text-[#999]">{i.soSerialRecommended}</span>
+                </label>
+                <p className="mt-0.5 text-[11px] text-[#888]">{i.soSerialHelper}</p>
+                <input
+                  type="text"
+                  value={serialNumber}
+                  onChange={(e) => setSerialNumber(e.target.value)}
+                  placeholder={i.soSerialPlaceholder}
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none"
+                />
+              </div>
+
+              <button
+                onClick={() => setStep("review")}
+                className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+              >
+                {i.soReviewSubmit} →
+              </button>
+            </div>
+          )}
+
+          {/* ── Step: Sale details (bulk) ── */}
+          {step === "sale-details" && mode === "bulk" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[16px] font-bold text-[#111]">{i.soAddSoldProducts}</h3>
+                <p className="mt-1 text-[13px] text-[#888]">{i.soAddSoldProductsDesc}</p>
+              </div>
+
+              {bulkItems.map((item, idx) => (
+                <div key={idx} className="rounded-xl border border-[#d0d0d0] bg-white p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[12px] font-bold text-[#e65100]">{i.soProduct} {idx + 1}</span>
+                    {bulkItems.length > 1 && (
+                      <button onClick={() => removeBulkItem(idx)} className="text-[#ccc] hover:text-[#c44]">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#999]">{i.soProduct}</label>
+                      <select
+                        value={item.product}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const inv = inventoryData.find((p) => p.name === val);
+                          setBulkItems((prev) => prev.map((it, j) => j === idx ? { ...it, product: val, pnc: inv?.pnc ?? "" } : it));
+                        }}
+                        className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] bg-white px-2 text-[12px] text-[#333] focus:border-[#e65100] focus:outline-none"
+                      >
+                        <option value="">Select...</option>
+                        {inventoryData.map((p) => <option key={p.pnc} value={p.name}>{p.name}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#999]">{i.soSaleDate}</label>
+                      <input type="date" value={item.date} onChange={(e) => updateBulkItem(idx, "date", e.target.value)} className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] px-2 text-[12px] text-[#333] focus:border-[#e65100] focus:outline-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-[#999]">{i.soSerialNumber} <span className="font-normal text-[#bbb]">(optional)</span></label>
+                    <input type="text" value={item.serial} onChange={(e) => updateBulkItem(idx, "serial", e.target.value)} placeholder={i.soSerialPlaceholder} className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] px-3 text-[12px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none" />
+                  </div>
+                </div>
+              ))}
+
+              <button onClick={addBulkRow} className="w-full rounded-lg border border-dashed border-[#d0d0d0] py-2.5 text-[12px] font-semibold text-[#888] transition-colors hover:border-[#999] hover:text-[#555]">
+                {i.soAddAnotherProduct}
+              </button>
+
+              <button
+                onClick={handleSubmitBulk}
+                disabled={!bulkItems.some((item) => item.product)}
+                className={`w-full rounded-lg py-3 text-[13px] font-bold text-white transition-colors ${bulkItems.some((item) => item.product) ? "bg-[#e65100] hover:bg-[#d84300]" : "bg-[#e0e0e0] cursor-not-allowed"}`}
+              >
+                {i.soSubmitBulk} ({bulkItems.filter((item) => item.product).length}) →
+              </button>
+            </div>
+          )}
+
+          {/* ── Step: Review (single) ── */}
+          {step === "review" && mode === "single" && selectedProduct && (
+            <div className="space-y-5">
+              <h3 className="text-[18px] font-bold text-[#111]">{i.soReviewTitle}</h3>
+
+              <div className="rounded-xl border border-[#d0d0d0] bg-white">
+                <div className="divide-y divide-[#f0f0f0]">
+                  {[
+                    [i.soProduct, selectedProduct.name],
+                    [i.soPnc, selectedProduct.pnc],
+                    [i.soSaleDate, saleDate],
+                    [i.soSerialNumberLabel, serialNumber || i.soNotProvided],
+                  ].map(([label, value]) => (
+                    <div key={label} className="flex items-center justify-between px-5 py-3">
+                      <span className="text-[12px] text-[#888]">{label}</span>
+                      <span className="text-[13px] font-semibold text-[#111]">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* What this unlocks */}
+              <div className="rounded-xl bg-[#fff8f0] px-5 py-4">
+                <p className="text-[12px] font-bold text-[#e65100]">{i.soWhatUnlocks}</p>
+                <div className="mt-2 space-y-1.5">
+                  {[i.soUnlockWarranty, i.soUnlockAnalytics, i.soUnlockBonus, i.soUnlockServices].map((txt) => (
+                    <div key={txt} className="flex items-center gap-2">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2e7d32" strokeWidth="2" strokeLinecap="round"><path d="M4 8l3 3 5-5" /></svg>
+                      <span className="text-[12px] text-[#555]">{txt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                onClick={handleSubmitSingle}
+                className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+              >
+                ✓ {i.soSubmitSellout}
+              </button>
+            </div>
+          )}
+
+          {/* ── Step: Done ── */}
+          {step === "done" && (
+            <div className="flex flex-col items-center pt-12">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e8f5e9]">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              </span>
+              <h3 className="mt-4 text-[18px] font-bold text-[#111]">{i.soSelloutReported}</h3>
+              <p className="mt-1 text-center text-[13px] text-[#888]">{i.soSelloutReportedDesc}</p>
+
+              <div className="mt-5 w-full space-y-2">
+                {[i.soUnlockWarranty, i.soUnlockAnalytics, i.soUnlockBonus, i.soUnlockServices].map((txt) => (
+                  <div key={txt} className="flex items-center gap-3 rounded-lg bg-[#fafafa] px-4 py-3">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#2e7d32" strokeWidth="2" strokeLinecap="round"><path d="M4 8l3 3 5-5" /></svg>
+                    <span className="text-[13px] text-[#333]">{txt}</span>
+                  </div>
+                ))}
+              </div>
+
+              {selectedProduct && (
+                <div className="mt-5 w-full rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-5 py-3">
+                  <p className="text-[11px] text-[#999]">Reported product</p>
+                  <p className="text-[13px] font-bold text-[#111]">{selectedProduct.name}</p>
+                  <p className="text-[11px] text-[#888]">PNC {selectedProduct.pnc} · Sold {saleDate}</p>
+                </div>
+              )}
+
+              <div className="mt-6 flex w-full gap-3">
+                <button onClick={onClose} className="flex-1 rounded-lg border border-[#d0d0d0] py-2.5 text-[13px] font-semibold text-[#555]">
+                  {i.soBackToOverview}
+                </button>
+                <button
+                  onClick={() => { setStep("choose"); setSelectedProduct(null); setSerialNumber(""); setPhotoScanned(false); setPncInput(""); setBulkItems([{ product: "", pnc: "", date: "2026-04-02", serial: "" }]); }}
+                  className="flex-1 rounded-lg bg-[#e65100] py-2.5 text-[13px] font-bold text-white"
+                >
+                  {i.soReportAnother} →
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
    QUESTIONNAIRE DRAWER — discussion guide
    ═══════════════════════════════════════════════════════ */
 
@@ -802,8 +1547,9 @@ export default function UserTest2026Page() {
 
   const missingCount = productData.filter((p) => p.soldDate === "missing").length;
 
-  const tabConfig: { id: Tab; label: string; badge?: number }[] = [
+  const tabConfig: { id: Tab; label: string; badge?: number; highlight?: boolean }[] = [
     { id: "products", label: i.tabProducts, badge: 87 },
+    { id: "sellout", label: i.tabSellout, badge: 14, highlight: true },
     { id: "customers", label: i.tabCustomers, badge: 142 },
     { id: "contracts", label: i.tabContracts, badge: 23 },
     { id: "today", label: i.tabToday, badge: 14 },
@@ -855,7 +1601,11 @@ export default function UserTest2026Page() {
                 <span className="flex items-center gap-1.5">
                   {tab.label}
                   {tab.badge !== undefined && (
-                    <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${activeTab === tab.id ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"}`}>{tab.badge}</span>
+                    <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                      activeTab === tab.id ? "bg-[#273A60] text-white" :
+                      tab.highlight ? "bg-[#e65100] text-white" :
+                      "bg-[#e5e5e5] text-[#888]"
+                    }`}>{tab.badge}</span>
                   )}
                 </span>
               </button>
@@ -964,6 +1714,8 @@ export default function UserTest2026Page() {
               </div>
             </div>
           )}
+
+          {activeTab === "sellout" && <SelloutView lang={lang} products={productData} onRegisterSale={(serial, date) => handleSalesDateRegistered(serial, date, "")} />}
 
           {activeTab === "contracts" && <div className="py-12 text-center"><p className="text-[14px] text-[#999]">{i.contractsPlaceholder}</p></div>}
           {activeTab === "today" && <div className="py-12 text-center"><p className="text-[14px] text-[#999]">{i.todayPlaceholder}</p></div>}
