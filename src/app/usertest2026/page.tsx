@@ -647,21 +647,30 @@ function StatusBadge({ status, lang }: { status: string; lang: Lang }) {
    ═══════════════════════════════════════════════════════ */
 
 const products = [
+  // Full data: serial + PNC + customer
   { model: "Automower 435X AWD", serial: "2024-435X-00891", pnc: "967 85 32-01", customer: "Lindström Fastigheter", soldDate: "2024-11-15", installed: "pending", warranty: "pending", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Automower 550X Mark II", serial: "2024-550X-01244", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: "completed", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active" },
-  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active" },
-  { model: "Automower 310 Mark II", serial: "2024-310M-02198", pnc: "967 85 21-03", customer: "Nilsson Villaservice", soldDate: "2024-12-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
   { model: "CEORA 526 EPOS", serial: "2024-C526-00045", pnc: "967 93 10-02", customer: "Karlsson Park & Trädgård", soldDate: "2024-08-14", installed: "completed", warranty: "active", serviceContract: "active", leasing: "active", hypercare: "active" },
-  { model: "Automower 450X NERA", serial: "2024-450N-01567", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: "completed", warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "Skogsservice Norr AB", soldDate: "2024-06-10", installed: "completed", warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "Fastighets AB Solbacken", soldDate: "2025-01-15", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 562XP", serial: "2024-562X-01987", pnc: "966 57 03-18", customer: "Lundgren Maskin AB", soldDate: "2024-06-20", installed: "completed", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Automower 320 NERA", serial: "2025-320N-00156", pnc: "967 85 25-01", customer: "Malmö Grönska HB", soldDate: "2025-02-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "Eriksson Trädgård AB", soldDate: "2024-11-08", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active" },
   { model: "Automower 430X NERA", serial: "2024-430N-02876", pnc: "585 57 28-01", customer: "Lindström Fastigheter", soldDate: "2024-05-12", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Automower 310 Mark II", serial: "2025-310M-03401", pnc: "967 85 21-03", customer: "Villa Ekbacken", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 562XP", serial: "2025-562X-02100", pnc: "966 57 03-18", customer: "Skog & Mark HB", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
+
+  // PNC + customer, no serial (reported sell-out with customer but no unit tracking)
+  { model: "Automower 550X Mark II", serial: "—", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: "completed", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Automower 450X NERA", serial: "—", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: "completed", warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—" },
+
+  // PNC + serial, no customer (reported sell-out with unit tracking but no customer info yet)
+  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "—", soldDate: "2024-06-10", installed: "completed", warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—" },
+  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "—", soldDate: "2024-11-08", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "—", soldDate: "2025-01-15", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+
+  // PNC only, no serial, no customer (minimum sell-out report: just PNC + date)
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "2024-12-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "2024-06-20", installed: "completed", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—" },
+  { model: "Automower 320 NERA", serial: "—", pnc: "967 85 25-01", customer: "—", soldDate: "2025-02-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+
+  // Missing sold date entirely
+  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active" },
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
 ];
 
 const existingCustomers = [
@@ -1073,7 +1082,7 @@ function SelloutView({ lang, products, onRegisterSale }: { lang: Lang; products:
   );
 }
 
-function ReportSelloutDrawer({ lang, preselected, onClose, onRegisterSale }: { lang: Lang; preselected?: InventoryItem | null; onClose: () => void; onRegisterSale: (serial: string, date: string) => void }) {
+function ReportSelloutDrawer({ lang, preselected, prefillSerial, prefillCustomer, onClose, onRegisterSale }: { lang: Lang; preselected?: InventoryItem | null; prefillSerial?: string; prefillCustomer?: string; onClose: () => void; onRegisterSale: (serial: string, date: string) => void }) {
   const i = t[lang];
   const [step, setStep] = useState<SelloutStep>(preselected ? "sale-details" : "choose");
   const [mode, setMode] = useState<SelloutMode>("single");
@@ -1084,7 +1093,8 @@ function ReportSelloutDrawer({ lang, preselected, onClose, onRegisterSale }: { l
   const [pncInput, setPncInput] = useState("");
   const [photoScanned, setPhotoScanned] = useState(false);
   const [saleDate, setSaleDate] = useState("2026-04-02");
-  const [serialNumber, setSerialNumber] = useState("");
+  const [serialNumber, setSerialNumber] = useState(prefillSerial ?? "");
+  const [saleCustomer, setSaleCustomer] = useState(prefillCustomer ?? "");
 
   // Bulk flow state
   const [bulkItems, setBulkItems] = useState<BulkItem[]>([
@@ -1346,6 +1356,20 @@ function ReportSelloutDrawer({ lang, preselected, onClose, onRegisterSale }: { l
                 />
               </div>
 
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">
+                  {i.salesDateCustomer} <span className="font-normal text-[#999]">(optional)</span>
+                </label>
+                <select
+                  value={saleCustomer}
+                  onChange={(e) => setSaleCustomer(e.target.value)}
+                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] bg-white px-3 text-[13px] text-[#333] focus:border-[#e65100] focus:outline-none"
+                >
+                  <option value="">{i.selectCustomer}</option>
+                  {existingCustomers.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+
               <button
                 onClick={() => setStep("review")}
                 className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
@@ -1427,6 +1451,7 @@ function ReportSelloutDrawer({ lang, preselected, onClose, onRegisterSale }: { l
                     [i.soPnc, selectedProduct.pnc],
                     [i.soSaleDate, saleDate],
                     [i.soSerialNumberLabel, serialNumber || i.soNotProvided],
+                    [i.salesDateCustomer, saleCustomer || i.soNotProvided],
                   ].map(([label, value]) => (
                     <div key={label} className="flex items-center justify-between px-5 py-3">
                       <span className="text-[12px] text-[#888]">{label}</span>
@@ -1588,6 +1613,7 @@ export default function UserTest2026Page() {
   const [showSalesDatePicker, setShowSalesDatePicker] = useState(false);
   const [salesDateProduct, setSalesDateProduct] = useState<typeof products[0] | null>(null);
   const [reportSelloutFromPill, setReportSelloutFromPill] = useState<InventoryItem | null>(null);
+  const [reportSelloutPrefill, setReportSelloutPrefill] = useState<{ serial?: string; customer?: string }>({});
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
 
@@ -1709,8 +1735,8 @@ export default function UserTest2026Page() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#f0f0f0]">
-                    {productData.map((p) => (
-                      <tr key={p.serial} className="transition-colors hover:bg-[#fafafa]">
+                    {productData.map((p, idx) => (
+                      <tr key={`${p.pnc}-${p.serial}-${idx}`} className="transition-colors hover:bg-[#fafafa]">
                         <td className="px-4 py-3"><input type="checkbox" className="rounded border-[#ccc]" /></td>
                         <td className="px-3 py-3"><span className="text-[13px] font-semibold text-[#273A60]">{p.model}</span></td>
                         <td className="px-3 py-3"><span className="block text-[12px] font-medium text-[#333]">{p.serial}</span><span className="text-[10px] text-[#aaa]">{p.pnc}</span></td>
@@ -1719,6 +1745,10 @@ export default function UserTest2026Page() {
                           {p.soldDate === "missing" ? (
                             <button onClick={() => {
                               const inv = inventoryData.find((inv) => p.model.includes(inv.name)) ?? { name: p.model, pnc: p.pnc, category: "—", stock: 0 };
+                              setReportSelloutPrefill({
+                                serial: p.serial !== "—" ? p.serial : undefined,
+                                customer: p.customer !== "—" ? p.customer : undefined,
+                              });
                               setReportSelloutFromPill(inv);
                             }} className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44] transition-colors hover:bg-[#c44] hover:text-white">
                               {i.missing}
@@ -1817,10 +1847,13 @@ export default function UserTest2026Page() {
         <ReportSelloutDrawer
           lang={lang}
           preselected={reportSelloutFromPill}
-          onClose={() => setReportSelloutFromPill(null)}
+          prefillSerial={reportSelloutPrefill.serial}
+          prefillCustomer={reportSelloutPrefill.customer}
+          onClose={() => { setReportSelloutFromPill(null); setReportSelloutPrefill({}); }}
           onRegisterSale={(serial, date) => {
             handleSalesDateRegistered(serial, date, "");
             setReportSelloutFromPill(null);
+            setReportSelloutPrefill({});
           }}
         />
       )}
