@@ -1049,16 +1049,6 @@ function SelloutView({ lang, products, onRegisterSale }: { lang: Lang; products:
         </div>
       </div>
 
-      {/* Missing sell-outs alert */}
-      {missingProducts.length > 0 && (
-        <div className="flex items-center gap-3 rounded-xl border-l-4 border-l-[#e65100] bg-[#fff8f0] px-5 py-3">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e65100] text-[12px] font-bold text-white">{missingProducts.length}</span>
-          <div>
-            <p className="text-[13px] font-semibold text-[#111]">{i.missingSoldDate}</p>
-            <p className="text-[12px] text-[#888]">{missingProducts.map((p) => p.model).join(", ")}</p>
-          </div>
-        </div>
-      )}
 
       {/* Recent sell-outs */}
       <div className="rounded-xl border border-[#d0d0d0] bg-white">
