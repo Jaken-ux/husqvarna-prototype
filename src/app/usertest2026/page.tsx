@@ -1587,6 +1587,7 @@ export default function UserTest2026Page() {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showSalesDatePicker, setShowSalesDatePicker] = useState(false);
   const [salesDateProduct, setSalesDateProduct] = useState<typeof products[0] | null>(null);
+  const [reportSelloutFromPill, setReportSelloutFromPill] = useState<InventoryItem | null>(null);
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
 
@@ -1716,7 +1717,10 @@ export default function UserTest2026Page() {
                         <td className="px-3 py-3 text-[12px] text-[#555]">{p.customer}</td>
                         <td className="px-3 py-3">
                           {p.soldDate === "missing" ? (
-                            <button onClick={() => setSalesDateProduct(p)} className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44] transition-colors hover:bg-[#c44] hover:text-white">
+                            <button onClick={() => {
+                              const inv = inventoryData.find((inv) => p.model.includes(inv.name)) ?? { name: p.model, pnc: p.pnc, category: "—", stock: 0 };
+                              setReportSelloutFromPill(inv);
+                            }} className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44] transition-colors hover:bg-[#c44] hover:text-white">
                               {i.missing}
                               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 3v6M3 6h6" /></svg>
                             </button>
@@ -1807,6 +1811,17 @@ export default function UserTest2026Page() {
           lang={lang}
           onClose={() => setSalesDateProduct(null)}
           onRegister={handleSalesDateRegistered}
+        />
+      )}
+      {reportSelloutFromPill && (
+        <ReportSelloutDrawer
+          lang={lang}
+          preselected={reportSelloutFromPill}
+          onClose={() => setReportSelloutFromPill(null)}
+          onRegisterSale={(serial, date) => {
+            handleSalesDateRegistered(serial, date, "");
+            setReportSelloutFromPill(null);
+          }}
         />
       )}
       {showQuestionnaire && <QuestionnaireDrawer lang={lang} onClose={() => setShowQuestionnaire(false)} />}
