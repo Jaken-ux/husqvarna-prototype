@@ -72,6 +72,9 @@ const t: Record<Lang, Record<string, string>> = {
     qScano3: "Husqvarna PNC",
     qScano4: "Serial number",
     qScano5: "We don't scan products",
+    tagProducts: "Products",
+    tagSellout: "Sell-out",
+    tagGeneral: "General",
     colStatus: "Status",
     statusActive: "Active",
     statusExpiring: "Expiring",
@@ -276,6 +279,9 @@ const t: Record<Lang, Record<string, string>> = {
     qScano3: "Husqvarna PNC",
     qScano4: "Seriennummer",
     qScano5: "Wir scannen keine Produkte",
+    tagProducts: "Produkte",
+    tagSellout: "Sell-out",
+    tagGeneral: "Allgemein",
     colStatus: "Status",
     statusActive: "Aktiv",
     statusExpiring: "Läuft ab",
@@ -479,6 +485,9 @@ const t: Record<Lang, Record<string, string>> = {
     qScano3: "PNC Husqvarna",
     qScano4: "Numéro de série",
     qScano5: "Nous ne scannons pas les produits",
+    tagProducts: "Produits",
+    tagSellout: "Sell-out",
+    tagGeneral: "Général",
     colStatus: "Statut",
     statusActive: "Actif",
     statusExpiring: "Expire bientôt",
@@ -1580,10 +1589,13 @@ function ReportSelloutDrawer({ lang, preselected, prefillSerial, prefillCustomer
    QUESTIONNAIRE DRAWER — discussion guide
    ═══════════════════════════════════════════════════════ */
 
-function DiscussionQuestion({ num, question, options }: { num: string; question: string; options: string[] }) {
+function DiscussionQuestion({ num, question, options, tag }: { num: string; question: string; options: string[]; tag?: string }) {
   return (
     <div>
-      <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
+        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
+      </div>
       <div className="mt-2 space-y-1">
         {options.map((opt, i) => (
           <div key={i} className="flex items-start gap-2.5 rounded-lg bg-[#fafafa] px-4 py-2.5">
@@ -1596,10 +1608,13 @@ function DiscussionQuestion({ num, question, options }: { num: string; question:
   );
 }
 
-function OpenQuestion({ num, question, hint }: { num: string; question: string; hint: string }) {
+function OpenQuestion({ num, question, hint, tag }: { num: string; question: string; hint: string; tag?: string }) {
   return (
     <div>
-      <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
+        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
+      </div>
       <div className="mt-2 rounded-lg border border-dashed border-[#d0d0d0] bg-[#fafafa] px-4 py-3">
         <p className="text-[12px] italic text-[#aaa]">{hint}</p>
       </div>
@@ -1630,16 +1645,16 @@ function QuestionnaireDrawer({ lang, onClose }: { lang: Lang; onClose: () => voi
             <p className="mt-3 text-[12px] font-semibold text-[#273A60]">{i.qInstructions}</p>
           </div>
 
-          <DiscussionQuestion num="1" question={i.q1} options={[i.q1o1, i.q1o2, i.q1o3, i.q1o4]} />
-          <DiscussionQuestion num="2" question={i.q2} options={[i.q2o1, i.q2o2, i.q2o3, i.q2o4]} />
-          <DiscussionQuestion num="3" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} />
-          <DiscussionQuestion num="4" question={i.qScan} options={[i.qScano1, i.qScano2, i.qScano3, i.qScano4, i.qScano5]} />
-          <DiscussionQuestion num="5" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
-          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
-          <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
-          <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
-          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} />
-          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} />
+          <DiscussionQuestion num="1" question={i.q1} options={[i.q1o1, i.q1o2, i.q1o3, i.q1o4]} tag={i.tagProducts} />
+          <DiscussionQuestion num="2" question={i.q2} options={[i.q2o1, i.q2o2, i.q2o3, i.q2o4]} tag={i.tagProducts} />
+          <DiscussionQuestion num="3" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} tag={i.tagProducts} />
+          <DiscussionQuestion num="4" question={i.qScan} options={[i.qScano1, i.qScano2, i.qScano3, i.qScano4, i.qScano5]} tag={i.tagProducts} />
+          <DiscussionQuestion num="5" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} tag={i.tagProducts} />
+          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} tag={i.tagSellout} />
+          <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} tag={i.tagSellout} />
+          <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} tag={i.tagSellout} />
+          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} tag={i.tagGeneral} />
+          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} tag={i.tagGeneral} />
         </div>
       </div>
     </>
