@@ -1635,12 +1635,11 @@ function QuestionnaireDrawer({ lang, onClose }: { lang: Lang; onClose: () => voi
           <DiscussionQuestion num="3" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} />
           <DiscussionQuestion num="4" question={i.qScan} options={[i.qScano1, i.qScano2, i.qScano3, i.qScano4, i.qScano5]} />
           <DiscussionQuestion num="5" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
-          <DiscussionQuestion num="6" question={i.q5} options={[i.q5o1, i.q5o2, i.q5o3, i.q5o4]} />
-          <DiscussionQuestion num="7" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
-          <DiscussionQuestion num="8" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
-          <DiscussionQuestion num="9" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
-          <OpenQuestion num="10" question={i.q11} hint={i.q11placeholder} />
-          <OpenQuestion num="11" question={i.q12} hint={i.q12placeholder} />
+          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
+          <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
+          <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
+          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} />
+          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} />
         </div>
       </div>
     </>
