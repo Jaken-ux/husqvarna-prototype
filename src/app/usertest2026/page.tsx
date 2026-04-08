@@ -63,7 +63,9 @@ const t: Record<Lang, Record<string, string>> = {
     colContact: "Contact person",
     colProducts: "Products",
     colContracts: "Contracts",
-    colProgram: "Program",
+    colProgram: "Service",
+    addCustomer: "+ Add customer",
+    addContract: "+ Add contract",
     colStatus: "Status",
     statusActive: "Active",
     statusExpiring: "Expiring",
@@ -259,7 +261,9 @@ const t: Record<Lang, Record<string, string>> = {
     colContact: "Kontaktperson",
     colProducts: "Produkte",
     colContracts: "Verträge",
-    colProgram: "Programm",
+    colProgram: "Service",
+    addCustomer: "+ Kunde hinzufügen",
+    addContract: "+ Vertrag hinzufügen",
     colStatus: "Status",
     statusActive: "Aktiv",
     statusExpiring: "Läuft ab",
@@ -454,7 +458,9 @@ const t: Record<Lang, Record<string, string>> = {
     colContact: "Personne de contact",
     colProducts: "Produits",
     colContracts: "Contrats",
-    colProgram: "Programme",
+    colProgram: "Service",
+    addCustomer: "+ Ajouter un client",
+    addContract: "+ Ajouter un contrat",
     colStatus: "Statut",
     statusActive: "Actif",
     statusExpiring: "Expire bientôt",
@@ -1793,9 +1799,15 @@ export default function UserTest2026Page() {
 
           {activeTab === "customers" && (
             <div className="space-y-5">
-              <div>
-                <h2 className="text-base font-semibold text-[#111]">{i.customerOverview}</h2>
-                <p className="text-[12px] text-[#888]">{i.customerOverviewDesc}</p>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-base font-semibold text-[#111]">{i.customerOverview}</h2>
+                  <p className="text-[12px] text-[#888]">{i.customerOverviewDesc}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">{i.addCustomer}</button>
+                  <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">{i.addContract}</button>
+                </div>
               </div>
               <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
                 <table className="w-full min-w-[700px] text-left">
