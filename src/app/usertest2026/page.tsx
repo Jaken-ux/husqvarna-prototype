@@ -1390,6 +1390,27 @@ function ReportSelloutDrawer({ lang, preselected, prefillSerial, prefillCustomer
                 <p className="mt-1 text-[13px] text-[#888]">{i.soAddSoldProductsDesc}</p>
               </div>
 
+              {/* Input method tabs */}
+              <div className="flex rounded-lg border border-[#e0e0e0] bg-[#f5f5f5] p-0.5">
+                {([
+                  { id: "manual", label: i.manualTab, icon: "M13.5 3.5l3 3L7 16l-4 1 1-4L13.5 3.5z" },
+                  { id: "scan", label: i.scanTab, icon: "M3 3h4M17 3h-4M3 3v4M17 3v4M3 17h4M17 17h-4M3 17v-4M17 17v-4M7 7h6v6H7z" },
+                  { id: "upload", label: i.uploadTab, icon: "M12 15V3M12 3l-4 4M12 3l4 4M4 17h16" },
+                ] as { id: string; label: string; icon: string }[]).map((tab) => (
+                  <button
+                    key={tab.id}
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[12px] font-semibold transition-all ${
+                      tab.id === "manual" ? "bg-white text-[#111] shadow-sm" : "text-[#888]"
+                    }`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={tab.icon} />
+                    </svg>
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
               {bulkItems.map((item, idx) => (
                 <div key={idx} className="rounded-xl border border-[#d0d0d0] bg-white p-4 space-y-3">
                   <div className="flex items-center justify-between">
