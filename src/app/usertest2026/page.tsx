@@ -120,10 +120,11 @@ const t: Record<Lang, Record<string, string>> = {
     q5o2: "Yes, in spreadsheets",
     q5o3: "No, we do not track individual products",
     q5o4: "Partially — only for some product types",
-    q6: "Would you prefer to add products one by one or in bulk?",
-    q6o1: "One by one — as they arrive or are sold",
-    q6o2: "In bulk — periodic batch uploads",
+    q6: "Would you prefer to add products and report sell-outs one by one or in bulk?",
+    q6o1: "One by one — as each product arrives or is sold",
+    q6o2: "In bulk — periodic batch uploads or reports",
     q6o3: "Both — depending on the situation",
+    q6o4: "Automatically synced from my own system",
     q7: "How useful would the sell-out reporting feature be for your business?",
     q7o1: "Very useful — I would report every sale",
     q7o2: "Somewhat useful — I would report regularly",
@@ -315,10 +316,11 @@ const t: Record<Lang, Record<string, string>> = {
     q5o2: "Ja, in Tabellenkalkulationen",
     q5o3: "Nein, wir verfolgen keine einzelnen Produkte",
     q5o4: "Teilweise — nur für bestimmte Produkttypen",
-    q6: "Würden Sie Produkte lieber einzeln oder in großen Mengen hinzufügen?",
-    q6o1: "Einzeln — wenn sie ankommen oder verkauft werden",
-    q6o2: "In großen Mengen — periodische Batch-Uploads",
+    q6: "Würden Sie Produkte und Sell-outs lieber einzeln oder in großen Mengen erfassen?",
+    q6o1: "Einzeln — bei Ankunft oder Verkauf jedes Produkts",
+    q6o2: "In großen Mengen — periodische Batch-Uploads oder Meldungen",
     q6o3: "Beides — je nach Situation",
+    q6o4: "Automatische Synchronisation aus meinem eigenen System",
     q7: "Wie nützlich wäre die Sell-out-Meldefunktion für Ihr Geschäft?",
     q7o1: "Sehr nützlich — ich würde jeden Verkauf melden",
     q7o2: "Ziemlich nützlich — ich würde regelmäßig melden",
@@ -509,10 +511,11 @@ const t: Record<Lang, Record<string, string>> = {
     q5o2: "Oui, dans des tableurs",
     q5o3: "Non, nous ne suivons pas les produits individuels",
     q5o4: "Partiellement — uniquement pour certains types de produits",
-    q6: "Préféreriez-vous ajouter des produits un par un ou en masse ?",
-    q6o1: "Un par un — à leur arrivée ou vente",
-    q6o2: "En masse — uploads périodiques par lots",
+    q6: "Préféreriez-vous ajouter des produits et déclarer des sell-outs un par un ou en masse ?",
+    q6o1: "Un par un — à l'arrivée ou à la vente de chaque produit",
+    q6o2: "En masse — uploads ou déclarations périodiques par lots",
     q6o3: "Les deux — selon la situation",
+    q6o4: "Synchronisation automatique depuis mon propre système",
     q7: "Quelle serait l'utilité de la fonction de déclaration sell-out pour votre activité ?",
     q7o1: "Très utile — je déclarerais chaque vente",
     q7o2: "Assez utile — je déclarerais régulièrement",
@@ -1584,16 +1587,14 @@ function QuestionnaireDrawer({ lang, onClose }: { lang: Lang; onClose: () => voi
 
           <DiscussionQuestion num="1" question={i.q1} options={[i.q1o1, i.q1o2, i.q1o3, i.q1o4]} />
           <DiscussionQuestion num="2" question={i.q2} options={[i.q2o1, i.q2o2, i.q2o3, i.q2o4]} />
-          <DiscussionQuestion num="3" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
-          <DiscussionQuestion num="4" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} />
+          <DiscussionQuestion num="3" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} />
+          <DiscussionQuestion num="4" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
           <DiscussionQuestion num="5" question={i.q5} options={[i.q5o1, i.q5o2, i.q5o3, i.q5o4]} />
-          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3]} />
+          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
           <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
           <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
-          <DiscussionQuestion num="9" question={i.q9} options={[i.q9o1, i.q9o2, i.q9o3, i.q9o4]} />
-          <DiscussionQuestion num="10" question={i.q10} options={[i.q10o1, i.q10o2, i.q10o3, i.q10o4]} />
-          <OpenQuestion num="11" question={i.q11} hint={i.q11placeholder} />
-          <OpenQuestion num="12" question={i.q12} hint={i.q12placeholder} />
+          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} />
+          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} />
         </div>
       </div>
     </>
