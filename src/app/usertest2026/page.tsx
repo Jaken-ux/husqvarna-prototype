@@ -74,7 +74,13 @@ const t: Record<Lang, Record<string, string>> = {
     qScano5: "We don't scan products",
     tagProducts: "Products",
     tagSellout: "Sell-out",
+    tagCustomers: "Customer overview",
     tagGeneral: "General",
+    qCust: "How useful would this customer overview be in your daily work?",
+    qCusto1: "Very useful — I would use it daily",
+    qCusto2: "Somewhat useful — I would check it regularly",
+    qCusto3: "Limited use — only occasionally",
+    qCusto4: "Not useful for my workflow",
     colStatus: "Status",
     statusActive: "Active",
     statusExpiring: "Expiring",
@@ -281,7 +287,13 @@ const t: Record<Lang, Record<string, string>> = {
     qScano5: "Wir scannen keine Produkte",
     tagProducts: "Produkte",
     tagSellout: "Sell-out",
+    tagCustomers: "Kundenübersicht",
     tagGeneral: "Allgemein",
+    qCust: "Wie nützlich wäre diese Kundenübersicht in Ihrer täglichen Arbeit?",
+    qCusto1: "Sehr nützlich — ich würde sie täglich nutzen",
+    qCusto2: "Ziemlich nützlich — ich würde sie regelmäßig prüfen",
+    qCusto3: "Begrenzt nützlich — nur gelegentlich",
+    qCusto4: "Nicht nützlich für meinen Arbeitsablauf",
     colStatus: "Status",
     statusActive: "Aktiv",
     statusExpiring: "Läuft ab",
@@ -487,7 +499,13 @@ const t: Record<Lang, Record<string, string>> = {
     qScano5: "Nous ne scannons pas les produits",
     tagProducts: "Produits",
     tagSellout: "Sell-out",
+    tagCustomers: "Aperçu clients",
     tagGeneral: "Général",
+    qCust: "Quelle serait l'utilité de cet aperçu des clients dans votre travail quotidien ?",
+    qCusto1: "Très utile — je l'utiliserais quotidiennement",
+    qCusto2: "Assez utile — je le consulterais régulièrement",
+    qCusto3: "Utilité limitée — seulement occasionnellement",
+    qCusto4: "Pas utile pour mon activité",
     colStatus: "Statut",
     statusActive: "Actif",
     statusExpiring: "Expire bientôt",
@@ -1594,7 +1612,7 @@ function DiscussionQuestion({ num, question, options, tag }: { num: string; ques
     <div>
       <div className="flex items-center gap-2">
         <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
-        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
+        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : /^(Customer|Kunden|Aperçu)/.test(tag) ? "bg-[#e8f5e9] text-[#2e7d32]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
       </div>
       <div className="mt-2 space-y-1">
         {options.map((opt, i) => (
@@ -1613,7 +1631,7 @@ function OpenQuestion({ num, question, hint, tag }: { num: string; question: str
     <div>
       <div className="flex items-center gap-2">
         <p className="text-[14px] font-bold text-[#111]">{num}. {question}</p>
-        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
+        {tag && <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${tag === "Sell-out" ? "bg-[#fff3e0] text-[#e65100]" : /^(Products|Produkte|Produits)$/.test(tag) ? "bg-[#e3f2fd] text-[#1565c0]" : /^(Customer|Kunden|Aperçu)/.test(tag) ? "bg-[#e8f5e9] text-[#2e7d32]" : "bg-[#f5f5f5] text-[#888]"}`}>{tag}</span>}
       </div>
       <div className="mt-2 rounded-lg border border-dashed border-[#d0d0d0] bg-[#fafafa] px-4 py-3">
         <p className="text-[12px] italic text-[#aaa]">{hint}</p>
@@ -1653,8 +1671,9 @@ function QuestionnaireDrawer({ lang, onClose }: { lang: Lang; onClose: () => voi
           <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} tag={i.tagSellout} />
           <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} tag={i.tagSellout} />
           <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} tag={i.tagSellout} />
-          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} tag={i.tagGeneral} />
-          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} tag={i.tagGeneral} />
+          <DiscussionQuestion num="9" question={i.qCust} options={[i.qCusto1, i.qCusto2, i.qCusto3, i.qCusto4]} tag={i.tagCustomers} />
+          <OpenQuestion num="10" question={i.q11} hint={i.q11placeholder} tag={i.tagGeneral} />
+          <OpenQuestion num="11" question={i.q12} hint={i.q12placeholder} tag={i.tagGeneral} />
         </div>
       </div>
     </>
