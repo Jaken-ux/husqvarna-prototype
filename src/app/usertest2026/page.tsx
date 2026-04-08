@@ -66,6 +66,12 @@ const t: Record<Lang, Record<string, string>> = {
     colProgram: "Service",
     addCustomer: "+ Add customer",
     addContract: "+ Add contract",
+    qScan: "What data do you save from scanning products?",
+    qScano1: "GTIN / EAN",
+    qScano2: "Own SKU / internal article number",
+    qScano3: "Husqvarna PNC",
+    qScano4: "Serial number",
+    qScano5: "We don't scan products",
     colStatus: "Status",
     statusActive: "Active",
     statusExpiring: "Expiring",
@@ -264,6 +270,12 @@ const t: Record<Lang, Record<string, string>> = {
     colProgram: "Service",
     addCustomer: "+ Kunde hinzufügen",
     addContract: "+ Vertrag hinzufügen",
+    qScan: "Welche Daten speichern Sie beim Scannen von Produkten?",
+    qScano1: "GTIN / EAN",
+    qScano2: "Eigene SKU / interne Artikelnummer",
+    qScano3: "Husqvarna PNC",
+    qScano4: "Seriennummer",
+    qScano5: "Wir scannen keine Produkte",
     colStatus: "Status",
     statusActive: "Aktiv",
     statusExpiring: "Läuft ab",
@@ -461,6 +473,12 @@ const t: Record<Lang, Record<string, string>> = {
     colProgram: "Service",
     addCustomer: "+ Ajouter un client",
     addContract: "+ Ajouter un contrat",
+    qScan: "Quelles données enregistrez-vous lors du scan de produits ?",
+    qScano1: "GTIN / EAN",
+    qScano2: "SKU propre / numéro d'article interne",
+    qScano3: "PNC Husqvarna",
+    qScano4: "Numéro de série",
+    qScano5: "Nous ne scannons pas les produits",
     colStatus: "Statut",
     statusActive: "Actif",
     statusExpiring: "Expire bientôt",
@@ -1615,13 +1633,14 @@ function QuestionnaireDrawer({ lang, onClose }: { lang: Lang; onClose: () => voi
           <DiscussionQuestion num="1" question={i.q1} options={[i.q1o1, i.q1o2, i.q1o3, i.q1o4]} />
           <DiscussionQuestion num="2" question={i.q2} options={[i.q2o1, i.q2o2, i.q2o3, i.q2o4]} />
           <DiscussionQuestion num="3" question={i.q4} options={[i.q4o1, i.q4o2, i.q4o3, i.q4o4]} />
-          <DiscussionQuestion num="4" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
-          <DiscussionQuestion num="5" question={i.q5} options={[i.q5o1, i.q5o2, i.q5o3, i.q5o4]} />
-          <DiscussionQuestion num="6" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
-          <DiscussionQuestion num="7" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
-          <DiscussionQuestion num="8" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
-          <OpenQuestion num="9" question={i.q11} hint={i.q11placeholder} />
-          <OpenQuestion num="10" question={i.q12} hint={i.q12placeholder} />
+          <DiscussionQuestion num="4" question={i.qScan} options={[i.qScano1, i.qScano2, i.qScano3, i.qScano4, i.qScano5]} />
+          <DiscussionQuestion num="5" question={i.q3} options={[i.q3o1, i.q3o2, i.q3o3, i.q3o4]} />
+          <DiscussionQuestion num="6" question={i.q5} options={[i.q5o1, i.q5o2, i.q5o3, i.q5o4]} />
+          <DiscussionQuestion num="7" question={i.q6} options={[i.q6o1, i.q6o2, i.q6o3, i.q6o4]} />
+          <DiscussionQuestion num="8" question={i.q7} options={[i.q7o1, i.q7o2, i.q7o3, i.q7o4]} />
+          <DiscussionQuestion num="9" question={i.q8} options={[i.q8o1, i.q8o2, i.q8o3, i.q8o4, i.q8o5]} />
+          <OpenQuestion num="10" question={i.q11} hint={i.q11placeholder} />
+          <OpenQuestion num="11" question={i.q12} hint={i.q12placeholder} />
         </div>
       </div>
     </>
