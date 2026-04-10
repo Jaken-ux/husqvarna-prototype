@@ -6,10 +6,11 @@ import { useState, Fragment } from "react";
    i18n
    ═══════════════════════════════════════════════════════ */
 
-type Lang = "en" | "de" | "fr";
+type Lang = "en" | "sv" | "de" | "fr";
 
 const langs: { id: Lang; label: string; flag: string }[] = [
   { id: "en", label: "English", flag: "🇬🇧" },
+  { id: "sv", label: "Svenska", flag: "🇸🇪" },
   { id: "de", label: "Deutsch", flag: "🇩🇪" },
   { id: "fr", label: "Français", flag: "🇫🇷" },
 ];
@@ -51,6 +52,7 @@ const t: Record<Lang, Record<string, string>> = {
     colServiceContract: "Service contract",
     colLeasing: "Leasing",
     colHyperCare: "HyperCare",
+    colLastUpdated: "Last updated",
     missing: "Missing",
     filterAll: "All",
     filterHyperCare: "HyperCare",
@@ -241,6 +243,232 @@ const t: Record<Lang, Record<string, string>> = {
     soAddAnotherProduct: "+ Add another product",
     soSubmitBulk: "Submit sell-outs",
   },
+  sv: {
+    title: "Återförsäljararbetsyta",
+    subtitle: "Enhetlig arbetsyta — produkter, kunder, avtal och dagliga uppgifter",
+    lastUpdated: "Senast uppdaterad: idag 09:15",
+    tabProducts: "Produkter",
+    tabCustomers: "Kunder",
+    tabContracts: "Avtal & program",
+    tabToday: "Idag",
+    allProducts: "Alla produkter",
+    allProductsDesc: "Produkter under din hantering — filtrera efter program och status",
+    addProduct: "+ Lägg till produkt",
+    addSalesDate: "Lägg till säljdatum",
+    export: "Exportera",
+    selectProduct: "Välj en produkt för att registrera säljdatum",
+    salesDateTitle: "Registrera säljdatum",
+    salesDateLabel: "Säljdatum *",
+    salesDateHelper: "Datum då produkten såldes till slutkund",
+    salesDateCustomer: "Kund",
+    salesDateCustomerHelper: "Slutkund som köpte produkten",
+    salesDateComment: "Kommentar",
+    salesDateCommentHelper: "Valfri notering om försäljningen",
+    salesDateRegister: "Registrera säljdatum",
+    salesDateRegistered: "✓ Registrerat!",
+    salesDateSearchPlaceholder: "Sök kund...",
+    salesDateMissingBadge: "Saknar säljdatum",
+    missingSoldDate: "Produkter saknar säljdatum",
+    missingSoldDateDesc: "Klicka på \"Saknas\" i tabellen för att registrera",
+    colModel: "Modell",
+    colSerialPnc: "Serie / PNC",
+    colCustomer: "Kund",
+    colSoldDate: "Säljdatum",
+    colInstallation: "Installation",
+    colWarranty: "Garanti",
+    colServiceContract: "Serviceavtal",
+    colLeasing: "Leasing",
+    colHyperCare: "HyperCare",
+    colLastUpdated: "Senast uppdaterad",
+    missing: "Saknas",
+    filterAll: "Alla",
+    filterHyperCare: "HyperCare",
+    filterServicePlus: "Service Plus",
+    filterLeasePlus: "Lease Plus",
+    filterMissingData: "Saknar data",
+    filterNeedsRenewal: "Behöver förnyelse",
+    customerOverview: "Kundöversikt",
+    customerOverviewDesc: "Alla kunder du stöttar — klicka för detaljer",
+    colContact: "Kontaktperson",
+    colProducts: "Produkter",
+    colContracts: "Avtal",
+    colProgram: "Service",
+    addCustomer: "+ Lägg till kund",
+    addContract: "+ Lägg till avtal",
+    addCustomerTitle: "Lägg till kund",
+    custCompanyName: "Företagsnamn *",
+    custContactPerson: "Kontaktperson",
+    custEmail: "E-post",
+    custPhone: "Telefon",
+    custAddress: "Adress",
+    custCity: "Ort",
+    custPostalCode: "Postnummer",
+    custCountry: "Land",
+    custOrgNr: "Org.-nr / Moms-nr",
+    custNotes: "Anteckningar",
+    custNotesPlaceholder: "Interna anteckningar om kunden...",
+    custSave: "Spara kund",
+    qScan: "Vilken data sparar du när du scannar produkter?",
+    qScano1: "GTIN / EAN",
+    qScano2: "Egen SKU / internt artikelnummer",
+    qScano3: "Husqvarna PNC",
+    qScano4: "Serienummer",
+    qScano5: "Vi scannar inte produkter",
+    tagProducts: "Produkter",
+    tagSellout: "Sell-out",
+    tagCustomers: "Kundöversikt",
+    tagGeneral: "Allmänt",
+    qCust: "Hur användbar skulle denna kundöversikt vara i ditt dagliga arbete?",
+    qCusto1: "Mycket användbar — jag skulle använda den dagligen",
+    qCusto2: "Ganska användbar — jag skulle kolla den regelbundet",
+    qCusto3: "Begränsad användning — bara ibland",
+    qCusto4: "Inte användbar för mitt arbetsflöde",
+    colStatus: "Status",
+    statusActive: "Aktiv",
+    statusExpiring: "Löper ut",
+    statusExpired: "Utgånget",
+    statusPending: "Väntar",
+    statusMissing: "Saknas",
+    statusCompleted: "Klar",
+    contractsPlaceholder: "Avtal & program — se hela prototypen",
+    todayPlaceholder: "Idag — se hela prototypen",
+    addProductTitle: "Lägg till produkt",
+    scanTab: "QR / Streckkod",
+    manualTab: "Manuell",
+    uploadTab: "Ladda upp fil",
+    scanning: "Scannar...",
+    scanQr: "Scanna produktens QR-kod",
+    startCamera: "Starta kamera",
+    productIdentified: "Produkt identifierad via QR",
+    modelLabel: "Modell *",
+    serialLabel: "Serienummer *",
+    pncLabel: "Artikelnummer (PNC)",
+    customerLabel: "Tilldela kund",
+    selectCustomer: "Välj kund (valfritt)",
+    cancel: "Avbryt",
+    registerProduct: "Registrera produkt",
+    added: "✓ Tillagd!",
+    dragDrop: "Dra och släpp filen här",
+    chooseFile: "Välj fil",
+    acceptedFormats: "Accepterade format",
+    questionnaire: "Frågeformulär",
+    qIntro: "Tack för att du utforskar denna prototyp. Detta är inte ett test av dig — det är en undersökning för att förstå hur du upplever värdet av denna typ av arbetsyta. Dina ärliga svar hjälper oss förstå vad som är viktigast för återförsäljare i deras dagliga arbete.",
+    qInstructions: "Vänligen besvara frågorna nedan baserat på din erfarenhet. Det finns inga rätta eller fel svar.",
+    q1: "Hur användbar skulle denna produktöversikt vara i ditt dagliga arbete?",
+    q1o1: "Mycket användbar — jag skulle använda den dagligen",
+    q1o2: "Ganska användbar — jag skulle kolla den regelbundet",
+    q1o3: "Begränsad användning — bara ibland",
+    q1o4: "Inte användbar för mitt arbetsflöde",
+    q2: "Skulle du lägga till dina produkter via funktionen \"Lägg till produkt\"?",
+    q2o1: "Ja, om det sparar tid på annat håll",
+    q2o2: "Ja, men bara om processen är snabb",
+    q2o3: "Förmodligen inte — för mycket jobb",
+    q2o4: "Bara om det krävdes",
+    q3: "Överväger nyttan av denna vy ansträngningen att lägga till produktdata?",
+    q3o1: "Definitivt — översikten ensam motiverar arbetet",
+    q3o2: "Förmodligen — om datan även används för garantier och avtal",
+    q3o3: "Osäker — beror på hur mycket jobb det är",
+    q3o4: "Nej — arbetet är för stort för värdet",
+    q4: "Hur skulle du föredra att lägga till produkter?",
+    q4o1: "QR / streckkodsscanning (en åt gången)",
+    q4o2: "Filuppladdning (bulk, CSV/Excel)",
+    q4o3: "Manuell inmatning (en åt gången)",
+    q4o4: "Automatisk synk från mitt eget system",
+    q5: "Registrerar du redan produkter i ett annat system?",
+    q5o1: "Ja, i vårt eget affärssystem (ERP/CRM)",
+    q5o2: "Ja, i kalkylblad",
+    q5o3: "Nej, vi spårar inte enskilda produkter",
+    q5o4: "Delvis — bara för vissa produkttyper",
+    q6: "Skulle du föredra att lägga till produkter och rapportera sell-outs en åt gången eller i bulk?",
+    q6o1: "En åt gången — när varje produkt anländer eller säljs",
+    q6o2: "I bulk — periodiska batchuppladdningar eller rapporter",
+    q6o3: "Båda — beroende på situation",
+    q6o4: "Automatisk synk från mitt eget system",
+    q7: "Hur användbar skulle sell-out-rapportering vara för din verksamhet?",
+    q7o1: "Mycket användbar — jag skulle rapportera varje försäljning",
+    q7o2: "Ganska användbar — jag skulle rapportera regelbundet",
+    q7o3: "Begränsad användning — bara om det krävs",
+    q7o4: "Inte användbar för mitt arbetsflöde",
+    q8: "Vilken fördel med sell-out-rapportering är viktigast för dig?",
+    q8o1: "Garanti aktiveras automatiskt från säljdatum",
+    q8o2: "Försäljning spåras i mina analyser och rapporter",
+    q8o3: "Bonusberättigande och kampanjkvalificering",
+    q8o4: "Bättre produktförsörjning anpassad till min verkliga försäljning",
+    q8o5: "Uppföljningstjänster blir tillgängliga",
+    q9: "Rapporterar du sell-outs till Husqvarna idag? Om ja, hur?",
+    q9o1: "Ja — via nuvarande B2B-portal",
+    q9o2: "Ja — via e-post eller kalkylblad",
+    q9o3: "Delvis — bara för vissa produkttyper",
+    q9o4: "Nej — vi rapporterar inte sell-outs idag",
+    q10: "Skulle du föredra att rapportera sell-outs direkt vid försäljning eller i batcher senare?",
+    q10o1: "Direkt — vid varje försäljning",
+    q10o2: "I batcher — veckovis eller månadsvis",
+    q10o3: "Båda — beroende på situation",
+    q10o4: "Automatiskt synkat från mitt eget system",
+    q11: "Vilken information i denna vy är mest värdefull för dig?",
+    q11placeholder: "Beskriv vilka kolumner eller datapunkter du tycker är mest användbara, och om något saknas...",
+    q12: "Övrig feedback eller tankar?",
+    q12placeholder: "Dela observationer, funderingar eller idéer...",
+    qSubmit: "Skicka svar",
+    qSubmitted: "Tack! Dina svar har registrerats.",
+    tabSellout: "Sell-out",
+    selloutTitle: "Sell-out",
+    selloutSubtitle: "Rapportera försäljning till Husqvarna och lås upp förmåner",
+    soInStock: "I lager",
+    soInStockSub: "över produkter",
+    soSoldMonth: "Sålda denna månad",
+    soSoldMonthSub: "Mars 2026",
+    soPendingBonus: "Väntande bonus",
+    soPendingBonusSub: "väntar på granskning",
+    soInventory: "Ditt lager",
+    soInStockBadge: "i lager",
+    soReportSale: "Rapportera försäljning",
+    soRecentSellouts: "Senaste sell-outs",
+    soReportSellout: "+ Rapportera sell-out",
+    soStep: "Steg",
+    soWhatReport: "Vad vill du rapportera?",
+    soChooseMode: "Välj enstaka eller bulk-rapportering.",
+    soSingleProduct: "Enstaka produkt",
+    soSingleDesc: "En produkt med fullständiga detaljer",
+    soBulkReport: "Bulk-rapport",
+    soBulkDesc: "Flera produkter på en gång",
+    soWhichProduct: "Vilken produkt såldes?",
+    soWhichProductDesc: "Välj från lager, ange PNC manuellt eller scanna med foto.",
+    soTabInventory: "Lager",
+    soTabPnc: "Ange PNC",
+    soTabPhoto: "Foto",
+    soPncNumber: "PNC-nummer",
+    soPncPlaceholder: "t.ex. 967 62 25-03",
+    soPhotoDesc: "Ta ett foto av produktetiketten — vi identifierar PNC automatiskt.",
+    soSimulateScan: "Simulera scan",
+    soContinue: "Fortsätt",
+    soEnterSaleDetails: "Ange säljdetaljer",
+    soSaleDate: "Säljdatum *",
+    soSerialNumber: "Serienummer",
+    soSerialRecommended: "(rekommenderat)",
+    soSerialHelper: "Krävs för att aktivera garanti per enhet och registrera produkten.",
+    soSerialPlaceholder: "t.ex. AMX-2026-00123",
+    soReviewSubmit: "Granska & skicka",
+    soReviewTitle: "Granska din sell-out",
+    soProduct: "Produkt",
+    soPnc: "PNC",
+    soSerialNumberLabel: "Serienummer",
+    soNotProvided: "— ej angivet",
+    soWhatUnlocks: "Vad detta låser upp för dig:",
+    soUnlockWarranty: "Garanti aktiverad från säljdatum",
+    soUnlockAnalytics: "Försäljning spårad i dina analyser",
+    soUnlockBonus: "Bonusberättigande öppnat hos Husqvarna",
+    soUnlockServices: "Uppföljningstjänster nu tillgängliga",
+    soSubmitSellout: "Skicka sell-out",
+    soSelloutReported: "Sell-out rapporterad!",
+    soSelloutReportedDesc: "Husqvarna har notifierats. Här är vad som har aktiverats:",
+    soBackToOverview: "Tillbaka till översikt",
+    soReportAnother: "Rapportera en till",
+    soAddSoldProducts: "Lägg till sålda produkter",
+    soAddSoldProductsDesc: "Lägg till varje såld produkt. Serienummer är valfritt men rekommenderas.",
+    soAddAnotherProduct: "+ Lägg till en till produkt",
+    soSubmitBulk: "Skicka sell-outs",
+  },
   de: {
     title: "Händler-Arbeitsbereich",
     subtitle: "Einheitlicher Arbeitsbereich — Produkte, Kunden, Verträge und tägliche Aufgaben",
@@ -277,6 +505,7 @@ const t: Record<Lang, Record<string, string>> = {
     colServiceContract: "Servicevertrag",
     colLeasing: "Leasing",
     colHyperCare: "HyperCare",
+    colLastUpdated: "Zuletzt aktualisiert",
     missing: "Fehlt",
     filterAll: "Alle",
     filterHyperCare: "HyperCare",
@@ -502,6 +731,7 @@ const t: Record<Lang, Record<string, string>> = {
     colServiceContract: "Contrat de service",
     colLeasing: "Leasing",
     colHyperCare: "HyperCare",
+    colLastUpdated: "Dernière mise à jour",
     missing: "Manquant",
     filterAll: "Tous",
     filterHyperCare: "HyperCare",
@@ -710,6 +940,7 @@ type ProductRow = {
   serviceContract: string;
   leasing: string;
   hypercare: string;
+  lastUpdated?: string;
 };
 
 function StatusBadge({ status, lang }: { status: string; lang: Lang }) {
@@ -741,47 +972,126 @@ function StatusBadge({ status, lang }: { status: string; lang: Lang }) {
 
 const products = [
   // Full data: serial + PNC + customer
-  { model: "Automower 435X AWD", serial: "2024-435X-00891", pnc: "967 85 32-01", customer: "Lindström Fastigheter", soldDate: "2024-11-15", installed: "pending", warranty: "pending", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "CEORA 526 EPOS", serial: "2024-C526-00045", pnc: "967 93 10-02", customer: "Karlsson Park & Trädgård", soldDate: "2024-08-14", installed: "completed", warranty: "active", serviceContract: "active", leasing: "active", hypercare: "active" },
-  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active" },
-  { model: "Automower 430X NERA", serial: "2024-430N-02876", pnc: "585 57 28-01", customer: "Lindström Fastigheter", soldDate: "2024-05-12", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Automower 435X AWD", serial: "2024-435X-00891", pnc: "967 85 32-01", customer: "Lindström Fastigheter", soldDate: "2024-11-15", installed: "missing", warranty: "pending", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-08" },
+  { model: "CEORA 526 EPOS", serial: "2024-C526-00045", pnc: "967 93 10-02", customer: "Karlsson Park & Trädgård", soldDate: "2024-08-14", installed: "2024-08-20", warranty: "active", serviceContract: "active", leasing: "active", hypercare: "active", lastUpdated: "2026-03-22" },
+  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: "2024-09-12", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active", lastUpdated: "2026-04-02" },
+  { model: "Automower 430X NERA", serial: "2024-430N-02876", pnc: "585 57 28-01", customer: "Lindström Fastigheter", soldDate: "2024-05-12", installed: "2024-05-18", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-14" },
 
   // PNC + customer, no serial (reported sell-out with customer but no unit tracking)
-  { model: "Automower 550X Mark II", serial: "—", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: "completed", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Automower 450X NERA", serial: "—", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: "completed", warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—" },
+  { model: "Automower 550X Mark II", serial: "—", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: "2024-10-25", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-30" },
+  { model: "Automower 450X NERA", serial: "—", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: "2024-07-28", warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—", lastUpdated: "2026-01-18" },
 
   // PNC + serial, no customer (reported sell-out with unit tracking but no customer info yet)
-  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "—", soldDate: "2024-06-10", installed: "completed", warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "—", soldDate: "2024-11-08", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "—", soldDate: "2025-01-15", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "—", soldDate: "2024-06-10", installed: "2024-06-15", warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-09" },
+  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "—", soldDate: "2024-11-08", installed: "missing", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-15" },
+  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "—", soldDate: "2025-01-15", installed: "2025-01-22", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-28" },
 
   // PNC only, no serial, no customer (minimum sell-out report: just PNC + date)
-  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "2024-12-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "2024-06-20", installed: "completed", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Automower 320 NERA", serial: "—", pnc: "967 85 25-01", customer: "—", soldDate: "2025-02-01", installed: "completed", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—" },
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "2024-12-01", installed: "2024-12-08", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2025-12-10" },
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "2024-06-20", installed: "missing", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-11-05" },
+  { model: "Automower 320 NERA", serial: "—", pnc: "967 85 25-01", customer: "—", soldDate: "2025-02-01", installed: "2025-02-10", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-05" },
 
   // Missing sold date entirely
-  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active" },
-  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
-  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" },
+  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active", lastUpdated: "2026-01-12" },
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-10-22" },
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-09-30" },
 ];
 
-const existingCustomers = [
-  "Lindström Fastigheter", "Eriksson Trädgård AB", "AB Grönytor", "Skogsservice Norr AB",
-  "Nilsson Villaservice", "Karlsson Park & Trädgård", "BRF Solsidan", "Fastighets AB Solbacken",
-  "Lundgren Maskin AB", "Malmö Grönska HB", "Villa Ekbacken", "Skog & Mark HB",
-];
+/* Customer key (stable identifier across languages) → localized {name, contact} */
+type CustomerLocale = { name: string; contact: string };
 
-const customers = [
-  { name: "Lindström Fastigheter", contact: "Anna Lindström", products: 4, contracts: 2, hypercare: 0, program: "Service Plus", status: "active" },
-  { name: "Eriksson Trädgård AB", contact: "Per Eriksson", products: 3, contracts: 3, hypercare: 0, program: "Service Plus", status: "active" },
-  { name: "AB Grönytor", contact: "Maria Svensson", products: 6, contracts: 4, hypercare: 2, program: "Lease Plus", status: "pending" },
-  { name: "Skogsservice Norr AB", contact: "Johan Bergström", products: 8, contracts: 5, hypercare: 2, program: "Service Plus", status: "active" },
-  { name: "Nilsson Villaservice", contact: "Erik Nilsson", products: 2, contracts: 1, hypercare: 0, program: "Service Plus", status: "active" },
-  { name: "Karlsson Park & Trädgård", contact: "Lisa Karlsson", products: 5, contracts: 4, hypercare: 1, program: "Lease Plus", status: "active" },
-  { name: "BRF Solsidan", contact: "Karin Holm", products: 3, contracts: 2, hypercare: 0, program: "Service Plus", status: "expiring" },
-  { name: "Fastighets AB Solbacken", contact: "Anders Björk", products: 1, contracts: 0, hypercare: 0, program: "—", status: "pending" },
-];
+const customerLocales: Record<string, Record<Lang, CustomerLocale>> = {
+  c1: {
+    en: { name: "Greenfield Properties Ltd", contact: "Andrew Miller" },
+    sv: { name: "Lindström Fastigheter", contact: "Anna Lindström" },
+    de: { name: "Lindström Immobilien GmbH", contact: "Emilia Schmidt" },
+    fr: { name: "Propriétés Verts SARL", contact: "Gabriel Martin" },
+  },
+  c2: {
+    en: { name: "Eriksson Garden Co", contact: "Peter Edwards" },
+    sv: { name: "Eriksson Trädgård AB", contact: "Per Eriksson" },
+    de: { name: "Eriksson Garten GmbH", contact: "Peter Müller" },
+    fr: { name: "Eriksson Jardins SARL", contact: "Pierre Dubois" },
+  },
+  c3: {
+    en: { name: "AB Green Areas", contact: "Mary Stevens" },
+    sv: { name: "AB Grönytor", contact: "Maria Svensson" },
+    de: { name: "Grünflächen AG", contact: "Marie Becker" },
+    fr: { name: "AB Espaces Verts", contact: "Marie Lefèvre" },
+  },
+  c4: {
+    en: { name: "Northern Forest Service Ltd", contact: "John Morgan" },
+    sv: { name: "Skogsservice Norr AB", contact: "Johan Bergström" },
+    de: { name: "Waldservice Nord GmbH", contact: "Johannes Berger" },
+    fr: { name: "Service Forestier Nord SARL", contact: "Jean Bernard" },
+  },
+  c5: {
+    en: { name: "Nilsson Home Service", contact: "Eric Nicholson" },
+    sv: { name: "Nilsson Villaservice", contact: "Erik Nilsson" },
+    de: { name: "Nilsson Hausdienst", contact: "Erik Neumann" },
+    fr: { name: "Nilsson Service Maison", contact: "Éric Noël" },
+  },
+  c6: {
+    en: { name: "Karlsson Park & Garden", contact: "Lisa Carlton" },
+    sv: { name: "Karlsson Park & Trädgård", contact: "Lisa Karlsson" },
+    de: { name: "Karlsson Park & Garten", contact: "Lisa Krüger" },
+    fr: { name: "Karlsson Parc & Jardin", contact: "Lise Caron" },
+  },
+  c7: {
+    en: { name: "Sunset Housing Co-op", contact: "Karen Holmes" },
+    sv: { name: "BRF Solsidan", contact: "Karin Holm" },
+    de: { name: "Sonnenseite Wohnen eG", contact: "Karin Hoffmann" },
+    fr: { name: "Coopérative Côté Soleil", contact: "Karine Hubert" },
+  },
+  c8: {
+    en: { name: "Sunbeam Properties Plc", contact: "Andrew Birch" },
+    sv: { name: "Fastighets AB Solbacken", contact: "Anders Björk" },
+    de: { name: "Solbacken Immobilien AG", contact: "Andreas Brandt" },
+    fr: { name: "Propriétés Soleil SA", contact: "André Béranger" },
+  },
+};
+
+const customerStats: Record<string, { products: number; contracts: number; hypercare: number; program: string; status: string }> = {
+  c1: { products: 4, contracts: 2, hypercare: 0, program: "Service Plus", status: "active" },
+  c2: { products: 3, contracts: 3, hypercare: 0, program: "Service Plus", status: "active" },
+  c3: { products: 6, contracts: 4, hypercare: 2, program: "Lease Plus", status: "pending" },
+  c4: { products: 8, contracts: 5, hypercare: 2, program: "Service Plus", status: "active" },
+  c5: { products: 2, contracts: 1, hypercare: 0, program: "Service Plus", status: "active" },
+  c6: { products: 5, contracts: 4, hypercare: 1, program: "Lease Plus", status: "active" },
+  c7: { products: 3, contracts: 2, hypercare: 0, program: "Service Plus", status: "expiring" },
+  c8: { products: 1, contracts: 0, hypercare: 0, program: "—", status: "pending" },
+};
+
+/* Map Swedish customer names (used in product mock data) → customer key */
+const customerNameToKey: Record<string, string> = {
+  "Lindström Fastigheter": "c1",
+  "Eriksson Trädgård AB": "c2",
+  "AB Grönytor": "c3",
+  "Skogsservice Norr AB": "c4",
+  "Nilsson Villaservice": "c5",
+  "Karlsson Park & Trädgård": "c6",
+  "BRF Solsidan": "c7",
+  "Fastighets AB Solbacken": "c8",
+};
+
+function localizedCustomerName(swedishName: string, lang: Lang): string {
+  if (swedishName === "—" || swedishName === "missing") return swedishName;
+  const key = customerNameToKey[swedishName];
+  if (!key) return swedishName;
+  return customerLocales[key][lang].name;
+}
+
+function getLocalizedCustomers(lang: Lang) {
+  return Object.entries(customerLocales).map(([key, locales]) => ({
+    name: locales[lang].name,
+    contact: locales[lang].contact,
+    ...customerStats[key],
+  }));
+}
+
+function getExistingCustomerNames(lang: Lang): string[] {
+  return Object.values(customerLocales).map((c) => c[lang].name);
+}
 
 /* ═══════════════════════════════════════════════════════
    ADD PRODUCT PANEL
@@ -806,7 +1116,7 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
   function handleAdd() {
     if (!model || !serial) return;
     setAdded(true);
-    setTimeout(() => { onAdd({ model, serial, pnc: pnc || "—", customer: customer || "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—" }); }, 1000);
+    setTimeout(() => { onAdd({ model, serial, pnc: pnc || "—", customer: customer || "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: new Date().toISOString().split("T")[0] }); }, 1000);
   }
 
   const modeButtons = [
@@ -884,7 +1194,7 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
                 <label className="text-[13px] font-bold text-[#111]">{i.customerLabel}</label>
                 <select value={customer} onChange={(e) => setCustomer(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] bg-white px-3 text-[13px] text-[#333] focus:border-[#273A60] focus:outline-none">
                   <option value="">{i.selectCustomer}</option>
-                  {existingCustomers.map((c) => <option key={c} value={c}>{c}</option>)}
+                  {getExistingCustomerNames(lang).map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
             </div>
@@ -917,14 +1227,16 @@ function SalesDatePanel({
   onRegister: (serial: string, date: string, customer: string) => void;
 }) {
   const i = t[lang];
+  const localizedInitial = localizedCustomerName(product.customer, lang);
+  const initialCustomer = localizedInitial === "—" ? "" : localizedInitial;
   const [date, setDate] = useState("");
-  const [customer, setCustomer] = useState(product.customer);
-  const [customerSearch, setCustomerSearch] = useState(product.customer);
+  const [customer, setCustomer] = useState(initialCustomer);
+  const [customerSearch, setCustomerSearch] = useState(initialCustomer);
   const [showList, setShowList] = useState(false);
   const [comment, setComment] = useState("");
   const [registered, setRegistered] = useState(false);
 
-  const filtered = existingCustomers.filter((c) => c.toLowerCase().includes(customerSearch.toLowerCase()));
+  const filtered = getExistingCustomerNames(lang).filter((c) => c.toLowerCase().includes(customerSearch.toLowerCase()));
 
   function handleRegister() {
     if (!date) return;
@@ -972,7 +1284,7 @@ function SalesDatePanel({
                 className="h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none" />
               {showList && filtered.length > 0 && (
                 <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border border-[#d0d0d0] bg-white shadow-lg">
-                  {filtered.map((c) => (
+                  {filtered.map((c: string) => (
                     <button key={c} onMouseDown={() => { setCustomer(c); setCustomerSearch(c); setShowList(false); }}
                       className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[#333] hover:bg-[#f5f5f5]">{c}</button>
                   ))}
@@ -1037,7 +1349,7 @@ function SalesDatePickerPanel({
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="text-[13px] font-semibold text-[#111]">{p.model}</span>
-                  <span className="mt-0.5 block text-[11px] text-[#888]">{p.serial} · {p.customer}</span>
+                  <span className="mt-0.5 block text-[11px] text-[#888]">{p.serial} · {localizedCustomerName(p.customer, lang)}</span>
                 </div>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ccc" strokeWidth="1.8" strokeLinecap="round"><path d="M6 4l4 4-4 4" /></svg>
               </button>
@@ -1552,7 +1864,7 @@ function ReportSelloutDrawer({ lang, preselected, prefillSerial, prefillCustomer
                   className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] bg-white px-3 text-[13px] text-[#333] focus:border-[#e65100] focus:outline-none"
                 >
                   <option value="">{i.selectCustomer}</option>
-                  {existingCustomers.map((c) => <option key={c} value={c}>{c}</option>)}
+                  {getExistingCustomerNames(lang).map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
 
@@ -1861,7 +2173,7 @@ export default function UserTest2026Page() {
     { key: "renewal", label: i.filterNeedsRenewal, count: 3 },
   ];
 
-  const productCols = [i.colModel, i.colSerialPnc, i.colCustomer, i.colSoldDate, i.colInstallation, i.colWarranty, i.colServiceContract, i.colLeasing, i.colHyperCare];
+  const productCols = [i.colModel, i.colSerialPnc, i.colCustomer, i.colSoldDate, i.colInstallation, i.colWarranty, i.colServiceContract, i.colLeasing, i.colHyperCare, i.colLastUpdated];
 
   return (
     <div className="min-h-screen bg-white">
@@ -1953,14 +2265,14 @@ export default function UserTest2026Page() {
                         <td className="px-4 py-3"><input type="checkbox" className="rounded border-[#ccc]" /></td>
                         <td className="px-3 py-3"><span className="text-[13px] font-semibold text-[#273A60]">{p.model}</span></td>
                         <td className="px-3 py-3"><span className="block text-[12px] font-medium text-[#333]">{p.serial}</span><span className="text-[10px] text-[#aaa]">{p.pnc}</span></td>
-                        <td className="px-3 py-3 text-[12px] text-[#555]">{p.customer}</td>
+                        <td className="px-3 py-3 text-[12px] text-[#555]">{localizedCustomerName(p.customer, lang)}</td>
                         <td className="px-3 py-3">
                           {p.soldDate === "missing" ? (
                             <button onClick={() => {
                               const inv = inventoryData.find((inv) => p.model.includes(inv.name)) ?? { name: p.model, pnc: p.pnc, category: "—", stock: 0 };
                               setReportSelloutPrefill({
                                 serial: p.serial !== "—" ? p.serial : undefined,
-                                customer: p.customer !== "—" ? p.customer : undefined,
+                                customer: p.customer !== "—" ? localizedCustomerName(p.customer, lang) : undefined,
                               });
                               setReportSelloutFromPill(inv);
                             }} className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44] transition-colors hover:bg-[#c44] hover:text-white">
@@ -1969,11 +2281,18 @@ export default function UserTest2026Page() {
                             </button>
                           ) : <span className="text-[12px] text-[#555]">{p.soldDate}</span>}
                         </td>
-                        <td className="px-3 py-3"><StatusBadge status={p.installed} lang={lang} /></td>
+                        <td className="px-3 py-3">
+                          {p.installed === "missing" ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44]">{i.missing}</span>
+                          ) : (
+                            <span className="text-[12px] text-[#555]">{p.installed}</span>
+                          )}
+                        </td>
                         <td className="px-3 py-3"><StatusBadge status={p.warranty} lang={lang} /></td>
                         <td className="px-3 py-3"><StatusBadge status={p.serviceContract} lang={lang} /></td>
                         <td className="px-3 py-3"><StatusBadge status={p.leasing} lang={lang} /></td>
                         <td className="px-3 py-3"><StatusBadge status={p.hypercare} lang={lang} /></td>
+                        <td className="px-3 py-3 text-[12px] text-[#888]">{p.lastUpdated ?? "—"}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -2007,7 +2326,7 @@ export default function UserTest2026Page() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#f0f0f0]">
-                    {customers.map((c) => (
+                    {getLocalizedCustomers(lang).map((c) => (
                       <tr key={c.name} className="cursor-pointer transition-colors hover:bg-[#fafafa]">
                         <td className="px-5 py-3"><span className="text-[13px] font-semibold text-[#273A60]">{c.name}</span></td>
                         <td className="px-3 py-3 text-[12px] text-[#555]">{c.contact}</td>
