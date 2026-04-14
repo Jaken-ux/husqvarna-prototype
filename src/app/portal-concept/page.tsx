@@ -151,6 +151,7 @@ export default function PortalConceptPage() {
   const [whyOpen, setWhyOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [comparisonOpen, setComparisonOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -185,6 +186,15 @@ export default function PortalConceptPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setComparisonOpen(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-[#7b61ff] bg-white px-3 py-2 text-[12px] font-semibold text-[#7b61ff] transition-colors hover:bg-[#7b61ff] hover:text-white"
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 1v14M1 8h14" />
+              </svg>
+              Why better than current?
+            </button>
             <button
               onClick={() => setWhyOpen((v) => !v)}
               className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#333] transition-colors hover:bg-[#fafafa]"
@@ -276,6 +286,202 @@ export default function PortalConceptPage() {
                 <SectionContent section={active} showRationale={showRationale} />
               </div>
             </main>
+          </div>
+        </div>
+      </div>
+
+      {comparisonOpen && <ComparisonModal onClose={() => setComparisonOpen(false)} />}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   COMPARISON MODAL — why this is better than current
+   ═══════════════════════════════════════════════════════ */
+
+const comparisonPoints: { title: string; current: string; workspace: string }[] = [
+  {
+    title: "Mental model matches dealer work",
+    current: "Forces the dealer to classify content by origin — 'is this Husqvarna content or my operations?'",
+    workspace: "Organizes by purpose — 'what am I trying to accomplish?' Dealers don't care about origin, they care about outcomes. Nielsen heuristic #2: match between system and the real world.",
+  },
+  {
+    title: "Fewer clicks to function",
+    current: "Top nav → landing page (puffs) → function page = 2–3 clicks. Landing pages are really menus disguised as dashboards.",
+    workspace: "Sidebar → function landing = 1 click. Eliminates the intermediate menu layer.",
+  },
+  {
+    title: "Spatial orientation — you always know where you are",
+    current: "When you click into a sub-page, the top navigation disappears. Breadcrumbs are needed to orient.",
+    workspace: "Sidebar is always visible. Active section highlighted. Jump anywhere in 1 click without 'going back.'",
+  },
+  {
+    title: "Search is the hero, not a sidekick",
+    current: "Search is a narrow input crammed in the middle of the nav bar.",
+    workspace: "Large search with ⌘K shortcut. Cross-domain results (products, orders, customers, docs) in one list. For power users who live in the portal daily, this is the difference between 30 seconds and 3 seconds per lookup.",
+  },
+  {
+    title: "The Kampanjer problem solved",
+    current: "Campaigns were moved from Min verksamhet → Husqvarna (because it's OEM content). But dealers use campaigns operationally (track bonus, qualify). That split is artificial.",
+    workspace: "Campaigns live in Resources (material Husqvarna gives you). Bonus tracking lives in Insights (your performance). Separates 'the content' from 'what you do with it' — not 'whose content is it.'",
+  },
+  {
+    title: "Sales ≠ Operations",
+    current: "All dealer work is lumped into 'Min verksamhet.'",
+    workspace: "Sales (creating future revenue — quotes, customers, wishlist, sell-out) is separated from Operations (fulfilling existing commitments — orders, invoices, contracts). Genuinely different work modes with different psychology. Forcing them together makes every page cluttered.",
+  },
+  {
+    title: "Inbox as a first-class citizen",
+    current: "Notifications = a bell icon in the corner. Tasks are scattered across different pages.",
+    workspace: "Inbox is its own section — unified triage of everything requiring action (alerts, tasks, customer replies, service cases, campaign updates). Same pattern as Linear, GitHub, Gmail. Dealers manage many parallel threads — centralizing them is real value.",
+  },
+  {
+    title: "Home = mission control, not more menus",
+    current: "Start page has KPIs, but the landing pages for Husqvarna/Min verksamhet are mostly puffs too (visual menus). Three layers of menus.",
+    workspace: "Home is the only place with KPIs and prioritized alerts. Menus live in the sidebar. No duplicated navigation patterns.",
+  },
+  {
+    title: "Discoverability",
+    current: "To find 'Rapporter' you need to know it lives under Min verksamhet. If you've never clicked there, you don't even know the feature exists.",
+    workspace: "All 7 sections are visible in the sidebar at all times. 'Insights' is visible even if you've never clicked it. Feature discovery is built into navigation.",
+  },
+  {
+    title: "Scalability",
+    current: "If Husqvarna launches a new feature (say 'Product marketing toolkit'), where does it go? Under Husqvarna it becomes yet another puff. But the use is operational. The split becomes unsustainable as features are added.",
+    workspace: "Every new feature has an obvious home in one of 7 purpose-based sections. No hesitation, no turf wars over placement.",
+  },
+  {
+    title: "Industry-standard pattern",
+    current: "Dual horizontal navigation is unusual. I can't think of a modern SaaS tool that does it this way.",
+    workspace: "Same pattern as Stripe Dashboard, Linear, Salesforce Lightning, HubSpot, Shopify admin, Microsoft 365 Admin, Notion. Dealers recognize the pattern from other tools they use — less learning curve.",
+  },
+  {
+    title: "Reduced decision fatigue",
+    current: "First decision at login: 'should I go to Husqvarna or Min verksamhet?' That's an artificial fork.",
+    workspace: "First decision is 'what's urgent?' — answered by Home's priority list. Sidebar is there as a backup.",
+  },
+  {
+    title: "The Wishlist paradox",
+    current: "Wishlist lives under Min verksamhet. But a wishlist is about customer interest — which products a customer wants to buy. That's Sales work, not backoffice.",
+    workspace: "Wishlist lives under Sales alongside quotes and customers. Logical grouping.",
+  },
+  {
+    title: "Context preservation",
+    current: "Click 'Offerter' and you leave the Min verksamhet landing entirely. When you come back, the puffs reload. Nothing feels connected.",
+    workspace: "The sidebar stays. Switching sections doesn't feel like 'leaving and coming back.'",
+  },
+];
+
+const tradeoffs: { title: string; detail: string }[] = [
+  {
+    title: "Husqvarna brand identity is less visible",
+    detail: "Dual navigation clearly shows 'Husqvarna gives you tools + you run your business.' That partnership framing is softer when everything is merged into one portal. A conscious trade-off: is the clarity of purpose-based IA worth the loss of brand visibility in navigation?",
+  },
+  {
+    title: "Mobile is harder",
+    detail: "A persistent sidebar doesn't work on small screens — it has to collapse to an overlay/drawer. The current prototype's three-tab mobile nav (Hem, Husqvarna, Min verksamhet) is actually more mobile-native. For a desktop-first dealer workflow this is acceptable, but for field use it's a real cost.",
+  },
+  {
+    title: "Migration friction",
+    detail: "Existing dealers have muscle memory for the current structure. Switching to a completely different IA means retraining, support load, and temporary productivity dip. The concept assumes greenfield; in reality there's transition cost.",
+  },
+];
+
+function ComparisonModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm p-4 sm:p-8">
+      <div className="relative w-full max-w-[960px] rounded-2xl bg-white shadow-2xl">
+        {/* Header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-[#e5e5e5] bg-white px-6 py-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#7b61ff]">Comparison</p>
+            <h2 className="text-[18px] font-bold text-[#111]">Why Workspace is better than the current prototype</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-[#888] hover:bg-[#fafafa] hover:text-[#111]"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </div>
+
+        {/* Intro */}
+        <div className="border-b border-[#f0f0f0] bg-[#fafafa] px-6 py-5">
+          <p className="text-[13px] leading-relaxed text-[#555]">
+            The current prototype uses a <strong className="text-[#111]">dual navigation</strong> (Husqvarna on the left, Min verksamhet on the right). The Workspace concept proposes a <strong className="text-[#111]">purpose-based sidebar</strong> instead. Below: 14 specific points where Workspace is better, and 3 honest trade-offs where it&apos;s worse.
+          </p>
+        </div>
+
+        {/* Better points */}
+        <div className="px-6 py-6">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2e7d32] text-[11px] font-bold text-white">✓</span>
+            <h3 className="text-[14px] font-bold text-[#111]">Where Workspace wins ({comparisonPoints.length})</h3>
+          </div>
+          <div className="space-y-4">
+            {comparisonPoints.map((p, idx) => (
+              <div key={p.title} className="rounded-xl border border-[#e5e5e5] bg-white p-5">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#7b61ff]/10 text-[12px] font-bold text-[#7b61ff]">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1">
+                    <h4 className="text-[14px] font-bold text-[#111]">{p.title}</h4>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-lg bg-[#fce8e8]/30 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[#c44]">Current</p>
+                        <p className="mt-1 text-[12px] leading-relaxed text-[#555]">{p.current}</p>
+                      </div>
+                      <div className="rounded-lg bg-[#e8f5e9]/40 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[#2e7d32]">Workspace</p>
+                        <p className="mt-1 text-[12px] leading-relaxed text-[#555]">{p.workspace}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Trade-offs */}
+        <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-6 py-6 rounded-b-2xl">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#e65100] text-[11px] font-bold text-white">!</span>
+            <h3 className="text-[14px] font-bold text-[#111]">Honest trade-offs — where Workspace is worse ({tradeoffs.length})</h3>
+          </div>
+          <p className="mb-4 text-[12px] text-[#888]">
+            No design decision is free. These are the costs of the Workspace concept — worth considering before committing.
+          </p>
+          <div className="space-y-3">
+            {tradeoffs.map((t, idx) => (
+              <div key={t.title} className="rounded-xl border border-[#e65100]/20 bg-white p-5">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#e65100]/10 text-[12px] font-bold text-[#e65100]">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1">
+                    <h4 className="text-[14px] font-bold text-[#111]">{t.title}</h4>
+                    <p className="mt-1 text-[12px] leading-relaxed text-[#555]">{t.detail}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-xl border border-[#273A60]/20 bg-[#f0f3f8] p-5">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#273A60]">Summary</p>
+            <p className="mt-1 text-[13px] leading-relaxed text-[#333]">
+              For <strong>desktop-first dealer workflows</strong> (where the majority of portal work happens), the Workspace concept&apos;s arguments are stronger. For <strong>mobile-heavy field use</strong> or <strong>brand-identity-led partner portals</strong>, the dual navigation still has real merit. It&apos;s not black and white.
+            </p>
           </div>
         </div>
       </div>
