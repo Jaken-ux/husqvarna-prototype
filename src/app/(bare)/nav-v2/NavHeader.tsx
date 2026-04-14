@@ -381,6 +381,23 @@ export default function NavHeader() {
 
       {/* Floating buttons */}
       <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex flex-col items-end gap-2.5">
+        {/* Portal Concept */}
+        <Link
+          href="/portal-concept"
+          className="flex items-center gap-2 sm:gap-2.5 rounded-full bg-[#7b61ff] px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-bold text-white shadow-lg shadow-[#7b61ff]/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#7b61ff]/30 active:scale-[0.98]"
+        >
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="6" height="6" rx="1" />
+            <rect x="12" y="2" width="6" height="6" rx="1" />
+            <rect x="2" y="12" width="6" height="6" rx="1" />
+            <rect x="12" y="12" width="6" height="6" rx="1" />
+          </svg>
+          Portal Concept
+          <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold">
+            NY
+          </span>
+        </Link>
+
         {/* UserTest 2026 */}
         <Link
           href="/usertest2026"
