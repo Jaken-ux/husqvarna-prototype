@@ -477,7 +477,7 @@ const tabs: { id: Tab; label: string; badge?: number | string; badgeDot?: boolea
    ═══════════════════════════════════════════════════════ */
 
 function StatusBadge({ status }: { status: string }) {
-  if (status === "—") return <span className="text-[12px] text-[#ccc]">—</span>;
+  if (status === "—" || status === "missing") return <span className="text-[12px] text-[#ccc]">—</span>;
   const s = statusBadges[status] ?? statusBadges.pending;
   const label = statusLabels[status] ?? status;
   return (
