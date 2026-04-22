@@ -64,7 +64,9 @@ const t: Record<Lang, Record<string, string>> = {
     colSerialPnc: "Serial / PNC",
     colCustomer: "Customer",
     colSoldDate: "Sold date",
-    colInstallation: "Installation",
+    colInstallation: "Setup & First use",
+    colInstalled: "Installed",
+    colFirstUse: "First use",
     colWarranty: "Warranty",
     colServiceContract: "Service contract",
     colLeasing: "Leasing",
@@ -308,7 +310,9 @@ const t: Record<Lang, Record<string, string>> = {
     colSerialPnc: "Serie / PNC",
     colCustomer: "Kund",
     colSoldDate: "Säljdatum",
-    colInstallation: "Installation",
+    colInstallation: "Installation & Första start",
+    colInstalled: "Installerad",
+    colFirstUse: "Första start",
     colWarranty: "Garanti",
     colServiceContract: "Serviceavtal",
     colLeasing: "Leasing",
@@ -551,7 +555,9 @@ const t: Record<Lang, Record<string, string>> = {
     colSerialPnc: "Serie / PNC",
     colCustomer: "Kunde",
     colSoldDate: "Verkaufsdatum",
-    colInstallation: "Installation",
+    colInstallation: "Installation & Erststart",
+    colInstalled: "Installiert",
+    colFirstUse: "Erststart",
     colWarranty: "Garantie",
     colServiceContract: "Servicevertrag",
     colLeasing: "Leasing",
@@ -794,7 +800,9 @@ const t: Record<Lang, Record<string, string>> = {
     colSerialPnc: "Série / PNC",
     colCustomer: "Client",
     colSoldDate: "Date de vente",
-    colInstallation: "Installation",
+    colInstallation: "Installation & Première util.",
+    colInstalled: "Installé",
+    colFirstUse: "Première util.",
     colWarranty: "Garantie",
     colServiceContract: "Contrat de service",
     colLeasing: "Leasing",
@@ -997,13 +1005,17 @@ const t: Record<Lang, Record<string, string>> = {
 
 type Tab = "products" | "sellout" | "orders" | "invoices" | "customers" | "contracts" | "today";
 
+type SetupSource = "Fleet" | "MIT" | "AMS" | "Connect" | "";
+type SetupData = { date: string; source: SetupSource } | "missing";
+
 type ProductRow = {
   model: string;
   serial: string;
   pnc: string;
   customer: string;
   soldDate: string;
-  installed: string;
+  installed: SetupData;
+  firstUse: SetupData;
   warranty: string;
   serviceContract: string;
   leasing: string;
@@ -1034,35 +1046,87 @@ function StatusBadge({ status, lang }: { status: string; lang: Lang }) {
   return <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${s.bg} ${s.text}`}>{label}</span>;
 }
 
+const sourceColors: Record<SetupSource, { bg: string; text: string }> = {
+  Fleet: { bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  MIT: { bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
+  AMS: { bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  Connect: { bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+  "": { bg: "bg-[#f5f5f5]", text: "text-[#888]" },
+};
+
+function SetupCell({ installed, firstUse, lang }: { installed: SetupData; firstUse: SetupData; lang: Lang }) {
+  const i = t[lang];
+  const bothMissing = installed === "missing" && firstUse === "missing";
+
+  if (bothMissing) {
+    return <span className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44]">{i.missing}</span>;
+  }
+
+  return (
+    <div className="space-y-1.5">
+      {installed !== "missing" && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colInstalled}</span>
+          <span className="text-[11px] text-[#555]">{installed.date}</span>
+          <span className={`rounded px-1 py-0.5 text-[9px] font-bold ${sourceColors[installed.source].bg} ${sourceColors[installed.source].text}`}>{installed.source}</span>
+        </div>
+      )}
+      {installed === "missing" && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colInstalled}</span>
+          <span className="rounded-full bg-[#fce8e8] px-1.5 py-0.5 text-[9px] font-semibold text-[#c44]">—</span>
+        </div>
+      )}
+      {firstUse !== "missing" && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colFirstUse}</span>
+          <span className="text-[11px] text-[#555]">{firstUse.date}</span>
+          <span className={`rounded px-1 py-0.5 text-[9px] font-bold ${sourceColors[firstUse.source].bg} ${sourceColors[firstUse.source].text}`}>{firstUse.source}</span>
+        </div>
+      )}
+      {firstUse === "missing" && installed !== "missing" && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colFirstUse}</span>
+          <span className="rounded-full bg-[#fff3e0] px-1.5 py-0.5 text-[9px] font-semibold text-[#b8860b]">{i.statusPending}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════
    DATA
    ═══════════════════════════════════════════════════════ */
 
-const products = [
-  // Full data: serial + PNC + customer
-  { model: "Automower 435X AWD", serial: "2024-435X-00891", pnc: "967 85 32-01", customer: "Lindström Fastigheter", soldDate: "2024-11-15", installed: "missing", warranty: "pending", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-08" },
-  { model: "CEORA 526 EPOS", serial: "2024-C526-00045", pnc: "967 93 10-02", customer: "Karlsson Park & Trädgård", soldDate: "2024-08-14", installed: "2024-08-20", warranty: "active", serviceContract: "active", leasing: "active", hypercare: "active", lastUpdated: "2026-03-22" },
-  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: "2024-09-12", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active", lastUpdated: "2026-04-02" },
-  { model: "Automower 430X NERA", serial: "2024-430N-02876", pnc: "585 57 28-01", customer: "Lindström Fastigheter", soldDate: "2024-05-12", installed: "2024-05-18", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-14" },
+const products: ProductRow[] = [
+  // Full data — both installed & first use from different sources
+  { model: "Automower 435X AWD", serial: "2024-435X-00891", pnc: "967 85 32-01", customer: "Lindström Fastigheter", soldDate: "2024-11-15", installed: { date: "2024-11-20", source: "MIT" }, firstUse: "missing", warranty: "pending", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-08" },
+  { model: "CEORA 526 EPOS", serial: "2024-C526-00045", pnc: "967 93 10-02", customer: "Karlsson Park & Trädgård", soldDate: "2024-08-14", installed: { date: "2024-08-20", source: "MIT" }, firstUse: { date: "2024-08-22", source: "Fleet" }, warranty: "active", serviceContract: "active", leasing: "active", hypercare: "active", lastUpdated: "2026-03-22" },
+  { model: "Husqvarna 346XP", serial: "2024-346X-03211", pnc: "966 99 18-35", customer: "Skogsservice Norr AB", soldDate: "2024-09-05", installed: { date: "2024-09-05", source: "MIT" }, firstUse: { date: "2024-09-05", source: "Connect" }, warranty: "active", serviceContract: "active", leasing: "—", hypercare: "active", lastUpdated: "2026-04-02" },
+  { model: "Automower 430X NERA", serial: "2024-430N-02876", pnc: "585 57 28-01", customer: "Lindström Fastigheter", soldDate: "2024-05-12", installed: { date: "2024-05-18", source: "MIT" }, firstUse: { date: "2024-05-25", source: "AMS" }, warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-14" },
 
-  // PNC + customer, no serial (reported sell-out with customer but no unit tracking)
-  { model: "Automower 550X Mark II", serial: "—", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: "2024-10-25", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-30" },
-  { model: "Automower 450X NERA", serial: "—", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: "2024-07-28", warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—", lastUpdated: "2026-01-18" },
+  // Installed but not yet first-used
+  { model: "Automower 550X Mark II", serial: "—", pnc: "967 85 45-02", customer: "Eriksson Trädgård AB", soldDate: "2024-10-20", installed: { date: "2024-10-25", source: "MIT" }, firstUse: "missing", warranty: "pending", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-30" },
+  { model: "Automower 450X NERA", serial: "—", pnc: "967 85 38-01", customer: "BRF Solsidan", soldDate: "2024-07-22", installed: { date: "2024-07-28", source: "MIT" }, firstUse: { date: "2024-08-03", source: "AMS" }, warranty: "active", serviceContract: "expiring", leasing: "—", hypercare: "—", lastUpdated: "2026-01-18" },
 
-  // PNC + serial, no customer (reported sell-out with unit tracking but no customer info yet)
-  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "—", soldDate: "2024-06-10", installed: "2024-06-15", warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-09" },
-  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "—", soldDate: "2024-11-08", installed: "missing", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-15" },
-  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "—", soldDate: "2025-01-15", installed: "2025-01-22", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-28" },
+  // First use from Connect (chainsaw/trimmer — no "installation" step)
+  { model: "Husqvarna 572XP", serial: "2024-572X-00432", pnc: "966 73 31-18", customer: "—", soldDate: "2024-06-10", installed: "missing", firstUse: { date: "2024-06-15", source: "Connect" }, warranty: "active", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2026-04-09" },
+  { model: "Husqvarna 535RXT", serial: "2024-535R-04521", pnc: "967 86 12-03", customer: "—", soldDate: "2024-11-08", installed: "missing", firstUse: { date: "2024-11-10", source: "Connect" }, warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-03-15" },
 
-  // PNC only, no serial, no customer (minimum sell-out report: just PNC + date)
-  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "2024-12-01", installed: "2024-12-08", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2025-12-10" },
-  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "2024-06-20", installed: "missing", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-11-05" },
-  { model: "Automower 320 NERA", serial: "—", pnc: "967 85 25-01", customer: "—", soldDate: "2025-02-01", installed: "2025-02-10", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-05" },
+  // Fleet-reported first use (professional robotic mower)
+  { model: "Automower 405X NERA", serial: "2025-405N-00312", pnc: "967 85 40-01", customer: "—", soldDate: "2025-01-15", installed: { date: "2025-01-22", source: "MIT" }, firstUse: { date: "2025-01-24", source: "Fleet" }, warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-28" },
+
+  // AMS-reported first use (consumer app)
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "2024-12-01", installed: { date: "2024-12-08", source: "MIT" }, firstUse: { date: "2024-12-15", source: "AMS" }, warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2025-12-10" },
+
+  // Nothing — no installation, no first use
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "2024-06-20", installed: "missing", firstUse: "missing", warranty: "expiring", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-11-05" },
+  { model: "Automower 320 NERA", serial: "—", pnc: "967 85 25-01", customer: "—", soldDate: "2025-02-01", installed: { date: "2025-02-10", source: "MIT" }, firstUse: "missing", warranty: "active", serviceContract: "active", leasing: "—", hypercare: "—", lastUpdated: "2026-02-05" },
 
   // Missing sold date entirely
-  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active", lastUpdated: "2026-01-12" },
-  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-10-22" },
-  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-09-30" },
+  { model: "CEORA 546 EPOS", serial: "2024-C546-00087", pnc: "967 93 12-01", customer: "AB Grönytor", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "active", hypercare: "active", lastUpdated: "2026-01-12" },
+  { model: "Automower 310 Mark II", serial: "—", pnc: "967 85 21-03", customer: "—", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-10-22" },
+  { model: "Husqvarna 562XP", serial: "—", pnc: "966 57 03-18", customer: "—", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: "2025-09-30" },
 ];
 
 /* Customer key (stable identifier across languages) → localized {name, contact} */
@@ -1184,7 +1248,7 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
   function handleAdd() {
     if (!model || !serial) return;
     setAdded(true);
-    setTimeout(() => { onAdd({ model, serial, pnc: pnc || "—", customer: customer || "—", soldDate: "missing", installed: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: new Date().toISOString().split("T")[0] }); }, 1000);
+    setTimeout(() => { onAdd({ model, serial, pnc: pnc || "—", customer: customer || "—", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", lastUpdated: new Date().toISOString().split("T")[0] }); }, 1000);
   }
 
   const modeButtons = [
@@ -2612,11 +2676,7 @@ export default function UserTest2026Page() {
                           ) : <span className="text-[12px] text-[#555]">{p.soldDate}</span>}
                         </td>
                         <td className="px-3 py-3">
-                          {p.installed === "missing" ? (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44]">{i.missing}</span>
-                          ) : (
-                            <span className="text-[12px] text-[#555]">{p.installed}</span>
-                          )}
+                          <SetupCell installed={p.installed} firstUse={p.firstUse} lang={lang} />
                         </td>
                         <td className="px-3 py-3"><StatusBadge status={p.warranty} lang={lang} /></td>
                         <td className="px-3 py-3"><StatusBadge status={p.serviceContract} lang={lang} /></td>
