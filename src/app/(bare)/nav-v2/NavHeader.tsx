@@ -256,7 +256,7 @@ export default function NavHeader() {
           {/* Right: Min verksamhet link */}
           <div className="flex items-center">
             <Link
-              href="/nav-v2/min-verksamhet"
+              href="/nav-v2/min-verksamhet/workspace"
               className={`relative flex items-center gap-2.5 px-5 py-5 text-base transition-colors focus:outline-none ${
                 isVerksamhet ? "text-[#111]" : "text-[#444] hover:text-[#111]"
               }`}
@@ -1044,7 +1044,7 @@ const visionAreas: ScopeArea[] = [
         strategic_value: "The landing page as an engagement hub enables future personalization, notifications and AI summaries.",
         dependencies: "Real-time data for metrics (order count, invoice status). Badge system for notifications.",
         scope_note: "Prototype shows 50/50 grid with order management card (dark gradient, glassmorphism metrics) and stacked economy cards. NY badges on all new pages.",
-        href: "/nav-v2/min-verksamhet",
+        href: "/nav-v2/min-verksamhet/workspace",
       },
       {
         title: "Dealer Workspace",

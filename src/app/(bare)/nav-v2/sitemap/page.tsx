@@ -34,7 +34,7 @@ const sitemap: SitemapNode[] = [
       },
       {
         label: "Min verksamhet",
-        href: "/nav-v2/min-verksamhet",
+        href: "/nav-v2/min-verksamhet/workspace",
         badge: "Dealer",
         children: [
           {
@@ -43,6 +43,7 @@ const sitemap: SitemapNode[] = [
             children: [
               { label: "Dashboard", href: "/nav-v2/min-verksamhet/workspace" },
               { label: "Produkter", href: "/nav-v2/min-verksamhet/workspace" },
+              { label: "Sell-out", href: "/nav-v2/min-verksamhet/workspace" },
               { label: "Kunder", href: "/nav-v2/min-verksamhet/workspace" },
               { label: "Avtal & Program", href: "/nav-v2/min-verksamhet/workspace" },
               { label: "Idag", href: "/nav-v2/min-verksamhet/workspace" },

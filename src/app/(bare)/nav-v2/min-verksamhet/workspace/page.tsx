@@ -11,7 +11,7 @@ import Breadcrumb from "../../Breadcrumb";
 
 type Priority = "high" | "medium" | "low";
 
-type Tab = "dashboard" | "products" | "sellout" | "customers" | "contracts" | "today";
+type Tab = "dashboard" | "customers" | "products" | "orders" | "invoices" | "contracts";
 type ContractView = "alla" | "service-plus" | "warranty-plus" | "leasing-plus" | "hypercare";
 
 /* ═══════════════════════════════════════════════════════
@@ -109,8 +109,19 @@ const recentActivity = [
    ═══════════════════════════════════════════════════════ */
 
 const productColumns = [
-  "Modell", "Serie / PNC", "Kund", "Sålddatum", "Installation", "Garanti", "Serviceavtal", "Leasing", "HyperCare"
+  "Modell", "Serie / PNC", "Kund", "Sålddatum", "Installation & Första start", "Garanti", "Serviceavtal", "Leasing", "HyperCare", "CX Bonus"
 ];
+
+type SetupSource = "Fleet" | "MIT" | "AMS" | "Connect" | "";
+type SetupData = { date: string; source: SetupSource } | "missing";
+
+const sourceColors: Record<SetupSource, { bg: string; text: string }> = {
+  Fleet: { bg: "bg-[#f0f0f0]", text: "text-[#888]" },
+  MIT: { bg: "bg-[#f0f0f0]", text: "text-[#888]" },
+  AMS: { bg: "bg-[#f0f0f0]", text: "text-[#888]" },
+  Connect: { bg: "bg-[#f0f0f0]", text: "text-[#888]" },
+  "": { bg: "bg-[#f0f0f0]", text: "text-[#888]" },
+};
 
 const products = [
   {
@@ -119,11 +130,12 @@ const products = [
     pnc: "967 85 32-01",
     customer: "Lindström Fastigheter",
     soldDate: "2024-11-15",
-    installed: "pending",
+    installed: { date: "2024-11-20", source: "MIT" } as SetupData,
+    firstUse: "missing" as SetupData,
     warranty: "pending",
     serviceContract: "missing",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "processing",
   },
   {
     model: "Automower 550X Mark II",
@@ -131,11 +143,12 @@ const products = [
     pnc: "967 85 45-02",
     customer: "Eriksson Trädgård AB",
     soldDate: "2024-10-20",
-    installed: "completed",
+    installed: { date: "2024-10-25", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-10-28", source: "AMS" } as SetupData,
     warranty: "pending",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "CEORA 546 EPOS",
@@ -143,11 +156,12 @@ const products = [
     pnc: "967 93 12-01",
     customer: "AB Grönytor",
     soldDate: "missing",
-    installed: "missing",
+    installed: "missing" as SetupData,
+    firstUse: "missing" as SetupData,
     warranty: "missing",
     serviceContract: "missing",
     leasing: "active",
-    hypercare: "active",
+    hypercare: "active", cxBonus: "—",
   },
   {
     model: "Husqvarna 346XP",
@@ -155,11 +169,12 @@ const products = [
     pnc: "966 99 18-35",
     customer: "Skogsservice Norr AB",
     soldDate: "2024-09-05",
-    installed: "completed",
+    installed: { date: "2024-09-05", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-09-05", source: "Connect" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "active",
+    hypercare: "active", cxBonus: "paid",
   },
   {
     model: "Automower 310 Mark II",
@@ -167,11 +182,12 @@ const products = [
     pnc: "967 85 21-03",
     customer: "Nilsson Villaservice",
     soldDate: "2024-12-01",
-    installed: "completed",
+    installed: { date: "2024-12-08", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-12-15", source: "AMS" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "CEORA 526 EPOS",
@@ -179,11 +195,12 @@ const products = [
     pnc: "967 93 10-02",
     customer: "Karlsson Park & Trädgård",
     soldDate: "2024-08-14",
-    installed: "completed",
+    installed: { date: "2024-08-20", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-08-22", source: "Fleet" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "active",
-    hypercare: "active",
+    hypercare: "active", cxBonus: "paid",
   },
   {
     model: "Automower 450X NERA",
@@ -191,11 +208,12 @@ const products = [
     pnc: "967 85 38-01",
     customer: "BRF Solsidan",
     soldDate: "2024-07-22",
-    installed: "completed",
+    installed: { date: "2024-07-28", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-08-03", source: "AMS" } as SetupData,
     warranty: "active",
     serviceContract: "expiring",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "Husqvarna 572XP",
@@ -203,11 +221,12 @@ const products = [
     pnc: "966 73 31-18",
     customer: "Skogsservice Norr AB",
     soldDate: "2024-06-10",
-    installed: "completed",
+    installed: "missing" as SetupData,
+    firstUse: { date: "2024-06-15", source: "Connect" } as SetupData,
     warranty: "active",
     serviceContract: "missing",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "rejected",
   },
   {
     model: "Automower 405X NERA",
@@ -215,11 +234,12 @@ const products = [
     pnc: "967 85 40-01",
     customer: "Fastighets AB Solbacken",
     soldDate: "2025-01-15",
-    installed: "completed",
+    installed: { date: "2025-01-22", source: "MIT" } as SetupData,
+    firstUse: { date: "2025-01-24", source: "Fleet" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "Husqvarna 562XP",
@@ -227,11 +247,12 @@ const products = [
     pnc: "966 57 03-18",
     customer: "Lundgren Maskin AB",
     soldDate: "2024-06-20",
-    installed: "completed",
+    installed: "missing" as SetupData,
+    firstUse: { date: "2024-06-22", source: "Connect" } as SetupData,
     warranty: "expiring",
     serviceContract: "missing",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "processing",
   },
   {
     model: "Automower 320 NERA",
@@ -239,11 +260,12 @@ const products = [
     pnc: "967 85 25-01",
     customer: "Malmö Grönska HB",
     soldDate: "2025-02-01",
-    installed: "completed",
+    installed: { date: "2025-02-10", source: "MIT" } as SetupData,
+    firstUse: "missing" as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "Husqvarna 535RXT",
@@ -251,11 +273,12 @@ const products = [
     pnc: "967 86 12-03",
     customer: "Eriksson Trädgård AB",
     soldDate: "2024-11-08",
-    installed: "completed",
+    installed: "missing" as SetupData,
+    firstUse: { date: "2024-11-10", source: "Connect" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "paid",
   },
   {
     model: "Automower 430X NERA",
@@ -263,11 +286,12 @@ const products = [
     pnc: "585 57 28-01",
     customer: "Lindström Fastigheter",
     soldDate: "2024-05-12",
-    installed: "completed",
+    installed: { date: "2024-05-18", source: "MIT" } as SetupData,
+    firstUse: { date: "2024-05-25", source: "AMS" } as SetupData,
     warranty: "active",
     serviceContract: "active",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "—",
   },
   {
     model: "Automower 310 Mark II",
@@ -275,11 +299,12 @@ const products = [
     pnc: "967 85 21-03",
     customer: "Villa Ekbacken",
     soldDate: "missing",
-    installed: "missing",
+    installed: "missing" as SetupData,
+    firstUse: "missing" as SetupData,
     warranty: "missing",
     serviceContract: "missing",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "—",
   },
   {
     model: "Husqvarna 562XP",
@@ -287,11 +312,12 @@ const products = [
     pnc: "966 57 03-18",
     customer: "Skog & Mark HB",
     soldDate: "missing",
-    installed: "missing",
+    installed: "missing" as SetupData,
+    firstUse: "missing" as SetupData,
     warranty: "missing",
     serviceContract: "missing",
     leasing: "—",
-    hypercare: "—",
+    hypercare: "—", cxBonus: "—",
   },
 ];
 
@@ -437,13 +463,13 @@ const actionGroups = [
    TABS CONFIG
    ═══════════════════════════════════════════════════════ */
 
-const tabs: { id: Tab; label: string; badge?: number }[] = [
+const tabs: { id: Tab; label: string; badge?: number | string; badgeDot?: boolean; badgePill?: string }[] = [
   { id: "dashboard", label: "Dashboard" },
-  { id: "products", label: "Produkter", badge: 87 },
-  { id: "sellout", label: "Sell-out", badge: 14 },
   { id: "customers", label: "Kunder", badge: 142 },
+  { id: "products", label: "Produkter", badge: 87 },
+  { id: "orders", label: "Ordrar", badge: 14, badgeDot: true },
+  { id: "invoices", label: "Fakturor", badge: 8, badgePill: "NY" },
   { id: "contracts", label: "Avtal & program", badge: 23 },
-  { id: "today", label: "Idag", badge: 14 },
 ];
 
 /* ═══════════════════════════════════════════════════════
@@ -461,6 +487,56 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+function CxBonusBadge({ status }: { status: string }) {
+  if (status === "—") return <span className="text-[12px] text-[#ccc]">—</span>;
+  const styles: Record<string, { bg: string; text: string; label: string }> = {
+    processing: { bg: "bg-[#e3f2fd]", text: "text-[#1565c0]", label: "Processing" },
+    paid: { bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]", label: "Paid" },
+    rejected: { bg: "bg-[#fce8e8]", text: "text-[#c44]", label: "Rejected" },
+  };
+  const s = styles[status] ?? { bg: "bg-[#f5f5f5]", text: "text-[#888]", label: status };
+  return <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${s.bg} ${s.text}`}>{s.label}</span>;
+}
+
+function SetupCell({ installed, firstUse }: { installed: SetupData; firstUse: SetupData }) {
+  const bothMissing = installed === "missing" && firstUse === "missing";
+  if (bothMissing) {
+    return <span className="inline-flex items-center gap-1 rounded-full bg-[#fce8e8] px-2 py-0.5 text-[10px] font-semibold text-[#c44]">Saknas</span>;
+  }
+  return (
+    <div className="space-y-2.5">
+      <div>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbb]">Installerad</span>
+        {installed !== "missing" ? (
+          <div className="mt-0.5 flex items-center gap-1.5 pl-2">
+            <span className="text-[12px] font-medium text-[#333]">{installed.date}</span>
+            <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${sourceColors[installed.source].bg} ${sourceColors[installed.source].text}`}>{installed.source}</span>
+          </div>
+        ) : (
+          <div className="mt-0.5 pl-2"><span className="text-[11px] text-[#ccc]">—</span></div>
+        )}
+      </div>
+      <div>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbb]">Första start</span>
+        {firstUse !== "missing" ? (
+          <div className="mt-0.5 flex items-center gap-1.5 pl-2">
+            <span className="text-[12px] font-medium text-[#333]">{firstUse.date}</span>
+            <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${sourceColors[firstUse.source].bg} ${sourceColors[firstUse.source].text}`}>{firstUse.source}</span>
+          </div>
+        ) : (
+          <div className="mt-0.5 pl-2">
+            {installed !== "missing" ? (
+              <span className="rounded-full bg-[#fff3e0] px-1.5 py-0.5 text-[9px] font-semibold text-[#b8860b]">Väntar</span>
+            ) : (
+              <span className="text-[11px] text-[#ccc]">—</span>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════
    PAGE
    ═══════════════════════════════════════════════════════ */
@@ -473,13 +549,12 @@ export default function MinVerksamhetPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavHeader />
+      {/* NavHeader rendered by layout */}
 
-      <main className="mx-auto max-w-[1320px] px-6 py-6">
+      <main className="py-6">
         {/* ── Breadcrumb ── */}
         <Breadcrumb items={[
-          { label: "Min verksamhet", href: "/nav-v2/min-verksamhet" },
-          { label: "Dealer Workspace", href: "/nav-v2/min-verksamhet/workspace" },
+          { label: "Min verksamhet", href: "/nav-v2/min-verksamhet/workspace" },
         ]} />
 
         {/* ── Page header ── */}
@@ -511,14 +586,17 @@ export default function MinVerksamhetPage() {
                 <span className="flex items-center gap-1.5">
                   {tab.label}
                   {tab.badge !== undefined && (
-                    <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                    <span className={`relative rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
                       activeTab === tab.id ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"
                     }`}>
                       {tab.badge}
+                      {tab.badgeDot && <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#c44] ring-2 ring-white" />}
                     </span>
                   )}
-                  {tab.id === "today" && (
-                    <span className="absolute -right-0.5 top-1.5 h-2 w-2 rounded-full bg-[#c44]" />
+                  {tab.badgePill && (
+                    <span className="rounded-full bg-[#ff6b00] px-1.5 py-0.5 text-[9px] font-bold leading-none text-white">
+                      {tab.badgePill}
+                    </span>
                   )}
                 </span>
               </button>
@@ -540,29 +618,29 @@ export default function MinVerksamhetPage() {
           {activeTab === "dashboard" && (
             <DashboardView />
           )}
-          {activeTab === "products" && (
-            <ProductsView
-              filter={productFilter}
-              onFilterChange={setProductFilter}
-            />
-          )}
-          {activeTab === "sellout" && (
-            <SelloutView />
-          )}
           {activeTab === "customers" && (
             <CustomersView
               expanded={expandedCustomer}
               onToggle={setExpandedCustomer}
             />
           )}
+          {activeTab === "products" && (
+            <ProductsView
+              filter={productFilter}
+              onFilterChange={setProductFilter}
+            />
+          )}
+          {activeTab === "orders" && (
+            <OrdersDirectView />
+          )}
+          {activeTab === "invoices" && (
+            <InvoicesDirectView />
+          )}
           {activeTab === "contracts" && (
             <ContractsView
               activeView={contractView}
               onViewChange={setContractView}
             />
-          )}
-          {activeTab === "today" && (
-            <TodayView />
           )}
         </div>
       </main>
@@ -771,11 +849,13 @@ function AddProductPanel({
         pnc: pnc || "—",
         customer: customer || "Ej tilldelad",
         soldDate: "missing",
-        installed: "missing",
+        installed: "missing" as SetupData,
+        firstUse: "missing" as SetupData,
         warranty: "missing",
         serviceContract: "missing",
         leasing: "—",
         hypercare: "—",
+        cxBonus: "—",
       });
     }, 1000);
   }
@@ -1256,6 +1336,9 @@ function ProductsView({
   const [selloutProduct, setSelloutProduct] = useState<typeof products[0] | null>(null);
   const [productData, setProductData] = useState(products);
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [subView, setSubView] = useState<"products" | "sellout">("products");
+  const [showSelloutReport, setShowSelloutReport] = useState(false);
+  const [selloutReportProduct, setSelloutReportProduct] = useState<typeof inventoryItems[0] | null>(null);
 
   function handleAddProduct(product: typeof products[0]) {
     setProductData((prev) => [product, ...prev]);
@@ -1273,6 +1356,64 @@ function ProductsView({
 
   return (
     <div className="space-y-5">
+      {/* Sub-view toggle */}
+      <div className="flex items-center gap-1 rounded-lg border border-[#d0d0d0] bg-[#f5f5f5] p-0.5 self-start w-fit">
+        <button
+          onClick={() => setSubView("products")}
+          className={`rounded-md px-4 py-1.5 text-[13px] font-medium transition-all ${
+            subView === "products" ? "bg-white text-[#111] shadow-sm" : "text-[#888] hover:text-[#555]"
+          }`}
+        >
+          Alla produkter
+        </button>
+        <button
+          onClick={() => setSubView("sellout")}
+          className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-[13px] font-medium transition-all ${
+            subView === "sellout" ? "bg-white text-[#111] shadow-sm" : "text-[#888] hover:text-[#555]"
+          }`}
+        >
+          Sell-out
+          {missingCount > 0 && (
+            <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+              subView === "sellout" ? "bg-[#e65100] text-white" : "bg-[#fce8e8] text-[#c44]"
+            }`}>{missingCount}</span>
+          )}
+        </button>
+      </div>
+
+      {subView === "sellout" && (
+        <SelloutSubView
+          productData={productData}
+          onShowReport={(product) => { setSelloutReportProduct(product); setShowSelloutReport(true); }}
+          onShowReportGeneral={() => { setSelloutReportProduct(null); setShowSelloutReport(true); }}
+        />
+      )}
+
+      {showSelloutReport && (
+        <SelloutReportDrawer
+          preselected={selloutReportProduct}
+          onClose={() => setShowSelloutReport(false)}
+        />
+      )}
+
+      {subView === "products" && <>
+      {/* Quick actions row */}
+      <div className="flex flex-wrap gap-2">
+        {[
+          { label: "Registrera produkt", icon: "M3 3h14v14H3zM10 7v6M7 10h6", href: "#register-product" },
+          { label: "Registrera sellout", icon: "M10 10a7 7 0 100-14 7 7 0 000 14zM7 10l2.5 2.5L13 7", href: "#sellout" },
+          { label: "Starta installation", icon: "M10 2l6 3v5c0 3.5-2.5 6.5-6 8-3.5-1.5-6-4.5-6-8V5l6-3z", href: "#installation" },
+          { label: "Överlämning", icon: "M4 10l4 4 8-8", href: "#handover" },
+        ].map((a) => (
+          <a key={a.label} href={a.href} className="group flex items-center gap-2 rounded-lg border border-[#e5e5e5] bg-white px-3 py-2 text-[12px] font-medium text-[#555] transition-all hover:border-[#273A60]/30 hover:text-[#273A60]">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] group-hover:text-[#273A60]">
+              <path d={a.icon} />
+            </svg>
+            {a.label}
+          </a>
+        ))}
+      </div>
+
       {/* Header + bulk actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -1370,11 +1511,12 @@ function ProductsView({
                     <span className="text-[12px] text-[#555]">{p.soldDate}</span>
                   )}
                 </td>
-                <td className="px-3 py-3"><StatusBadge status={p.installed} /></td>
+                <td className="px-3 py-3"><SetupCell installed={p.installed} firstUse={p.firstUse} /></td>
                 <td className="px-3 py-3"><StatusBadge status={p.warranty} /></td>
                 <td className="px-3 py-3"><StatusBadge status={p.serviceContract} /></td>
                 <td className="px-3 py-3"><StatusBadge status={p.leasing} /></td>
                 <td className="px-3 py-3"><StatusBadge status={p.hypercare} /></td>
+                <td className="px-3 py-3"><CxBonusBadge status={p.cxBonus} /></td>
               </tr>
             ))}
           </tbody>
@@ -1406,6 +1548,114 @@ function ProductsView({
           <button className="rounded border border-[#d0d0d0] px-3 py-1.5 text-[12px] text-[#555]">2</button>
           <button className="rounded border border-[#d0d0d0] px-3 py-1.5 text-[12px] text-[#555]">3</button>
           <button className="rounded border border-[#d0d0d0] px-3 py-1.5 text-[12px] text-[#888]">Nästa →</button>
+        </div>
+      </div>
+      </>}
+    </div>
+  );
+}
+
+/* ── Sell-out Sub-View (inside Products tab) ── */
+
+function SelloutSubView({
+  productData,
+  onShowReport,
+  onShowReportGeneral,
+}: {
+  productData: typeof products;
+  onShowReport: (product: typeof inventoryItems[0]) => void;
+  onShowReportGeneral: () => void;
+}) {
+  const totalStock = inventoryItems.reduce((s, p) => s + p.stock, 0);
+  const missingProducts = productData.filter((p) => p.soldDate === "missing");
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold text-[#111]">Sell-out</h2>
+          <p className="text-[12px] text-[#888]">Rapportera försäljning till Husqvarna och lås upp förmåner</p>
+        </div>
+        <button
+          onClick={onShowReportGeneral}
+          className="rounded-lg bg-[#e65100] px-5 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+        >
+          + Rapportera sell-out
+        </button>
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#e65100]">{totalStock}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">I lager</span>
+          <span className="text-[11px] text-[#bbb]">{inventoryItems.length} produkter</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#111]">{recentSellouts.length}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">Sålda denna månad</span>
+          <span className="text-[11px] text-[#bbb]">Mars 2026</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#2e7d32]">3</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">Väntande bonus</span>
+          <span className="text-[11px] text-[#bbb]">Väntar på granskning</span>
+        </div>
+      </div>
+
+      {/* Inventory */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">Ditt lager</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {inventoryItems.map((item) => (
+            <div key={item.pnc} className="flex items-center justify-between px-5 py-3.5">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{item.name}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">PNC {item.pnc} · {item.category}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[11px] font-bold text-[#2e7d32]">{item.stock} i lager</span>
+                <button
+                  onClick={() => onShowReport(item)}
+                  className="rounded-lg border border-[#d0d0d0] px-3 py-1.5 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+                >
+                  Rapportera försäljning
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Missing sell-outs */}
+      {missingProducts.length > 0 && (
+        <div className="flex items-center gap-3 rounded-xl border-l-4 border-l-[#e65100] bg-[#fff8f0] px-5 py-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e65100] text-[12px] font-bold text-white">{missingProducts.length}</span>
+          <div>
+            <p className="text-[13px] font-semibold text-[#111]">Produkter saknar säljdatum</p>
+            <p className="text-[12px] text-[#888]">{missingProducts.map((p) => p.model).join(", ")}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Recent sell-outs */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">Senaste sell-outs</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {recentSellouts.map((so, idx) => (
+            <div key={idx} className="flex items-center justify-between px-5 py-3">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{so.product}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">S/N: {so.serial}</span>
+              </div>
+              <span className="text-[12px] text-[#999]">{so.date}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -2057,6 +2307,597 @@ function HyperCareTable() {
 /* ═══════════════════════════════════════════════════════
    E) TODAY / ACTIONS VIEW
    ═══════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════
+   ORDERS & INVOICES VIEW
+   ═══════════════════════════════════════════════════════ */
+
+type OISubTab = "orders" | "invoices" | "payments" | "returns" | "reports";
+
+const mockOrderRows = [
+  { id: "ORD-2026-1055", customer: "AB Grönytor", date: "2026-04-10", articles: "CEORA 546 EPOS × 1", total: "SEK 189 900", status: "processing" as const, delivery: "2026-04-18" },
+  { id: "ORD-2026-1052", customer: "Lindström Fastigheter", date: "2026-04-08", articles: "Automower 430X NERA × 2", total: "SEK 59 980", status: "shipped" as const, delivery: "2026-04-12" },
+  { id: "ORD-2026-1048", customer: "Skogsservice Norr AB", date: "2026-04-05", articles: "572 XP Mark II × 3, X-CUT SP33G × 5", total: "SEK 42 870", status: "shipped" as const, delivery: "2026-04-09" },
+  { id: "ORD-2026-1044", customer: "Eriksson Trädgård AB", date: "2026-04-03", articles: "Automower 320 NERA × 1, LC 353iVX × 2", total: "SEK 38 970", status: "delivered" as const, delivery: "2026-04-07" },
+  { id: "ORD-2026-1041", customer: "BRF Solsidan", date: "2026-04-01", articles: "Automower 450X NERA × 1", total: "SEK 29 990", status: "delivered" as const, delivery: "2026-04-04" },
+  { id: "ORD-2026-1038", customer: "Karlsson Park & Trädgård", date: "2026-03-28", articles: "525iB Mark II × 4, 325iLK × 2", total: "SEK 24 740", status: "delivered" as const, delivery: "2026-03-31" },
+  { id: "SR-2026-0168", customer: "Swedish Motors AB", date: "2026-03-25", articles: "Wheel Motor Assembly × 1", total: "SEK 1 850", status: "pending" as const, delivery: "—" },
+  { id: "SR-2026-0165", customer: "Nilsson Villaservice", date: "2026-03-22", articles: "Cutting Disc Assembly × 2", total: "SEK 1 780", status: "pending" as const, delivery: "—" },
+  { id: "ORD-2026-1032", customer: "Landskapet Trädgård AB", date: "2026-03-20", articles: "Automower 435X AWD × 1, Boundary Wire × 3", total: "SEK 34 960", status: "backorder" as const, delivery: "2026-04-25" },
+  { id: "ORD-2026-1028", customer: "Malmö Grönska HB", date: "2026-03-18", articles: "Automower 310 Mark II × 2", total: "SEK 19 980", status: "delivered" as const, delivery: "2026-03-21" },
+];
+
+const orderStatusMap: Record<string, { label: string; bg: string; text: string }> = {
+  pending: { label: "Väntande", bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  processing: { label: "Behandlas", bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  shipped: { label: "Under transport", bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
+  delivered: { label: "Levererad", bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+  backorder: { label: "Restorder", bg: "bg-[#fce8e8]", text: "text-[#c44]" },
+};
+
+const mockInvoiceRows = [
+  { id: "90366751", customer: "Landskapet Trädgård AB", date: "2026-02-17", due: "2026-03-20", total: 42890, status: "open" as const },
+  { id: "90366296", customer: "Swedish Motors AB", date: "2026-02-10", due: "2026-03-13", total: 18450, status: "open" as const },
+  { id: "90361100", customer: "Landskapet Trädgård AB", date: "2025-12-15", due: "2026-01-14", total: 67200, status: "overdue" as const },
+  { id: "12006575", customer: "AB Grönytor", date: "2026-01-07", due: "2026-02-06", total: 9500, status: "paid" as const },
+  { id: "90362893", customer: "AB Grönytor", date: "2026-01-05", due: "2026-01-08", total: -9500, status: "credited" as const },
+  { id: "12005923", customer: "JL Maskin & Trädgård", date: "2025-12-30", due: "2026-01-29", total: 1444, status: "paid" as const },
+  { id: "12005326", customer: "Stenungsunds kommun", date: "2025-12-22", due: "2026-01-21", total: 4249, status: "paid" as const },
+  { id: "12005325", customer: "Automower Service Stockholm", date: "2025-12-22", due: "2026-01-21", total: 4249, status: "paid" as const },
+];
+
+const invStatusMap: Record<string, { label: string; bg: string; text: string }> = {
+  open: { label: "Öppen", bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  paid: { label: "Betald", bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+  overdue: { label: "Förfallen", bg: "bg-[#fce8e8]", text: "text-[#c62828]" },
+  credited: { label: "Krediterad", bg: "bg-[#f5f5f5]", text: "text-[#888]" },
+};
+
+/* ── Orders Direct View (no sub-tabs) ── */
+function OrdersDirectView() {
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-5 gap-3">
+        {[
+          { label: "Väntande", count: 2, color: "#e65100" },
+          { label: "Behandlas", count: 1, color: "#1565c0" },
+          { label: "Under transport", count: 2, color: "#273A60" },
+          { label: "Levererade", count: 4, color: "#2e7d32" },
+          { label: "Restorder", count: 1, color: "#c44" },
+        ].map((s) => (
+          <div key={s.label} className="rounded-xl border border-[#e5e5e5] bg-white p-3">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: s.color }} />
+              <span className="text-[11px] font-semibold text-[#888]">{s.label}</span>
+            </div>
+            <p className="mt-1 text-[20px] font-extrabold" style={{ color: s.color }}>{s.count}</p>
+          </div>
+        ))}
+      </div>
+      <div className="overflow-auto max-h-[60vh] rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full min-w-[900px] text-left">
+          <thead className="sticky top-0 z-10">
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              {["Ordernr", "Kund", "Datum", "Artiklar", "Summa", "Status", "Leverans"].map((h) => (
+                <th key={h} className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {mockOrderRows.map((o) => {
+              const st = orderStatusMap[o.status];
+              return (
+                <tr key={o.id} className="transition-colors hover:bg-[#fafafa]">
+                  <td className="px-4 py-3 text-[13px] font-semibold text-[#273A60]">{o.id}</td>
+                  <td className="px-4 py-3 text-[12px] text-[#555]">{o.customer}</td>
+                  <td className="px-4 py-3 text-[12px] text-[#666]">{o.date}</td>
+                  <td className="px-4 py-3 text-[12px] text-[#555] max-w-[200px] truncate">{o.articles}</td>
+                  <td className="px-4 py-3 text-[13px] font-semibold text-[#111]">{o.total}</td>
+                  <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${st.bg} ${st.text}`}>{st.label}</span></td>
+                  <td className="px-4 py-3 text-[12px] text-[#888]">{o.delivery}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* ── Invoices Direct View (no sub-tabs) ── */
+function InvoicesDirectView() {
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+          <span className="text-[11px] font-semibold text-[#888]">Öppna (2)</span>
+          <p className="mt-1 text-[20px] font-bold text-[#1565c0]">SEK 61 340</p>
+        </div>
+        <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-[#888]">Förfallna (1)</span>
+            <span className="h-2 w-2 animate-pulse rounded-full bg-[#c62828]" />
+          </div>
+          <p className="mt-1 text-[20px] font-bold text-[#c62828]">SEK 67 200</p>
+        </div>
+        <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+          <span className="text-[11px] font-semibold text-[#888]">Betalda</span>
+          <p className="mt-1 text-[20px] font-bold text-[#2e7d32]">SEK 19 442</p>
+        </div>
+      </div>
+      <div className="overflow-auto max-h-[60vh] rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full min-w-[700px] text-left">
+          <thead className="sticky top-0 z-10">
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              {["Fakturanr", "Kund", "Utfärdad", "Förfallodatum", "Belopp", "Status"].map((h) => (
+                <th key={h} className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] ${h === "Belopp" ? "text-right" : ""}`}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {mockInvoiceRows.map((inv) => {
+              const st = invStatusMap[inv.status];
+              const isOverdue = inv.status === "overdue";
+              return (
+                <tr key={inv.id} className={`transition-colors hover:bg-[#fafafa] ${isOverdue ? "bg-[#fce8e8]/20" : ""}`}>
+                  <td className="px-4 py-3 text-[13px] font-semibold text-[#111]">{inv.id}</td>
+                  <td className="px-4 py-3 text-[12px] text-[#555]">{inv.customer}</td>
+                  <td className="px-4 py-3 text-[12px] text-[#666]">{inv.date}</td>
+                  <td className="px-4 py-3"><span className={`text-[12px] ${isOverdue ? "font-semibold text-[#c62828]" : "text-[#666]"}`}>{inv.due}</span></td>
+                  <td className="px-4 py-3 text-right"><span className={`text-[13px] font-semibold ${inv.total < 0 ? "text-[#c62828]" : "text-[#111]"}`}>SEK {inv.total.toLocaleString("sv-SE")}</span></td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${st.bg} ${st.text}`}>
+                      {isOverdue && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#c62828]" />}
+                      {st.label}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* ── KEPT FOR REFERENCE — OrdersInvoicesView (old combined) ── */
+function OrdersInvoicesView() {
+  const [subTab, setSubTab] = useState<OISubTab>("orders");
+
+  const subTabs: { id: OISubTab; label: string; badge?: string }[] = [
+    { id: "orders", label: "Ordrar" },
+    { id: "invoices", label: "Fakturor", badge: "8" },
+    { id: "payments", label: "Betalningar & saldo" },
+    { id: "returns", label: "Returer" },
+    { id: "reports", label: "Rapporter" },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* Sub-navigation */}
+      <div className="border-b border-[#e5e5e5]">
+        <nav className="-mb-px flex gap-0">
+          {subTabs.map((st) => (
+            <button
+              key={st.id}
+              onClick={() => setSubTab(st.id)}
+              className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                subTab === st.id ? "border-[#273A60] text-[#273A60]" : "border-transparent text-[#999] hover:text-[#555]"
+              }`}
+            >
+              {st.label}
+              {st.badge && (
+                <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                  subTab === st.id ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"
+                }`}>{st.badge}</span>
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Ordrar */}
+      {subTab === "orders" && (
+        <div className="space-y-4">
+          {/* Status summary */}
+          <div className="grid grid-cols-5 gap-3">
+            {[
+              { label: "Väntande", count: 2, color: "#e65100" },
+              { label: "Behandlas", count: 1, color: "#1565c0" },
+              { label: "Under transport", count: 2, color: "#273A60" },
+              { label: "Levererade", count: 4, color: "#2e7d32" },
+              { label: "Restorder", count: 1, color: "#c44" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-xl border border-[#e5e5e5] bg-white p-3">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: s.color }} />
+                  <span className="text-[11px] font-semibold text-[#888]">{s.label}</span>
+                </div>
+                <p className="mt-1 text-[20px] font-extrabold" style={{ color: s.color }}>{s.count}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Orders table */}
+          <div className="overflow-auto max-h-[60vh] rounded-xl border border-[#d0d0d0] bg-white">
+            <table className="w-full min-w-[900px] text-left">
+              <thead className="sticky top-0 z-10">
+                <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+                  {["Ordernr", "Kund", "Datum", "Artiklar", "Summa", "Status", "Leverans"].map((h) => (
+                    <th key={h} className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#f0f0f0]">
+                {mockOrderRows.map((o) => {
+                  const st = orderStatusMap[o.status];
+                  return (
+                    <tr key={o.id} className="transition-colors hover:bg-[#fafafa]">
+                      <td className="px-4 py-3 text-[13px] font-semibold text-[#273A60]">{o.id}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#555]">{o.customer}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#666]">{o.date}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#555] max-w-[200px] truncate">{o.articles}</td>
+                      <td className="px-4 py-3 text-[13px] font-semibold text-[#111]">{o.total}</td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${st.bg} ${st.text}`}>{st.label}</span></td>
+                      <td className="px-4 py-3 text-[12px] text-[#888]">{o.delivery}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Fakturor */}
+      {subTab === "invoices" && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+              <span className="text-[11px] font-semibold text-[#888]">Öppna (2)</span>
+              <p className="mt-1 text-[20px] font-bold text-[#1565c0]">SEK 61 340</p>
+            </div>
+            <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-[#888]">Förfallna (1)</span>
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[#c62828]" />
+              </div>
+              <p className="mt-1 text-[20px] font-bold text-[#c62828]">SEK 67 200</p>
+            </div>
+            <div className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+              <span className="text-[11px] font-semibold text-[#888]">Betalda</span>
+              <p className="mt-1 text-[20px] font-bold text-[#2e7d32]">SEK 19 442</p>
+            </div>
+          </div>
+          <div className="overflow-auto max-h-[60vh] rounded-xl border border-[#d0d0d0] bg-white">
+            <table className="w-full min-w-[700px] text-left">
+              <thead className="sticky top-0 z-10">
+                <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+                  {["Fakturanr", "Kund", "Utfärdad", "Förfallodatum", "Belopp", "Status"].map((h) => (
+                    <th key={h} className={`px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999] ${h === "Belopp" ? "text-right" : ""}`}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#f0f0f0]">
+                {mockInvoiceRows.map((inv) => {
+                  const st = invStatusMap[inv.status];
+                  const isOverdue = inv.status === "overdue";
+                  return (
+                    <tr key={inv.id} className={`transition-colors hover:bg-[#fafafa] ${isOverdue ? "bg-[#fce8e8]/20" : ""}`}>
+                      <td className="px-4 py-3 text-[13px] font-semibold text-[#111]">{inv.id}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#555]">{inv.customer}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#666]">{inv.date}</td>
+                      <td className="px-4 py-3"><span className={`text-[12px] ${isOverdue ? "font-semibold text-[#c62828]" : "text-[#666]"}`}>{inv.due}</span></td>
+                      <td className="px-4 py-3 text-right"><span className={`text-[13px] font-semibold ${inv.total < 0 ? "text-[#c62828]" : "text-[#111]"}`}>SEK {inv.total.toLocaleString("sv-SE")}</span></td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${st.bg} ${st.text}`}>
+                          {isOverdue && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#c62828]" />}
+                          {st.label}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Betalningar & saldo */}
+      {subTab === "payments" && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="rounded-2xl bg-gradient-to-br from-[#273A60] to-[#1a2d4d] p-6 text-white">
+              <span className="text-[12px] text-white/50">Aktuellt saldo</span>
+              <p className="mt-1 text-[28px] font-bold text-[#ff8a80]">SEK -18 450</p>
+              <div className="mt-3 space-y-1">
+                <div className="flex justify-between text-[12px]"><span className="text-white/60">Nästa betalning</span><span>2026-03-20</span></div>
+                <div className="flex justify-between text-[12px]"><span className="text-white/60">Belopp</span><span>SEK 42 890</span></div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-[#e5e5e5] bg-white p-6">
+              <span className="text-[12px] text-[#888]">Kreditlimit</span>
+              <p className="mt-1 text-[28px] font-bold text-[#111]">SEK 500 000</p>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#f0f0f0]">
+                <div className="h-full w-[96%] rounded-full bg-[#273A60]" />
+              </div>
+              <p className="mt-1 text-[11px] text-[#999]">96% utnyttjat · SEK 18 450 kvar</p>
+            </div>
+          </div>
+          <p className="text-center text-[13px] text-[#999]">Transaktionshistorik — byggs ut</p>
+        </div>
+      )}
+
+      {/* Returer */}
+      {subTab === "returns" && (
+        <div className="space-y-4">
+          <h3 className="text-base font-semibold text-[#111]">Returer & RMA</h3>
+          <p className="text-[12px] text-[#888]">Hantera returer och reklamationer</p>
+          <div className="rounded-xl border border-[#d0d0d0] bg-white">
+            <div className="divide-y divide-[#f0f0f0]">
+              <div className="flex items-center justify-between px-5 py-4">
+                <div>
+                  <p className="text-[13px] font-semibold text-[#111]">RMA-2026-012 — Cutting Disc Assembly</p>
+                  <p className="text-[11px] text-[#888]">Swedish Motors AB · Skapad 2026-03-08</p>
+                </div>
+                <span className="rounded-full bg-[#fff3e0] px-2 py-0.5 text-[10px] font-bold text-[#e65100]">Väntande</span>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-[13px] text-[#999]">Fler returer — byggs ut</p>
+        </div>
+      )}
+
+      {/* Rapporter */}
+      {subTab === "reports" && (
+        <div className="space-y-4">
+          <h3 className="text-base font-semibold text-[#111]">Rapporter</h3>
+          <p className="text-[12px] text-[#888]">Exportera rapporter och statistik</p>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { title: "Försäljningsöversikt", desc: "Total försäljning per månad och kategori", format: "PDF · Excel" },
+              { title: "Lagerstatus & restorder", desc: "Aktuell lagersituation och aktiva restorder", format: "Excel · CSV" },
+              { title: "Faktureringssammanställning", desc: "Alla fakturor och kreditnotor för perioden", format: "PDF · Excel" },
+            ].map((r) => (
+              <div key={r.title} className="rounded-xl border border-[#e5e5e5] bg-white p-4">
+                <h4 className="text-[13px] font-bold text-[#111]">{r.title}</h4>
+                <p className="mt-1 text-[11px] text-[#888]">{r.desc}</p>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-[10px] text-[#bbb]">{r.format}</span>
+                  <button className="text-[11px] font-semibold text-[#273A60] hover:underline">Generera →</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   SALES VIEW
+   ═══════════════════════════════════════════════════════ */
+
+type SalesSubTab = "quotes" | "wishlist" | "campaign-bonus" | "customer-pricing";
+
+const mockQuotes = [
+  { id: "Q-2026-0094", customer: "AB Grönytor", created: "2026-04-08", expires: "2026-04-22", value: "SEK 189 900", status: "sent" as const },
+  { id: "Q-2026-0091", customer: "Lindström Fastigheter", created: "2026-04-05", expires: "2026-04-19", value: "SEK 59 980", status: "reviewing" as const },
+  { id: "Q-2026-0089", customer: "BRF Solsidan", created: "2026-04-02", expires: "2026-04-16", value: "SEK 29 990", status: "accepted" as const },
+  { id: "Q-2026-0087", customer: "Eriksson Trädgård AB", created: "2026-03-28", expires: "2026-04-11", value: "SEK 38 970", status: "accepted" as const },
+  { id: "Q-2026-0084", customer: "Skogsservice Norr AB", created: "2026-03-25", expires: "2026-04-08", value: "SEK 42 870", status: "expired" as const },
+  { id: "Q-2026-0080", customer: "Karlsson Park & Trädgård", created: "2026-03-20", expires: "2026-04-03", value: "SEK 24 740", status: "draft" as const },
+  { id: "Q-2026-0078", customer: "Nilsson Villaservice", created: "2026-03-18", expires: "2026-04-01", value: "SEK 12 490", status: "rejected" as const },
+];
+
+const quoteStatusMap: Record<string, { label: string; bg: string; text: string }> = {
+  draft: { label: "Utkast", bg: "bg-[#f5f5f5]", text: "text-[#555]" },
+  sent: { label: "Skickad", bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  reviewing: { label: "Granskas", bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  accepted: { label: "Accepterad", bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+  rejected: { label: "Avvisad", bg: "bg-[#fce8e8]", text: "text-[#c44]" },
+  expired: { label: "Utgången", bg: "bg-[#f5f5f5]", text: "text-[#888]" },
+};
+
+const mockWishlistCustomers = [
+  {
+    customer: "Lindström Fastigheter",
+    items: [
+      { product: "Automower 450X NERA", added: "2026-03-15", price: "SEK 29 990" },
+      { product: "Automower 435X AWD", added: "2026-03-10", price: "SEK 29 990" },
+    ],
+  },
+  {
+    customer: "Eriksson Trädgård AB",
+    items: [
+      { product: "LC 353iVX", added: "2026-03-22", price: "SEK 6 490" },
+      { product: "525iB Mark II", added: "2026-03-18", price: "SEK 4 490" },
+      { product: "535i XP", added: "2026-03-05", price: "SEK 6 990" },
+    ],
+  },
+  {
+    customer: "BRF Solsidan",
+    items: [
+      { product: "Automower 320 NERA", added: "2026-04-01", price: "SEK 14 990" },
+    ],
+  },
+  {
+    customer: "AB Grönytor",
+    items: [
+      { product: "CEORA 526 EPOS", added: "2026-03-28", price: "SEK 149 900" },
+      { product: "Automower 550X Mark II", added: "2026-03-20", price: "SEK 34 990" },
+    ],
+  },
+];
+
+function SalesView() {
+  const [subTab, setSubTab] = useState<SalesSubTab>("quotes");
+
+  const subTabs: { id: SalesSubTab; label: string; badge?: string; pill?: string }[] = [
+    { id: "quotes", label: "Offerter", pill: "NY" },
+    { id: "wishlist", label: "Wishlist", pill: "NY" },
+    { id: "campaign-bonus", label: "Kampanjbonus", badge: "2" },
+    { id: "customer-pricing", label: "Kundspecifika priser" },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* Sub-navigation */}
+      <div className="border-b border-[#e5e5e5]">
+        <nav className="-mb-px flex gap-0">
+          {subTabs.map((st) => (
+            <button
+              key={st.id}
+              onClick={() => setSubTab(st.id)}
+              className={`flex items-center gap-1.5 border-b-2 px-4 py-2.5 text-[12px] font-semibold transition-colors ${
+                subTab === st.id ? "border-[#273A60] text-[#273A60]" : "border-transparent text-[#999] hover:text-[#555]"
+              }`}
+            >
+              {st.label}
+              {st.badge && (
+                <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                  subTab === st.id ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"
+                }`}>{st.badge}</span>
+              )}
+              {st.pill && (
+                <span className="rounded-full bg-[#ff6b00] px-1.5 py-0.5 text-[9px] font-bold leading-none text-white">{st.pill}</span>
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Offerter */}
+      {subTab === "quotes" && (
+        <div className="space-y-4">
+          {/* Summary strip */}
+          <div className="flex flex-wrap items-center gap-4 rounded-xl border border-[#e5e5e5] bg-[#fafafa] px-5 py-3">
+            {[
+              { label: "aktiva offerter", value: "7" },
+              { label: "väntar på kundsvar", value: "3" },
+              { label: "utgående denna vecka", value: "2" },
+              { label: "i pipeline", value: "SEK 284 500" },
+            ].map((s) => (
+              <span key={s.label} className="text-[12px] text-[#888]">
+                <span className="font-bold text-[#111]">{s.value}</span> {s.label}
+              </span>
+            ))}
+            <button className="ml-auto rounded-lg bg-[#273A60] px-4 py-2 text-[12px] font-semibold text-white hover:bg-[#1a2d4d]">+ Ny offert</button>
+          </div>
+
+          {/* Quotes table */}
+          <div className="overflow-auto max-h-[60vh] rounded-xl border border-[#d0d0d0] bg-white">
+            <table className="w-full min-w-[700px] text-left">
+              <thead className="sticky top-0 z-10">
+                <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+                  {["Offertnr", "Kund", "Skapad", "Utgår", "Värde", "Status"].map((h) => (
+                    <th key={h} className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#f0f0f0]">
+                {mockQuotes.map((q) => {
+                  const st = quoteStatusMap[q.status];
+                  return (
+                    <tr key={q.id} className="transition-colors hover:bg-[#fafafa]">
+                      <td className="px-4 py-3 text-[13px] font-semibold text-[#273A60]">{q.id}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#555]">{q.customer}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#666]">{q.created}</td>
+                      <td className="px-4 py-3 text-[12px] text-[#666]">{q.expires}</td>
+                      <td className="px-4 py-3 text-[13px] font-semibold text-[#111]">{q.value}</td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${st.bg} ${st.text}`}>{st.label}</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Wishlist */}
+      {subTab === "wishlist" && (
+        <div className="space-y-5">
+          {mockWishlistCustomers.map((c) => (
+            <div key={c.customer} className="rounded-xl border border-[#d0d0d0] bg-white">
+              <div className="flex items-center justify-between border-b border-[#f0f0f0] px-5 py-3.5">
+                <h3 className="text-[14px] font-semibold text-[#111]">{c.customer}</h3>
+                <span className="text-[11px] text-[#888]">{c.items.length} produkter</span>
+              </div>
+              <div className="divide-y divide-[#f0f0f0]">
+                {c.items.map((item) => (
+                  <div key={item.product} className="flex items-center justify-between px-5 py-3">
+                    <div>
+                      <p className="text-[13px] font-medium text-[#333]">{item.product}</p>
+                      <p className="text-[11px] text-[#999]">Tillagd {item.added} · {item.price}</p>
+                    </div>
+                    <button className="text-[12px] font-semibold text-[#273A60] hover:underline">Skapa offert →</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Kampanjbonus */}
+      {subTab === "campaign-bonus" && (
+        <div className="space-y-5">
+          <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#273A60] to-[#1a2d4d] p-6 text-white">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Aktiv kampanj</span>
+            <h3 className="mt-1.5 text-[20px] font-bold">Vårkampanj 2026</h3>
+            <p className="mt-0.5 text-[13px] text-white/70">1 mars – 31 maj 2026</p>
+
+            <div className="mt-5 grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">Nuvarande nivå</p>
+                <p className="mt-1 text-[20px] font-extrabold text-[#ff9b4d]">Guld · 4%</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">Kvalificerande enheter</p>
+                <p className="mt-1 text-[20px] font-extrabold">22</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">Intjänad bonus YTD</p>
+                <p className="mt-1 text-[20px] font-extrabold text-[#2a9d5c]">SEK 8 640</p>
+              </div>
+            </div>
+
+            <div className="mt-5">
+              <div className="flex items-center justify-between text-[11px] text-white/60">
+                <span>Guld (4%)</span>
+                <span>Platina (6%)</span>
+              </div>
+              <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-white/15">
+                <div className="h-full w-[65%] rounded-full bg-gradient-to-r from-[#ff9b4d] to-[#ff6b00]" />
+              </div>
+              <p className="mt-1.5 text-[11px] text-white/60">3 enheter till Platina-nivå</p>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-[#e5e5e5] bg-[#fafafa] px-4 py-3">
+            <p className="text-[12px] text-[#888]">
+              <span className="font-semibold text-[#555]">Kampanjmaterial och produktinformation</span> finns under Husqvarna → Kampanjer i huvudnavigationen.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Kundspecifika priser */}
+      {subTab === "customer-pricing" && (
+        <div className="space-y-4">
+          <h3 className="text-base font-semibold text-[#111]">Kundspecifika priser</h3>
+          <p className="text-[12px] text-[#888]">Avtalade priser och rabatter per kund</p>
+          <p className="py-8 text-center text-[13px] text-[#999]">Kundspecifika priser — byggs ut</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ═══════════════════════════════════════════════════════
    SELL-OUT VIEW

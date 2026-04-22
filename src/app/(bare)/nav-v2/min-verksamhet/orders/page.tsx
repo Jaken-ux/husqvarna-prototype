@@ -302,13 +302,13 @@ export default function OrdersPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavHeader />
+      {/* NavHeader rendered by layout */}
 
-      <main className="mx-auto max-w-[1320px] px-6 py-6">
+      <main className="py-6">
         {/* ── Breadcrumb ── */}
         <Breadcrumb
           items={[
-            { label: "Min verksamhet", href: "/nav-v2/min-verksamhet" },
+            { label: "Min verksamhet", href: "/nav-v2/min-verksamhet/workspace" },
             { label: "Orderhantering", href: "/nav-v2/min-verksamhet/orders" },
           ]}
         />

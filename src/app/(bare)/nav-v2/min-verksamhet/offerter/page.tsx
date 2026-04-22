@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import NavHeader from "../NavHeader";
-import Breadcrumb from "../Breadcrumb";
-import { useShowroom } from "../ShowroomContext";
+import Breadcrumb from "../../Breadcrumb";
+import { useShowroom } from "../../ShowroomContext";
 
 /* ═══ TYPES ═══ */
 type QuoteItem = {
@@ -466,13 +465,13 @@ export default function OfferterPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavHeader />
+      {/* NavHeader rendered by layout */}
 
-      <main className="mx-auto max-w-[1280px] px-6 py-10">
+      <main className="py-6">
         {/* ── Breadcrumb ── */}
         <Breadcrumb items={[
           { label: "Min verksamhet", href: "/nav-v2/min-verksamhet/workspace" },
-          { label: "Offerter", href: "/nav-v2/offerter" },
+          { label: "Offerter", href: "/nav-v2/min-verksamhet/offerter" },
         ]} />
 
         {/* Header */}
