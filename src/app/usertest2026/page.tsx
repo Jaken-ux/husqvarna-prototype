@@ -21,9 +21,26 @@ const t: Record<Lang, Record<string, string>> = {
     subtitle: "Unified workspace — products, customers, contracts and daily tasks",
     lastUpdated: "Last updated: today 09:15",
     tabProducts: "Products",
+    tabOrders: "Orders",
+    tabInvoices: "Invoices",
     tabCustomers: "Customers",
     tabContracts: "Contracts & programs",
     tabToday: "Today",
+    ordersTitle: "Orders",
+    ordersDesc: "Track order status — from cart to delivery",
+    ordersPending: "Pending",
+    ordersProcessing: "Processing",
+    ordersShipped: "In transit",
+    ordersDelivered: "Delivered",
+    ordersBackorder: "Back order",
+    invoicesTitle: "Invoices",
+    invoicesDesc: "Invoice overview, payment status and export",
+    invOpen: "Open",
+    invPaid: "Paid",
+    invOverdue: "Overdue",
+    invCredited: "Credited",
+    invAll: "All types",
+    invExport: "Export selected",
     allProducts: "All products",
     allProductsDesc: "Products under your management — filter by program and status",
     addProduct: "+ Add product",
@@ -248,9 +265,26 @@ const t: Record<Lang, Record<string, string>> = {
     subtitle: "Enhetlig arbetsyta — produkter, kunder, avtal och dagliga uppgifter",
     lastUpdated: "Senast uppdaterad: idag 09:15",
     tabProducts: "Produkter",
+    tabOrders: "Order",
+    tabInvoices: "Fakturor",
     tabCustomers: "Kunder",
     tabContracts: "Avtal & program",
     tabToday: "Idag",
+    ordersTitle: "Order",
+    ordersDesc: "Spåra orderstatus — från varukorg till leverans",
+    ordersPending: "Väntande",
+    ordersProcessing: "Behandlas",
+    ordersShipped: "Under transport",
+    ordersDelivered: "Levererade",
+    ordersBackorder: "Restorder",
+    invoicesTitle: "Fakturor",
+    invoicesDesc: "Fakturaöversikt, betalningsstatus och export",
+    invOpen: "Öppna",
+    invPaid: "Betalda",
+    invOverdue: "Förfallna",
+    invCredited: "Krediterade",
+    invAll: "Alla typer",
+    invExport: "Exportera valda",
     allProducts: "Alla produkter",
     allProductsDesc: "Produkter under din hantering — filtrera efter program och status",
     addProduct: "+ Lägg till produkt",
@@ -474,9 +508,26 @@ const t: Record<Lang, Record<string, string>> = {
     subtitle: "Einheitlicher Arbeitsbereich — Produkte, Kunden, Verträge und tägliche Aufgaben",
     lastUpdated: "Zuletzt aktualisiert: heute 09:15",
     tabProducts: "Produkte",
+    tabOrders: "Bestellungen",
+    tabInvoices: "Rechnungen",
     tabCustomers: "Kunden",
     tabContracts: "Verträge & Programme",
     tabToday: "Heute",
+    ordersTitle: "Bestellungen",
+    ordersDesc: "Bestellstatus verfolgen — vom Warenkorb bis zur Lieferung",
+    ordersPending: "Ausstehend",
+    ordersProcessing: "In Bearbeitung",
+    ordersShipped: "Im Transport",
+    ordersDelivered: "Geliefert",
+    ordersBackorder: "Nachbestellung",
+    invoicesTitle: "Rechnungen",
+    invoicesDesc: "Rechnungsübersicht, Zahlungsstatus und Export",
+    invOpen: "Offen",
+    invPaid: "Bezahlt",
+    invOverdue: "Überfällig",
+    invCredited: "Gutgeschrieben",
+    invAll: "Alle Typen",
+    invExport: "Ausgewählte exportieren",
     allProducts: "Alle Produkte",
     allProductsDesc: "Produkte unter Ihrer Verwaltung — nach Programm und Status filtern",
     addProduct: "+ Produkt hinzufügen",
@@ -700,9 +751,26 @@ const t: Record<Lang, Record<string, string>> = {
     subtitle: "Espace de travail unifié — produits, clients, contrats et tâches quotidiennes",
     lastUpdated: "Dernière mise à jour : aujourd'hui 09:15",
     tabProducts: "Produits",
+    tabOrders: "Commandes",
+    tabInvoices: "Factures",
     tabCustomers: "Clients",
     tabContracts: "Contrats & programmes",
     tabToday: "Aujourd'hui",
+    ordersTitle: "Commandes",
+    ordersDesc: "Suivre le statut des commandes — du panier à la livraison",
+    ordersPending: "En attente",
+    ordersProcessing: "En cours",
+    ordersShipped: "En transit",
+    ordersDelivered: "Livrées",
+    ordersBackorder: "En rupture",
+    invoicesTitle: "Factures",
+    invoicesDesc: "Aperçu des factures, statut de paiement et export",
+    invOpen: "Ouvertes",
+    invPaid: "Payées",
+    invOverdue: "En retard",
+    invCredited: "Créditées",
+    invAll: "Tous les types",
+    invExport: "Exporter la sélection",
     allProducts: "Tous les produits",
     allProductsDesc: "Produits sous votre gestion — filtrer par programme et statut",
     addProduct: "+ Ajouter un produit",
@@ -927,7 +995,7 @@ const t: Record<Lang, Record<string, string>> = {
    TYPES & SHARED
    ═══════════════════════════════════════════════════════ */
 
-type Tab = "products" | "sellout" | "customers" | "contracts" | "today";
+type Tab = "products" | "sellout" | "orders" | "invoices" | "customers" | "contracts" | "today";
 
 type ProductRow = {
   model: string;
@@ -2048,6 +2116,266 @@ function ReportSelloutDrawer({ lang, preselected, prefillSerial, prefillCustomer
 }
 
 /* ═══════════════════════════════════════════════════════
+   ORDERS VIEW
+   ═══════════════════════════════════════════════════════ */
+
+const mockOrders = [
+  { id: "SR-2026-0156", customer: "Swedish Motors AB", status: "pending" as const, source: "ServiceHub", date: "2026-03-12", total: 4230, items: 2 },
+  { id: "SR-2026-0157", customer: "Automower Service Stockholm", status: "pending" as const, source: "ServiceHub", date: "2026-03-13", total: 4520, items: 3 },
+  { id: "WEB-2026-0891", customer: "Grönyta Entreprenad AB", status: "pending" as const, source: "Webshop", date: "2026-03-14", total: 1290, items: 1 },
+  { id: "ORD-2026-1042", customer: "Lindström Fastigheter", status: "processing" as const, source: "EDI", date: "2026-03-10", total: 24990, items: 2 },
+  { id: "ORD-2026-1038", customer: "Skogsservice Norr AB", status: "shipped" as const, source: "Webshop", date: "2026-03-08", total: 8740, items: 4 },
+  { id: "ORD-2026-1035", customer: "Karlsson Park & Trädgård", status: "shipped" as const, source: "EDI", date: "2026-03-06", total: 15200, items: 3 },
+  { id: "ORD-2026-0998", customer: "Eriksson Trädgård AB", status: "delivered" as const, source: "Webshop", date: "2026-02-28", total: 6490, items: 2 },
+  { id: "ORD-2026-0991", customer: "BRF Solsidan", status: "delivered" as const, source: "Telefon", date: "2026-02-25", total: 32400, items: 1 },
+];
+
+const orderStatusConfig: Record<string, { label: Record<Lang, string>; bg: string; text: string }> = {
+  pending: { label: { en: "Pending", sv: "Väntande", de: "Ausstehend", fr: "En attente" }, bg: "bg-[#fff3e0]", text: "text-[#e65100]" },
+  processing: { label: { en: "Processing", sv: "Behandlas", de: "In Bearbeitung", fr: "En cours" }, bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  shipped: { label: { en: "In transit", sv: "Under transport", de: "Im Transport", fr: "En transit" }, bg: "bg-[#e8eaf6]", text: "text-[#273A60]" },
+  delivered: { label: { en: "Delivered", sv: "Levererad", de: "Geliefert", fr: "Livrée" }, bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+};
+
+function OrdersView({ lang }: { lang: Lang }) {
+  const i = t[lang];
+  const [orderFilter, setOrderFilter] = useState("all");
+
+  const filtered = orderFilter === "all" ? mockOrders : mockOrders.filter((o) => o.status === orderFilter);
+
+  const statusCounts: Record<string, number> = {};
+  mockOrders.forEach((o) => { statusCounts[o.status] = (statusCounts[o.status] ?? 0) + 1; });
+
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-base font-semibold text-[#111]">{i.ordersTitle}</h2>
+          <p className="text-[12px] text-[#888]">{i.ordersDesc}</p>
+        </div>
+        <button className="rounded-lg border border-[#d0d0d0] bg-white px-3 py-2 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]">+ {i.ordersTitle}</button>
+      </div>
+
+      {/* Status summary cards */}
+      <div className="grid grid-cols-4 gap-3">
+        {(["pending", "processing", "shipped", "delivered"] as const).map((s) => {
+          const sc = orderStatusConfig[s];
+          const count = statusCounts[s] ?? 0;
+          const isActive = orderFilter === s;
+          return (
+            <button
+              key={s}
+              onClick={() => setOrderFilter(orderFilter === s ? "all" : s)}
+              className={`rounded-xl border p-4 text-left transition-all ${
+                isActive ? "border-[#273A60] shadow-sm" : "border-[#e5e5e5] hover:border-[#d0d0d0]"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`h-2 w-2 rounded-full ${sc.bg.replace("bg-", "bg-")}`} style={{ backgroundColor: sc.text.match(/#[0-9a-f]+/i)?.[0] }} />
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#888]">{sc.label[lang]}</span>
+              </div>
+              <p className="mt-1 text-[22px] font-extrabold text-[#111]">{count}</p>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Orders table */}
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full min-w-[700px] text-left">
+          <thead className="sticky top-0 z-10">
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Order ID</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{i.colCustomer}</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Source</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{i.colStatus}</th>
+              <th className="px-3 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-[#999]">Items</th>
+              <th className="px-3 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-[#999]">Total (SEK)</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Date</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {filtered.map((o) => {
+              const sc = orderStatusConfig[o.status];
+              return (
+                <tr key={o.id} className="transition-colors hover:bg-[#fafafa]">
+                  <td className="px-5 py-3 text-[13px] font-semibold text-[#273A60]">{o.id}</td>
+                  <td className="px-3 py-3 text-[12px] text-[#555]">{localizedCustomerName(o.customer, lang)}</td>
+                  <td className="px-3 py-3"><span className="rounded-full bg-[#f0f3f8] px-2 py-0.5 text-[10px] font-semibold text-[#273A60]">{o.source}</span></td>
+                  <td className="px-3 py-3"><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${sc.bg} ${sc.text}`}>{sc.label[lang]}</span></td>
+                  <td className="px-3 py-3 text-right text-[13px] font-medium text-[#333]">{o.items}</td>
+                  <td className="px-3 py-3 text-right text-[13px] font-semibold text-[#111]">{o.total.toLocaleString("sv-SE")}</td>
+                  <td className="px-3 py-3 text-[12px] text-[#888]">{o.date}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   INVOICES VIEW
+   ═══════════════════════════════════════════════════════ */
+
+const mockInvoices = [
+  { id: "90366751", date: "2026-02-17", due: "2026-03-20", total: 42890, status: "open" as const, type: "Invoice", customer: "Landskapet Trädgård AB", orderNr: "2638633" },
+  { id: "90366296", date: "2026-02-10", due: "2026-03-13", total: 18450, status: "open" as const, type: "Invoice", customer: "Swedish Motors AB", orderNr: "2637101" },
+  { id: "12006575", date: "2026-01-07", due: "2026-02-06", total: 9500, status: "paid" as const, type: "Invoice", customer: "Grönyta Entreprenad AB", orderNr: "2627861" },
+  { id: "90362893", date: "2026-01-05", due: "2026-01-08", total: -9500, status: "credited" as const, type: "Credit note", customer: "Grönyta Entreprenad AB", orderNr: "2627425" },
+  { id: "12005923", date: "2025-12-30", due: "2026-01-29", total: 1444, status: "paid" as const, type: "Partial", customer: "JL Maskin & Trädgård", orderNr: "2626782" },
+  { id: "12005326", date: "2025-12-22", due: "2026-01-21", total: 4249, status: "paid" as const, type: "Invoice", customer: "Stenungsunds kommun", orderNr: "2626030" },
+  { id: "12005325", date: "2025-12-22", due: "2026-01-21", total: 4249, status: "paid" as const, type: "Invoice", customer: "Automower Service Stockholm", orderNr: "2626029" },
+  { id: "12005324", date: "2025-12-22", due: "2026-01-21", total: 4249, status: "paid" as const, type: "Invoice", customer: "Automower Service Stockholm", orderNr: "2625983" },
+  { id: "90361100", date: "2025-12-15", due: "2026-01-14", total: 67200, status: "overdue" as const, type: "Invoice", customer: "Landskapet Trädgård AB", orderNr: "2624550" },
+  { id: "12004998", date: "2025-12-10", due: "2026-01-09", total: 2890, status: "paid" as const, type: "Invoice", customer: "JL Maskin & Trädgård", orderNr: "2624100" },
+  { id: "12004887", date: "2025-12-01", due: "2025-12-31", total: 15600, status: "paid" as const, type: "Invoice", customer: "Swedish Motors AB", orderNr: "2623800" },
+];
+
+const invStatusConfig: Record<string, { label: Record<Lang, string>; bg: string; text: string }> = {
+  open: { label: { en: "Open", sv: "Öppen", de: "Offen", fr: "Ouverte" }, bg: "bg-[#e3f2fd]", text: "text-[#1565c0]" },
+  paid: { label: { en: "Paid", sv: "Betald", de: "Bezahlt", fr: "Payée" }, bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]" },
+  overdue: { label: { en: "Overdue", sv: "Förfallen", de: "Überfällig", fr: "En retard" }, bg: "bg-[#fce8e8]", text: "text-[#c62828]" },
+  credited: { label: { en: "Credited", sv: "Krediterad", de: "Gutgeschrieben", fr: "Créditée" }, bg: "bg-[#f5f5f5]", text: "text-[#888]" },
+};
+
+function InvoicesView({ lang }: { lang: Lang }) {
+  const i = t[lang];
+  const [invFilter, setInvFilter] = useState("all");
+  const [selectedInvs, setSelectedInvs] = useState<Set<string>>(new Set());
+
+  const filtered = invFilter === "all" ? mockInvoices : mockInvoices.filter((inv) => inv.status === invFilter);
+
+  const openTotal = mockInvoices.filter((inv) => inv.status === "open").reduce((s, inv) => s + inv.total, 0);
+  const overdueTotal = mockInvoices.filter((inv) => inv.status === "overdue").reduce((s, inv) => s + inv.total, 0);
+  const fmtSEK = (n: number) => n.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-base font-semibold text-[#111]">{i.invoicesTitle}</h2>
+          <p className="text-[12px] text-[#888]">{i.invoicesDesc}</p>
+        </div>
+        {selectedInvs.size > 0 && (
+          <button className="rounded-lg bg-[#273A60] px-4 py-2 text-[12px] font-semibold text-white">{i.invExport} ({selectedInvs.size})</button>
+        )}
+      </div>
+
+      {/* Summary cards */}
+      <div className="grid grid-cols-3 gap-3">
+        <button
+          onClick={() => setInvFilter(invFilter === "open" ? "all" : "open")}
+          className={`rounded-xl border p-4 text-left transition-all ${invFilter === "open" ? "border-[#1565c0] shadow-sm" : "border-[#e5e5e5]"}`}
+        >
+          <span className="text-[11px] font-semibold text-[#888]">{i.invOpen} ({mockInvoices.filter((inv) => inv.status === "open").length})</span>
+          <p className="mt-1 text-[20px] font-bold text-[#1565c0]">{fmtSEK(openTotal)} kr</p>
+        </button>
+        <button
+          onClick={() => setInvFilter(invFilter === "overdue" ? "all" : "overdue")}
+          className={`rounded-xl border p-4 text-left transition-all ${invFilter === "overdue" ? "border-[#c62828] shadow-sm" : "border-[#e5e5e5]"}`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-[#888]">{i.invOverdue} ({mockInvoices.filter((inv) => inv.status === "overdue").length})</span>
+            {overdueTotal > 0 && <span className="h-2 w-2 animate-pulse rounded-full bg-[#c62828]" />}
+          </div>
+          <p className="mt-1 text-[20px] font-bold text-[#c62828]">{fmtSEK(overdueTotal)} kr</p>
+        </button>
+        <div className="rounded-xl border border-[#e5e5e5] p-4">
+          <span className="text-[11px] font-semibold text-[#888]">{i.invPaid}</span>
+          <p className="mt-1 text-[20px] font-bold text-[#2e7d32]">{fmtSEK(mockInvoices.filter((inv) => inv.status === "paid").reduce((s, inv) => s + inv.total, 0))} kr</p>
+        </div>
+      </div>
+
+      {/* Status pills */}
+      <div className="flex gap-1.5">
+        {(["all", "open", "paid", "overdue", "credited"] as const).map((s) => {
+          const label = s === "all" ? i.invAll : invStatusConfig[s].label[lang];
+          return (
+            <button
+              key={s}
+              onClick={() => setInvFilter(s)}
+              className={`rounded-full px-3 py-1.5 text-[12px] font-medium transition-all ${
+                invFilter === s ? "bg-[#273A60] text-white" : "bg-[#f5f5f5] text-[#666] hover:bg-[#e8e8e8]"
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Invoice table */}
+      <div className="overflow-auto max-h-[70vh] rounded-xl border border-[#d0d0d0] bg-white">
+        <table className="w-full min-w-[750px] text-left">
+          <thead className="sticky top-0 z-10">
+            <tr className="border-b border-[#e5e5e5] bg-[#fafafa]">
+              <th className="w-8 px-4 py-3">
+                <input
+                  type="checkbox"
+                  checked={selectedInvs.size === filtered.length && filtered.length > 0}
+                  onChange={() => setSelectedInvs(selectedInvs.size === filtered.length ? new Set() : new Set(filtered.map((inv) => inv.id)))}
+                  className="rounded border-[#ccc]"
+                />
+              </th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Invoice #</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{i.colCustomer}</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Type</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Issued</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Due</th>
+              <th className="px-3 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-[#999]">Amount</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">{i.colStatus}</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#999]">Order</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#f0f0f0]">
+            {filtered.map((inv) => {
+              const sc = invStatusConfig[inv.status];
+              const isOverdue = inv.status === "overdue";
+              return (
+                <tr key={inv.id} className={`transition-colors hover:bg-[#fafafa] ${isOverdue ? "bg-[#fce8e8]/20" : ""}`}>
+                  <td className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedInvs.has(inv.id)}
+                      onChange={() => {
+                        const next = new Set(selectedInvs);
+                        if (next.has(inv.id)) next.delete(inv.id); else next.add(inv.id);
+                        setSelectedInvs(next);
+                      }}
+                      className="rounded border-[#ccc]"
+                    />
+                  </td>
+                  <td className="px-3 py-3 text-[13px] font-semibold text-[#111]">{inv.id}</td>
+                  <td className="px-3 py-3 text-[12px] text-[#555]">{inv.customer}</td>
+                  <td className="px-3 py-3 text-[12px] text-[#555]">{inv.type}</td>
+                  <td className="px-3 py-3 text-[12px] text-[#666]">{inv.date}</td>
+                  <td className="px-3 py-3">
+                    <span className={`text-[12px] ${isOverdue ? "font-semibold text-[#c62828]" : "text-[#666]"}`}>{inv.due}</span>
+                  </td>
+                  <td className="px-3 py-3 text-right">
+                    <span className={`text-[13px] font-semibold ${inv.total < 0 ? "text-[#c62828]" : "text-[#111]"}`}>{fmtSEK(inv.total)} kr</span>
+                  </td>
+                  <td className="px-3 py-3">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${sc.bg} ${sc.text}`}>
+                      {isOverdue && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#c62828]" />}
+                      {sc.label[lang]}
+                    </span>
+                  </td>
+                  <td className="px-3 py-3 text-[12px] font-medium text-[#273A60]">{inv.orderNr}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
    QUESTIONNAIRE DRAWER — discussion guide
    ═══════════════════════════════════════════════════════ */
 
@@ -2159,6 +2487,8 @@ export default function UserTest2026Page() {
   const tabConfig: { id: Tab; label: string; badge?: number; highlight?: boolean }[] = [
     { id: "products", label: i.tabProducts, badge: 87 },
     { id: "sellout", label: i.tabSellout, badge: 14, highlight: true },
+    { id: "orders", label: i.tabOrders, badge: 8 },
+    { id: "invoices", label: i.tabInvoices, badge: 11 },
     { id: "customers", label: i.tabCustomers, badge: 142 },
     { id: "contracts", label: i.tabContracts, badge: 23 },
     { id: "today", label: i.tabToday, badge: 14 },
@@ -2345,6 +2675,10 @@ export default function UserTest2026Page() {
           )}
 
           {activeTab === "sellout" && <SelloutView lang={lang} products={productData} onRegisterSale={(serial, date) => handleSalesDateRegistered(serial, date, "")} />}
+
+          {activeTab === "orders" && <OrdersView lang={lang} />}
+
+          {activeTab === "invoices" && <InvoicesView lang={lang} />}
 
           {activeTab === "contracts" && <div className="py-12 text-center"><p className="text-[14px] text-[#999]">{i.contractsPlaceholder}</p></div>}
           {activeTab === "today" && <div className="py-12 text-center"><p className="text-[14px] text-[#999]">{i.todayPlaceholder}</p></div>}
