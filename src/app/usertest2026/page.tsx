@@ -1063,33 +1063,40 @@ function SetupCell({ installed, firstUse, lang }: { installed: SetupData; firstU
   }
 
   return (
-    <div className="space-y-1.5">
-      {installed !== "missing" && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colInstalled}</span>
-          <span className="text-[11px] text-[#555]">{installed.date}</span>
-          <span className={`rounded px-1 py-0.5 text-[9px] font-bold ${sourceColors[installed.source].bg} ${sourceColors[installed.source].text}`}>{installed.source}</span>
-        </div>
-      )}
-      {installed === "missing" && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colInstalled}</span>
-          <span className="rounded-full bg-[#fce8e8] px-1.5 py-0.5 text-[9px] font-semibold text-[#c44]">—</span>
-        </div>
-      )}
-      {firstUse !== "missing" && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colFirstUse}</span>
-          <span className="text-[11px] text-[#555]">{firstUse.date}</span>
-          <span className={`rounded px-1 py-0.5 text-[9px] font-bold ${sourceColors[firstUse.source].bg} ${sourceColors[firstUse.source].text}`}>{firstUse.source}</span>
-        </div>
-      )}
-      {firstUse === "missing" && installed !== "missing" && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-semibold text-[#999] w-[52px] shrink-0">{i.colFirstUse}</span>
-          <span className="rounded-full bg-[#fff3e0] px-1.5 py-0.5 text-[9px] font-semibold text-[#b8860b]">{i.statusPending}</span>
-        </div>
-      )}
+    <div className="space-y-2.5">
+      {/* Installed */}
+      <div>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbb]">{i.colInstalled}</span>
+        {installed !== "missing" ? (
+          <div className="mt-0.5 flex items-center gap-1.5 pl-2">
+            <span className="text-[12px] font-medium text-[#333]">{installed.date}</span>
+            <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${sourceColors[installed.source].bg} ${sourceColors[installed.source].text}`}>{installed.source}</span>
+          </div>
+        ) : (
+          <div className="mt-0.5 pl-2">
+            <span className="text-[11px] text-[#ccc]">—</span>
+          </div>
+        )}
+      </div>
+
+      {/* First use */}
+      <div>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbb]">{i.colFirstUse}</span>
+        {firstUse !== "missing" ? (
+          <div className="mt-0.5 flex items-center gap-1.5 pl-2">
+            <span className="text-[12px] font-medium text-[#333]">{firstUse.date}</span>
+            <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${sourceColors[firstUse.source].bg} ${sourceColors[firstUse.source].text}`}>{firstUse.source}</span>
+          </div>
+        ) : (
+          <div className="mt-0.5 pl-2">
+            {installed !== "missing" ? (
+              <span className="rounded-full bg-[#fff3e0] px-1.5 py-0.5 text-[9px] font-semibold text-[#b8860b]">{i.statusPending}</span>
+            ) : (
+              <span className="text-[11px] text-[#ccc]">—</span>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
