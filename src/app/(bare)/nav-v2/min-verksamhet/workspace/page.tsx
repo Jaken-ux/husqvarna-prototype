@@ -11,7 +11,7 @@ import Breadcrumb from "../../Breadcrumb";
 
 type Priority = "high" | "medium" | "low";
 
-type Tab = "dashboard" | "products" | "customers" | "contracts" | "today";
+type Tab = "dashboard" | "products" | "sellout" | "customers" | "contracts" | "today";
 type ContractView = "alla" | "service-plus" | "warranty-plus" | "leasing-plus" | "hypercare";
 
 /* ═══════════════════════════════════════════════════════
@@ -440,6 +440,7 @@ const actionGroups = [
 const tabs: { id: Tab; label: string; badge?: number }[] = [
   { id: "dashboard", label: "Dashboard" },
   { id: "products", label: "Produkter", badge: 87 },
+  { id: "sellout", label: "Sell-out", badge: 14 },
   { id: "customers", label: "Kunder", badge: 142 },
   { id: "contracts", label: "Avtal & program", badge: 23 },
   { id: "today", label: "Idag", badge: 14 },
@@ -544,6 +545,9 @@ export default function MinVerksamhetPage() {
               filter={productFilter}
               onFilterChange={setProductFilter}
             />
+          )}
+          {activeTab === "sellout" && (
+            <SelloutView />
           )}
           {activeTab === "customers" && (
             <CustomersView
@@ -2052,6 +2056,370 @@ function HyperCareTable() {
 
 /* ═══════════════════════════════════════════════════════
    E) TODAY / ACTIONS VIEW
+   ═══════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════
+   SELL-OUT VIEW
+   ═══════════════════════════════════════════════════════ */
+
+type SelloutStep = "choose" | "select" | "details" | "review" | "done";
+
+const inventoryItems = [
+  { name: "Automower 430X", pnc: "967 62 25-03", category: "Robotgräsklippare", stock: 8 },
+  { name: "Automower 320 Nera", pnc: "967 65 48-01", category: "Robotgräsklippare", stock: 3 },
+  { name: "LC 353iV", pnc: "967 77 20-02", category: "Gräsklippare", stock: 12 },
+  { name: "535i XP", pnc: "967 84 10-05", category: "Motorsåg", stock: 5 },
+  { name: "572 XP Mark II", pnc: "966 73 30-14", category: "Motorsåg", stock: 2 },
+];
+
+const recentSellouts = [
+  { product: "Automower 430X", serial: "AMX-2026-0328", date: "28 mar" },
+  { product: "Automower 320 Nera", serial: "AMN-2026-0325", date: "25 mar" },
+  { product: "LC 353iV", serial: "LC3-2026-0320", date: "20 mar" },
+  { product: "535i XP", serial: "535-2026-0315", date: "15 mar" },
+  { product: "Automower 430X", serial: "AMX-2026-0310", date: "10 mar" },
+];
+
+function SelloutView() {
+  const [showReport, setShowReport] = useState(false);
+  const [reportProduct, setReportProduct] = useState<typeof inventoryItems[0] | null>(null);
+  const totalStock = inventoryItems.reduce((s, p) => s + p.stock, 0);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold text-[#111]">Sell-out</h2>
+          <p className="text-[12px] text-[#888]">Rapportera försäljning till Husqvarna och lås upp förmåner</p>
+        </div>
+        <button
+          onClick={() => { setReportProduct(null); setShowReport(true); }}
+          className="rounded-lg bg-[#e65100] px-5 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#d84300]"
+        >
+          + Rapportera sell-out
+        </button>
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#e65100]">{totalStock}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">I lager</span>
+          <span className="text-[11px] text-[#bbb]">{inventoryItems.length} produkter</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#111]">{recentSellouts.length}</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">Sålda denna månad</span>
+          <span className="text-[11px] text-[#bbb]">Mars 2026</span>
+        </div>
+        <div className="rounded-xl border border-[#d0d0d0] bg-white px-5 py-4 text-center">
+          <span className="text-[24px] font-extrabold text-[#2e7d32]">3</span>
+          <span className="mt-0.5 block text-[12px] font-medium text-[#888]">Väntande bonus</span>
+          <span className="text-[11px] text-[#bbb]">Väntar på granskning</span>
+        </div>
+      </div>
+
+      {/* Inventory */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">Ditt lager</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {inventoryItems.map((item) => (
+            <div key={item.pnc} className="flex items-center justify-between px-5 py-3.5">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{item.name}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">PNC {item.pnc} · {item.category}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[11px] font-bold text-[#2e7d32]">{item.stock} i lager</span>
+                <button
+                  onClick={() => { setReportProduct(item); setShowReport(true); }}
+                  className="rounded-lg border border-[#d0d0d0] px-3 py-1.5 text-[12px] font-semibold text-[#555] transition-colors hover:bg-[#f5f5f5]"
+                >
+                  Rapportera försäljning
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent sell-outs */}
+      <div className="rounded-xl border border-[#d0d0d0] bg-white">
+        <div className="border-b border-[#f0f0f0] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#111]">Senaste sell-outs</h3>
+        </div>
+        <div className="divide-y divide-[#f0f0f0]">
+          {recentSellouts.map((so, idx) => (
+            <div key={idx} className="flex items-center justify-between px-5 py-3">
+              <div>
+                <span className="text-[13px] font-semibold text-[#111]">{so.product}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">S/N: {so.serial}</span>
+              </div>
+              <span className="text-[12px] text-[#999]">{so.date}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Report drawer */}
+      {showReport && (
+        <SelloutReportDrawer
+          preselected={reportProduct}
+          onClose={() => setShowReport(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ── Sell-out Report Drawer ── */
+
+function SelloutReportDrawer({ preselected, onClose }: { preselected: typeof inventoryItems[0] | null; onClose: () => void }) {
+  const [step, setStep] = useState<SelloutStep>(preselected ? "details" : "choose");
+  const [mode, setMode] = useState<"single" | "bulk">("single");
+  const [selectedProduct, setSelectedProduct] = useState(preselected);
+  const [productTab, setProductTab] = useState<"inventory" | "pnc" | "photo">("inventory");
+  const [pncInput, setPncInput] = useState("");
+  const [saleDate, setSaleDate] = useState("2026-04-02");
+  const [serialNumber, setSerialNumber] = useState("");
+  const [bulkItems, setBulkItems] = useState([{ product: "", date: "2026-04-02", serial: "" }]);
+
+  const stepNumber = step === "choose" ? 0 : step === "select" ? 1 : step === "details" ? 2 : 3;
+
+  return (
+    <>
+      <div className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed right-0 top-0 z-[9999] flex h-full w-full max-w-lg flex-col bg-white shadow-2xl sm:w-[520px]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+          <div className="flex items-center gap-3">
+            {step !== "choose" && step !== "done" && (
+              <div className="flex gap-1">
+                {[1, 2, 3].map((s) => (
+                  <span key={s} className={`h-2 w-2 rounded-full ${s <= stepNumber ? "bg-[#e65100]" : "bg-[#e0e0e0]"}`} />
+                ))}
+              </div>
+            )}
+            <span className="text-[12px] text-[#999]">
+              {step !== "choose" && step !== "done" && `Steg ${stepNumber} / 3`}
+            </span>
+          </div>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-[#999] hover:bg-[#f5f5f5]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          {/* Choose single/bulk */}
+          {step === "choose" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[18px] font-bold text-[#111]">Vad vill du rapportera?</h3>
+                <p className="mt-1 text-[13px] text-[#888]">Välj enstaka eller bulk-rapportering.</p>
+              </div>
+              <button onClick={() => { setMode("single"); setStep("select"); }} className="flex w-full items-center gap-4 rounded-xl border border-[#d0d0d0] bg-white p-5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-md">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#fff3e0]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e65100" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M9 12l2 2 4-4" /></svg>
+                </span>
+                <div>
+                  <span className="text-[15px] font-bold text-[#111]">Enstaka produkt</span>
+                  <span className="mt-0.5 block text-[13px] text-[#888]">En produkt med fullständiga detaljer</span>
+                </div>
+              </button>
+              <button onClick={() => { setMode("bulk"); setStep("details"); }} className="flex w-full items-center gap-4 rounded-xl border border-[#d0d0d0] bg-white p-5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-md">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#fff3e0]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e65100" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+                </span>
+                <div>
+                  <span className="text-[15px] font-bold text-[#111]">Bulk-rapport</span>
+                  <span className="mt-0.5 block text-[13px] text-[#888]">Flera produkter på en gång</span>
+                </div>
+              </button>
+            </div>
+          )}
+
+          {/* Select product */}
+          {step === "select" && mode === "single" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[18px] font-bold text-[#111]">Vilken produkt såldes?</h3>
+                <p className="mt-1 text-[13px] text-[#888]">Välj från lager, ange PNC eller skanna.</p>
+              </div>
+              <div className="flex rounded-lg border border-[#e0e0e0] bg-[#f5f5f5] p-0.5">
+                {(["inventory", "pnc", "photo"] as const).map((tab) => (
+                  <button key={tab} onClick={() => setProductTab(tab)} className={`flex-1 rounded-md px-3 py-2 text-[12px] font-semibold transition-all ${productTab === tab ? "bg-white text-[#111] shadow-sm" : "text-[#888]"}`}>
+                    {tab === "inventory" ? "Lager" : tab === "pnc" ? "Ange PNC" : "📷 Foto"}
+                  </button>
+                ))}
+              </div>
+              {productTab === "inventory" && (
+                <div className="space-y-2">
+                  {inventoryItems.map((item) => (
+                    <button key={item.pnc} onClick={() => { setSelectedProduct(item); setStep("details"); }} className="flex w-full items-center justify-between rounded-xl border border-[#d0d0d0] bg-white px-5 py-3.5 text-left transition-all hover:border-[#e65100]/40 hover:shadow-sm">
+                      <div>
+                        <span className="text-[14px] font-semibold text-[#111]">{item.name}</span>
+                        <span className="mt-0.5 block text-[11px] text-[#888]">PNC {item.pnc}</span>
+                      </div>
+                      <span className="rounded-full bg-[#e8f5e9] px-2.5 py-0.5 text-[11px] font-bold text-[#2e7d32]">{item.stock} i lager</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {productTab === "pnc" && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[13px] font-bold text-[#111]">PNC-nummer</label>
+                    <input type="text" value={pncInput} onChange={(e) => setPncInput(e.target.value)} placeholder="t.ex. 967 62 25-03" className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none" />
+                  </div>
+                  <button onClick={() => { setSelectedProduct({ name: pncInput, pnc: pncInput, category: "—", stock: 0 }); setStep("details"); }} disabled={!pncInput.trim()} className={`w-full rounded-lg py-3 text-[13px] font-bold text-white ${pncInput.trim() ? "bg-[#e65100] hover:bg-[#d84300]" : "bg-[#e0e0e0] cursor-not-allowed"}`}>
+                    Fortsätt →
+                  </button>
+                </div>
+              )}
+              {productTab === "photo" && (
+                <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#d0d0d0] bg-[#fafafa]">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="12" cy="12" r="3.5" /><path d="M8 5V3h8v2" /></svg>
+                  <p className="mt-2 text-[13px] text-[#888]">Skanna QR-kod eller ta foto av produktetikett</p>
+                  <button onClick={() => { setSelectedProduct(inventoryItems[0]); setStep("details"); }} className="mt-3 rounded-lg bg-[#e65100] px-4 py-2 text-[12px] font-bold text-white">Simulera scan</button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Sale details — single */}
+          {step === "details" && mode === "single" && selectedProduct && (
+            <div className="space-y-5">
+              <div className="rounded-xl border border-[#d0d0d0] bg-[#fafafa] px-5 py-4">
+                <span className="text-[14px] font-bold text-[#111]">{selectedProduct.name}</span>
+                <span className="mt-0.5 block text-[11px] text-[#888]">PNC {selectedProduct.pnc}</span>
+              </div>
+              <h3 className="text-[16px] font-bold text-[#111]">Ange säljdetaljer</h3>
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Säljdatum *</label>
+                <input type="date" value={saleDate} onChange={(e) => setSaleDate(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] focus:border-[#e65100] focus:outline-none" />
+              </div>
+              <div>
+                <label className="text-[13px] font-bold text-[#111]">Serienummer <span className="font-normal text-[#999]">(rekommenderat)</span></label>
+                <p className="mt-0.5 text-[11px] text-[#888]">Krävs för att aktivera garanti per enhet.</p>
+                <input type="text" value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)} placeholder="t.ex. AMX-2026-00123" className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none" />
+              </div>
+              <button onClick={() => setStep("review")} className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white hover:bg-[#d84300]">Granska & skicka →</button>
+            </div>
+          )}
+
+          {/* Bulk details */}
+          {step === "details" && mode === "bulk" && (
+            <div className="space-y-5">
+              <div>
+                <h3 className="text-[16px] font-bold text-[#111]">Lägg till sålda produkter</h3>
+                <p className="mt-1 text-[13px] text-[#888]">Lägg till varje såld produkt. Serienummer är valfritt men rekommenderas.</p>
+              </div>
+              <div className="flex rounded-lg border border-[#e0e0e0] bg-[#f5f5f5] p-0.5">
+                {["Manuell", "QR / Streckkod", "Ladda upp fil"].map((tab, idx) => (
+                  <button key={tab} className={`flex-1 rounded-md px-3 py-2 text-[12px] font-semibold ${idx === 0 ? "bg-white text-[#111] shadow-sm" : "text-[#888]"}`}>{tab}</button>
+                ))}
+              </div>
+              {bulkItems.map((item, idx) => (
+                <div key={idx} className="rounded-xl border border-[#d0d0d0] bg-white p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[12px] font-bold text-[#e65100]">Produkt {idx + 1}</span>
+                    {bulkItems.length > 1 && (
+                      <button onClick={() => setBulkItems(bulkItems.filter((_, j) => j !== idx))} className="text-[#ccc] hover:text-[#c44]">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#999]">Produkt</label>
+                      <select value={item.product} onChange={(e) => setBulkItems(bulkItems.map((it, j) => j === idx ? { ...it, product: e.target.value } : it))} className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] bg-white px-2 text-[12px] text-[#333] focus:border-[#e65100] focus:outline-none">
+                        <option value="">Välj...</option>
+                        {inventoryItems.map((p) => <option key={p.pnc} value={p.name}>{p.name}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#999]">Säljdatum *</label>
+                      <input type="date" value={item.date} onChange={(e) => setBulkItems(bulkItems.map((it, j) => j === idx ? { ...it, date: e.target.value } : it))} className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] px-2 text-[12px] text-[#333] focus:border-[#e65100] focus:outline-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-[#999]">Serienummer <span className="font-normal text-[#bbb]">(valfritt)</span></label>
+                    <input type="text" value={item.serial} onChange={(e) => setBulkItems(bulkItems.map((it, j) => j === idx ? { ...it, serial: e.target.value } : it))} placeholder="t.ex. AMX-2026-00123" className="mt-1 h-9 w-full rounded-lg border border-[#d0d0d0] px-3 text-[12px] text-[#333] placeholder-[#aaa] focus:border-[#e65100] focus:outline-none" />
+                  </div>
+                </div>
+              ))}
+              <button onClick={() => setBulkItems([...bulkItems, { product: "", date: "2026-04-02", serial: "" }])} className="w-full rounded-lg border border-dashed border-[#d0d0d0] py-2.5 text-[12px] font-semibold text-[#888] hover:border-[#999] hover:text-[#555]">+ Lägg till en till produkt</button>
+              <button onClick={() => setStep("done")} disabled={!bulkItems.some((i) => i.product)} className={`w-full rounded-lg py-3 text-[13px] font-bold text-white ${bulkItems.some((i) => i.product) ? "bg-[#e65100] hover:bg-[#d84300]" : "bg-[#e0e0e0] cursor-not-allowed"}`}>
+                Skicka sell-outs ({bulkItems.filter((i) => i.product).length}) →
+              </button>
+            </div>
+          )}
+
+          {/* Review — single */}
+          {step === "review" && selectedProduct && (
+            <div className="space-y-5">
+              <h3 className="text-[18px] font-bold text-[#111]">Granska din sell-out</h3>
+              <div className="rounded-xl border border-[#d0d0d0] bg-white divide-y divide-[#f0f0f0]">
+                {[
+                  ["Produkt", selectedProduct.name],
+                  ["PNC", selectedProduct.pnc],
+                  ["Säljdatum", saleDate],
+                  ["Serienummer", serialNumber || "— ej angivet"],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex items-center justify-between px-5 py-3">
+                    <span className="text-[12px] text-[#888]">{label}</span>
+                    <span className="text-[13px] font-semibold text-[#111]">{value}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-xl bg-[#fff8f0] px-5 py-4">
+                <p className="text-[12px] font-bold text-[#e65100]">Vad detta låser upp för dig:</p>
+                <div className="mt-2 space-y-1.5">
+                  {["Garanti aktiverad från säljdatum", "Försäljning spårad i dina analyser", "Bonusberättigande öppnat hos Husqvarna", "Uppföljningstjänster nu tillgängliga"].map((txt) => (
+                    <div key={txt} className="flex items-center gap-2">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2e7d32" strokeWidth="2" strokeLinecap="round"><path d="M4 8l3 3 5-5" /></svg>
+                      <span className="text-[12px] text-[#555]">{txt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button onClick={() => setStep("done")} className="w-full rounded-lg bg-[#e65100] py-3 text-[13px] font-bold text-white hover:bg-[#d84300]">✓ Skicka sell-out</button>
+            </div>
+          )}
+
+          {/* Done */}
+          {step === "done" && (
+            <div className="flex flex-col items-center pt-12">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e8f5e9]">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              </span>
+              <h3 className="mt-4 text-[18px] font-bold text-[#111]">Sell-out rapporterad!</h3>
+              <p className="mt-1 text-center text-[13px] text-[#888]">Husqvarna har notifierats. Här är vad som aktiverats:</p>
+              <div className="mt-5 w-full space-y-2">
+                {["Garanti aktiverad från säljdatum", "Försäljning spårad i dina analyser", "Bonusberättigande öppnat hos Husqvarna", "Uppföljningstjänster nu tillgängliga"].map((txt) => (
+                  <div key={txt} className="flex items-center gap-3 rounded-lg bg-[#fafafa] px-4 py-3">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#2e7d32" strokeWidth="2" strokeLinecap="round"><path d="M4 8l3 3 5-5" /></svg>
+                    <span className="text-[13px] text-[#333]">{txt}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 flex w-full gap-3">
+                <button onClick={onClose} className="flex-1 rounded-lg border border-[#d0d0d0] py-2.5 text-[13px] font-semibold text-[#555]">Tillbaka till översikt</button>
+                <button onClick={() => { setStep("choose"); setSelectedProduct(null); setSerialNumber(""); setPncInput(""); setBulkItems([{ product: "", date: "2026-04-02", serial: "" }]); }} className="flex-1 rounded-lg bg-[#e65100] py-2.5 text-[13px] font-bold text-white">Rapportera en till →</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   E) TODAY VIEW
    ═══════════════════════════════════════════════════════ */
 
 function TodayView() {
