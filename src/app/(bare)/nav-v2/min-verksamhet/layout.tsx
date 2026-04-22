@@ -55,11 +55,17 @@ export default function MinVerksamhetLayout({ children }: { children: React.Reac
       <div className="mx-auto flex max-w-[1320px] gap-6 px-6">
         {/* Left panel */}
         <aside className="w-[240px] shrink-0 py-6">
-          <nav className="sticky top-[120px] space-y-5 rounded-xl border border-[#e5e5e5] bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <nav className="sticky top-[120px] space-y-1 overflow-hidden rounded-2xl border border-[#d0d0d0] bg-gradient-to-b from-[#fafbfd] to-white shadow-[0_4px_16px_rgba(39,58,96,0.08)]">
+            {/* Panel header */}
+            <div className="bg-[#273A60] px-5 py-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/50">Min verksamhet</p>
+            </div>
+
+            <div className="space-y-4 p-4">
             {panelGroups.map((group, gi) => (
               <div key={gi}>
                 {group.heading && (
-                  <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-[#bbb]">
+                  <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-[#b0b8c8]">
                     {group.heading}
                   </p>
                 )}
@@ -70,14 +76,14 @@ export default function MinVerksamhetLayout({ children }: { children: React.Reac
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`group flex items-center gap-2 rounded-lg px-3 py-2 text-left transition-all ${
+                        className={`group flex items-center gap-2 rounded-lg px-3 py-2.5 text-left transition-all ${
                           isActive
-                            ? "border-l-[3px] border-l-[#273A60] bg-[#f0f3f8] text-[#273A60]"
-                            : "border-l-[3px] border-l-transparent text-[#555] hover:bg-[#fafafa] hover:text-[#111]"
+                            ? "bg-[#273A60] text-white shadow-sm"
+                            : "text-[#555] hover:bg-[#eef1f6] hover:text-[#273A60]"
                         }`}
                       >
                         {item.primary && (
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={isActive ? "text-[#273A60]" : "text-[#999]"}>
+                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={isActive ? "text-white" : "text-[#999] group-hover:text-[#273A60]"}>
                             <rect x="3" y="3" width="6" height="6" rx="1" />
                             <rect x="11" y="3" width="6" height="6" rx="1" />
                             <rect x="3" y="11" width="6" height="6" rx="1" />
@@ -89,7 +95,7 @@ export default function MinVerksamhetLayout({ children }: { children: React.Reac
                         </span>
                         {item.badge && (
                           <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
-                            isActive ? "bg-[#273A60] text-white" : "bg-[#e5e5e5] text-[#888]"
+                            isActive ? "bg-white/20 text-white" : "bg-[#e5e5e5] text-[#888]"
                           }`}>{item.badge}</span>
                         )}
                         {item.pill && (
@@ -101,9 +107,10 @@ export default function MinVerksamhetLayout({ children }: { children: React.Reac
                     );
                   })}
                 </div>
-                {gi === 0 && <div className="mt-3 border-b border-[#f0f0f0]" />}
+                {gi === 0 && <div className="mt-3 border-b border-[#e5e5e5]" />}
               </div>
             ))}
+            </div>
           </nav>
         </aside>
 
