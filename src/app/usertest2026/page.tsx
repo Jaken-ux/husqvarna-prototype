@@ -1269,9 +1269,9 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
   }
 
   function handleAdd() {
-    if (!model || !serial) return;
+    if (!pnc || !serial) return;
     setAdded(true);
-    setTimeout(() => { onAdd({ model, serial, pnc: pnc || "—", customer: customer || "—", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", cxBonus: "processing", lastUpdated: new Date().toISOString().split("T")[0] }); }, 1000);
+    setTimeout(() => { onAdd({ model: model || pnc, serial, pnc, customer: customer || "—", soldDate: "missing", installed: "missing", firstUse: "missing", warranty: "missing", serviceContract: "missing", leasing: "—", hypercare: "—", cxBonus: "processing", lastUpdated: new Date().toISOString().split("T")[0] }); }, 1000);
   }
 
   const modeButtons = [
@@ -1342,9 +1342,8 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
                   <span className="text-[13px] font-semibold text-[#2e7d32]">{i.productIdentified}</span>
                 </div>
               )}
-              <div><label className="text-[13px] font-bold text-[#111]">{i.modelLabel}</label><input type="text" value={model} onChange={(e) => setModel(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none" /></div>
+              <div><label className="text-[13px] font-bold text-[#111]">{i.pncLabel} *</label><input type="text" value={pnc} onChange={(e) => setPnc(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none" /></div>
               <div><label className="text-[13px] font-bold text-[#111]">{i.serialLabel}</label><input type="text" value={serial} onChange={(e) => setSerial(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none" /></div>
-              <div><label className="text-[13px] font-bold text-[#111]">{i.pncLabel}</label><input type="text" value={pnc} onChange={(e) => setPnc(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none" /></div>
               <div>
                 <label className="text-[13px] font-bold text-[#111]">{i.customerLabel}</label>
                 <select value={customer} onChange={(e) => setCustomer(e.target.value)} className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] bg-white px-3 text-[13px] text-[#333] focus:border-[#273A60] focus:outline-none">
@@ -1357,7 +1356,7 @@ function AddProductPanel({ onClose, onAdd, lang }: { onClose: () => void; onAdd:
         </div>
         <div className="flex gap-3 border-t border-[#e5e5e5] px-6 py-4">
           <button onClick={onClose} className="flex-1 rounded-lg border border-[#d0d0d0] py-3 text-[13px] font-semibold text-[#555] hover:bg-[#f5f5f5]">{i.cancel}</button>
-          <button onClick={handleAdd} disabled={!model || !serial || added} className={`flex-1 rounded-lg py-3 text-[13px] font-bold text-white transition-all ${added ? "bg-[#2e7d32]" : model && serial ? "bg-[#273A60] hover:bg-[#1a2d4d]" : "bg-[#273A60]/50 cursor-not-allowed"}`}>
+          <button onClick={handleAdd} disabled={!pnc || !serial || added} className={`flex-1 rounded-lg py-3 text-[13px] font-bold text-white transition-all ${added ? "bg-[#2e7d32]" : pnc && serial ? "bg-[#273A60] hover:bg-[#1a2d4d]" : "bg-[#273A60]/50 cursor-not-allowed"}`}>
             {added ? i.added : i.registerProduct}
           </button>
         </div>

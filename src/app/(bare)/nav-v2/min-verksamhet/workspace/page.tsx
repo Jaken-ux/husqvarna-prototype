@@ -11,7 +11,7 @@ import Breadcrumb from "../../Breadcrumb";
 
 type Priority = "high" | "medium" | "low";
 
-type Tab = "dashboard" | "customers" | "products" | "orders" | "invoices" | "contracts";
+type Tab = "dashboard" | "customers" | "products" | "sellout" | "orders" | "invoices" | "contracts";
 type ContractView = "alla" | "service-plus" | "warranty-plus" | "leasing-plus" | "hypercare";
 
 /* ═══════════════════════════════════════════════════════
@@ -467,6 +467,7 @@ const tabs: { id: Tab; label: string; badge?: number | string; badgeDot?: boolea
   { id: "dashboard", label: "Dashboard" },
   { id: "customers", label: "Kunder", badge: 142 },
   { id: "products", label: "Produkter", badge: 87 },
+  { id: "sellout", label: "Sell-out", badge: 14, badgePill: undefined },
   { id: "orders", label: "Ordrar", badge: 14, badgeDot: true },
   { id: "invoices", label: "Fakturor", badge: 8, badgePill: "NY" },
   { id: "contracts", label: "Avtal & program", badge: 23 },
@@ -629,6 +630,9 @@ export default function MinVerksamhetPage() {
               filter={productFilter}
               onFilterChange={setProductFilter}
             />
+          )}
+          {activeTab === "sellout" && (
+            <SelloutView />
           )}
           {activeTab === "orders" && (
             <OrdersDirectView />
@@ -840,13 +844,13 @@ function AddProductPanel({
   }
 
   function handleAdd() {
-    if (!model || !serial) return;
+    if (!pnc || !serial) return;
     setAdded(true);
     setTimeout(() => {
       onAdd({
-        model,
+        model: model || pnc,
         serial,
-        pnc: pnc || "—",
+        pnc,
         customer: customer || "Ej tilldelad",
         soldDate: "missing",
         installed: "missing" as SetupData,
@@ -1043,16 +1047,17 @@ function AddProductPanel({
                 </div>
               )}
 
-              {/* Model */}
+              {/* PNC */}
               <div>
-                <label className="text-[13px] font-bold text-[#111]">Modell *</label>
+                <label className="text-[13px] font-bold text-[#111]">Artikelnummer (PNC) *</label>
                 <input
                   type="text"
-                  value={model}
-                  onChange={(e) => setModel(e.target.value)}
-                  placeholder="T.ex. Husqvarna 545 Mark II"
+                  value={pnc}
+                  onChange={(e) => setPnc(e.target.value)}
+                  placeholder="T.ex. 967 69 07-35"
                   className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
                 />
+                <p className="mt-1 text-[11px] text-[#999]">Fylls i automatiskt vid QR-skanning</p>
               </div>
 
               {/* Serial */}
@@ -1065,19 +1070,6 @@ function AddProductPanel({
                   placeholder="T.ex. 2025-545M-00123"
                   className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
                 />
-              </div>
-
-              {/* PNC */}
-              <div>
-                <label className="text-[13px] font-bold text-[#111]">Artikelnummer (PNC)</label>
-                <input
-                  type="text"
-                  value={pnc}
-                  onChange={(e) => setPnc(e.target.value)}
-                  placeholder="T.ex. 967 69 07-35"
-                  className="mt-1.5 h-10 w-full rounded-lg border border-[#d0d0d0] px-3 text-[13px] text-[#333] placeholder-[#aaa] focus:border-[#273A60] focus:outline-none"
-                />
-                <p className="mt-1 text-[11px] text-[#999]">Fylls i automatiskt vid QR-skanning</p>
               </div>
 
               {/* Customer */}
@@ -1120,7 +1112,7 @@ function AddProductPanel({
           </button>
           <button
             onClick={handleAdd}
-            disabled={!model || !serial || added}
+            disabled={!pnc || !serial || added}
             className={`flex-1 rounded-lg py-3 text-[13px] font-bold text-white transition-all ${
               added
                 ? "bg-[#2e7d32]"
