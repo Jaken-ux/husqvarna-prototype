@@ -20,7 +20,7 @@ type PanelGroup = {
 const panelGroups: PanelGroup[] = [
   {
     items: [
-      { label: "Dealer Workspace", href: "/nav-v2/min-verksamhet/workspace", primary: true },
+      { label: "Hem", href: "/nav-v2/min-verksamhet/workspace", primary: true },
     ],
   },
   {
