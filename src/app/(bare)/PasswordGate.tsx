@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 const STORAGE_KEY = "bare-auth";
-const PASSWORD = "supersecret";
+const PASSWORD = "Joojeed1";
 
 export default function PasswordGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);

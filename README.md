@@ -29,7 +29,7 @@ npm run dev
 open http://localhost:3000/nav-v2
 ```
 
-Password for the prototype gate: `supersecret`
+Password for the prototype gate: `Joojeed1`
 
 ---
 
